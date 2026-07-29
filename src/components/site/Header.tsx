@@ -17,7 +17,7 @@ import { useShop } from "@/lib/shop-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import logo from "@/assets/hero-1.jpg";
+import logo from "@/assets/logo.png";
 
 const mainNav = [
   { label: "Home", to: "/" },
@@ -119,7 +119,7 @@ export function Header() {
           </Sheet>
 
           <Link to="/" className="flex shrink-0 items-center gap-2">
-            <img src={logo} alt="" aria-hidden="true" width={48} height={48} className="h-11 w-11 rounded-full object-cover" />
+            <img src={logo} alt="" aria-hidden="true" width={512} height={512} className="h-12 w-12 object-contain" />
             <span className="leading-tight">
               <span className="block font-display text-xl font-bold text-primary sm:text-2xl">{store.name}</span>
               <span className="hidden text-[11px] text-muted-foreground sm:block">{store.tagline}</span>
