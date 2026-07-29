@@ -28,7 +28,7 @@ function AdminOrders() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("orders")
-        .select("*, order_items(id, product_name, quantity, price)")
+        .select("*, order_items(id, product_name, qty, unit_price)")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return data;
@@ -101,9 +101,9 @@ function AdminOrders() {
                   {order.order_items.map((item) => (
                     <li key={item.id} className="flex justify-between">
                       <span>
-                        {item.product_name} × {item.quantity}
+                        {item.product_name} × {item.qty}
                       </span>
-                      <span>{inr(item.price * item.quantity)}</span>
+                      <span>{inr(item.unit_price * item.qty)}</span>
                     </li>
                   ))}
                 </ul>
