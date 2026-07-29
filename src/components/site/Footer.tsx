@@ -1,0 +1,205 @@
+import { Link } from "@tanstack/react-router";
+import { Clock, Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, ShieldCheck } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { toast } from "sonner";
+import { categories, store } from "@/data/catalog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { WhatsAppIcon } from "./Header";
+
+const quickLinks = [
+  { label: "Home", to: "/" },
+  { label: "Shop", to: "/shop" },
+  { label: "Offers", to: "/offers" },
+  { label: "Blog / Parenting Tips", to: "/blog" },
+  { label: "About Us", to: "/about" },
+  { label: "Contact Us", to: "/contact" },
+] as const;
+
+const serviceLinks = [
+  { label: "My Account", to: "/account" },
+  { label: "Order Tracking", to: "/order-tracking" },
+  { label: "Wishlist", to: "/wishlist" },
+  { label: "Cart", to: "/cart" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Shipping Policy", to: "/shipping-policy" },
+  { label: "Returns & Refunds", to: "/returns-refunds" },
+  { label: "Privacy Policy", to: "/privacy-policy" },
+  { label: "Terms & Conditions", to: "/terms" },
+] as const;
+
+export function Footer() {
+  const [email, setEmail] = useState("");
+
+  const subscribe = (e: FormEvent) => {
+    e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    toast.success("Thanks for subscribing! Offers are on the way.");
+    setEmail("");
+  };
+
+  return (
+    <footer className="mt-16">
+      <div className="gradient-primary">
+        <div className="container-page flex flex-col items-center gap-5 py-8 text-primary-foreground md:flex-row md:justify-between">
+          <div className="flex items-center gap-3 text-center md:text-left">
+            <Send className="h-8 w-8 shrink-0" aria-hidden="true" />
+            <div>
+              <h2 className="text-lg font-bold">Stay updated</h2>
+              <p className="text-sm opacity-90">Get offers, new arrivals and parenting tips.</p>
+            </div>
+          </div>
+          <form onSubmit={subscribe} className="flex w-full max-w-md gap-2">
+            <label htmlFor="newsletter-email" className="sr-only">
+              Email address
+            </label>
+            <Input
+              id="newsletter-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email address"
+              className="bg-card text-foreground"
+            />
+            <Button type="submit" variant="teal">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+      </div>
+
+      <div className="bg-secondary/50">
+        <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-5">
+          <div className="lg:col-span-1">
+            <h2 className="font-display text-xl font-bold text-primary">{store.name}</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore.
+            </p>
+            <div className="mt-4 flex gap-2">
+              <a
+                href={store.instagram}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Instagram"
+                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-primary"
+              >
+                <Instagram className="h-4 w-4" />
+              </a>
+              <a
+                href={store.facebook}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-primary"
+              >
+                <Facebook className="h-4 w-4" />
+              </a>
+              <a
+                href={store.whatsapp}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp"
+                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-teal"
+              >
+                <WhatsAppIcon className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <nav aria-label="Quick links">
+            <h3 className="text-sm font-bold uppercase tracking-wide">Quick Links</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              {quickLinks.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="hover:text-primary">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Shop by category">
+            <h3 className="text-sm font-bold uppercase tracking-wide">Categories</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              {categories.map((c) => (
+                <li key={c.slug}>
+                  <Link to="/category/$slug" params={{ slug: c.slug }} className="hover:text-primary">
+                    {c.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Customer service">
+            <h3 className="text-sm font-bold uppercase tracking-wide">Customer Service</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              {serviceLinks.map((l) => (
+                <li key={l.to}>
+                  <Link to={l.to} className="hover:text-primary">
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wide">Contact Us</h3>
+            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+              <li className="flex gap-2">
+                <MapPin className="h-4 w-4 shrink-0 text-primary" /> {store.address}
+              </li>
+              <li className="flex gap-2">
+                <Phone className="h-4 w-4 shrink-0 text-primary" />
+                <a href={store.phoneHref} className="hover:text-primary">
+                  {store.phone}
+                </a>
+              </li>
+              <li className="flex gap-2">
+                <Mail className="h-4 w-4 shrink-0 text-primary" />
+                <a href={`mailto:${store.email}`} className="hover:text-primary">
+                  {store.email}
+                </a>
+              </li>
+              <li className="flex gap-2">
+                <Clock className="h-4 w-4 shrink-0 text-primary" /> {store.hours}
+              </li>
+              <li className="flex gap-2">
+                <Globe className="h-4 w-4 shrink-0 text-primary" /> www.mazhalaiulagam.com
+              </li>
+            </ul>
+            <Button variant="teal" size="sm" className="mt-4" asChild>
+              <a href={store.whatsapp} target="_blank" rel="noreferrer">
+                <WhatsAppIcon className="h-4 w-4" /> Order on WhatsApp
+              </a>
+            </Button>
+
+            <h3 className="mt-6 text-sm font-bold uppercase tracking-wide">We Accept</h3>
+            <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-bold">
+              {["VISA", "Mastercard", "RuPay", "UPI", "Net Banking", "COD"].map((m) => (
+                <span key={m} className="rounded-md border border-border bg-card px-2.5 py-1.5">
+                  {m}
+                </span>
+              ))}
+            </div>
+            <p className="mt-3 inline-flex items-center gap-2 text-xs text-muted-foreground">
+              <ShieldCheck className="h-4 w-4 text-teal" /> 100% secure payments
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="gradient-teal">
+        <div className="container-page flex flex-col items-center justify-between gap-2 py-4 text-xs text-teal-foreground sm:flex-row">
+          <p>© {new Date().getFullYear()} {store.name}. All rights reserved.</p>
+          <p>Made with love for little ones in Coimbatore, Tamil Nadu.</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
