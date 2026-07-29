@@ -15,7 +15,7 @@ function AdminDashboard() {
     queryFn: async () => {
       const [products, orders, customers] = await Promise.all([
         supabase.from("products").select("id", { count: "exact", head: true }),
-        supabase.from("orders").select("id, total_amount, status, created_at, customer_name").order("created_at", { ascending: false }),
+        supabase.from("orders").select("id, total, status, created_at, customer_name").order("created_at", { ascending: false }),
         supabase.from("profiles").select("id", { count: "exact", head: true }),
       ]);
       const rows = orders.data ?? [];
@@ -23,7 +23,7 @@ function AdminDashboard() {
         productCount: products.count ?? 0,
         customerCount: customers.count ?? 0,
         orderCount: rows.length,
-        revenue: rows.reduce((sum, o) => sum + Number(o.total_amount ?? 0), 0),
+        revenue: rows.reduce((sum, o) => sum + Number(o.total ?? 0), 0),
         recent: rows.slice(0, 8),
       };
     },
@@ -71,7 +71,7 @@ function AdminDashboard() {
                     <td className="py-2 font-medium">{o.customer_name ?? "—"}</td>
                     <td className="capitalize">{o.status}</td>
                     <td>{new Date(o.created_at).toLocaleDateString("en-IN")}</td>
-                    <td className="text-right">{inr(Number(o.total_amount ?? 0))}</td>
+                    <td className="text-right">{inr(Number(o.total ?? 0))}</td>
                   </tr>
                 ))}
               </tbody>
