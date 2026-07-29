@@ -10,7 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
+import { Route as ReturnsRefundsRouteImport } from './routes/returns-refunds'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as OrderTrackingRouteImport } from './routes/order-tracking'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -29,9 +33,29 @@ const WishlistRoute = WishlistRouteImport.update({
   path: '/wishlist',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingPolicyRoute = ShippingPolicyRouteImport.update({
+  id: '/shipping-policy',
+  path: '/shipping-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsRefundsRoute = ReturnsRefundsRouteImport.update({
+  id: '/returns-refunds',
+  path: '/returns-refunds',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OrderTrackingRoute = OrderTrackingRouteImport.update({
@@ -106,7 +130,11 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/returns-refunds': typeof ReturnsRefundsRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -122,7 +150,11 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/returns-refunds': typeof ReturnsRefundsRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -139,7 +171,11 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/returns-refunds': typeof ReturnsRefundsRoute
+  '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
@@ -157,7 +193,11 @@ export interface FileRouteTypes {
     | '/faq'
     | '/offers'
     | '/order-tracking'
+    | '/privacy-policy'
+    | '/returns-refunds'
+    | '/shipping-policy'
     | '/shop'
+    | '/terms'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$slug'
@@ -173,7 +213,11 @@ export interface FileRouteTypes {
     | '/faq'
     | '/offers'
     | '/order-tracking'
+    | '/privacy-policy'
+    | '/returns-refunds'
+    | '/shipping-policy'
     | '/shop'
+    | '/terms'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$slug'
@@ -189,7 +233,11 @@ export interface FileRouteTypes {
     | '/faq'
     | '/offers'
     | '/order-tracking'
+    | '/privacy-policy'
+    | '/returns-refunds'
+    | '/shipping-policy'
     | '/shop'
+    | '/terms'
     | '/wishlist'
     | '/category/$slug'
     | '/product/$slug'
@@ -206,7 +254,11 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   OffersRoute: typeof OffersRoute
   OrderTrackingRoute: typeof OrderTrackingRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ReturnsRefundsRoute: typeof ReturnsRefundsRoute
+  ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopRoute: typeof ShopRoute
+  TermsRoute: typeof TermsRoute
   WishlistRoute: typeof WishlistRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
@@ -221,11 +273,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WishlistRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping-policy': {
+      id: '/shipping-policy'
+      path: '/shipping-policy'
+      fullPath: '/shipping-policy'
+      preLoaderRoute: typeof ShippingPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns-refunds': {
+      id: '/returns-refunds'
+      path: '/returns-refunds'
+      fullPath: '/returns-refunds'
+      preLoaderRoute: typeof ReturnsRefundsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/order-tracking': {
@@ -326,7 +406,11 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   OffersRoute: OffersRoute,
   OrderTrackingRoute: OrderTrackingRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ReturnsRefundsRoute: ReturnsRefundsRoute,
+  ShippingPolicyRoute: ShippingPolicyRoute,
   ShopRoute: ShopRoute,
+  TermsRoute: TermsRoute,
   WishlistRoute: WishlistRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
@@ -334,3 +418,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
