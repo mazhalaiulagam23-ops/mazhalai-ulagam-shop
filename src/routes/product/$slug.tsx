@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
 import { Heart, Minus, Plus, RefreshCcw, ShieldCheck, Truck } from "lucide-react";
 import { toast } from "sonner";
-import { discountPercent, getCategory, getProduct, products } from "@/data/catalog";
+import { discountPercent, getCategory, getProduct, products, type Product } from "@/data/catalog";
 import { ProductCard, Stars } from "@/components/shop/ProductCard";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Button } from "@/components/ui/button";
@@ -75,7 +75,7 @@ const reviewsSample = [
 ];
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
+  const { product } = Route.useLoaderData() as { product: Product };
   const { addToCart, toggleWishlist, inWishlist } = useShop();
   const [qty, setQty] = useState(1);
   const [active, setActive] = useState(0);
