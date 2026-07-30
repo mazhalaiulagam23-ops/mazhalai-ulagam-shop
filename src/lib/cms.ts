@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import { store as staticStore } from "@/data/catalog";
+import { store as staticStore, categories as staticCategories } from "@/data/catalog";
 
 export type SiteSettings = Tables<"site_settings">;
 export type HomeSection = Tables<"home_sections">;
@@ -142,4 +142,17 @@ export function useCmsCategories() {
       return data;
     },
   });
+}
+
+/** Storefront categories: CMS-managed rows merged over the seed list. */
+export function useSiteCategories() {
+  const { data } = useCmsCategories();
+  const live = (data ?? []).map((c) => ({
+    slug: c.slug,
+    name: c.name,
+    tagline: c.tagline ?? "",
+    image: c.image_url || staticCategories.find((s) => s.slug === c.slug)?.image || "/placeholder.svg",
+  }));
+  const liveSlugs = new Set(live.map((c) => c.slug));
+  return [...live, ...staticCategories.filter((c) => !liveSlugs.has(c.slug))];
 }
