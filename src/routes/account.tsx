@@ -29,7 +29,7 @@ function Account() {
   const { user, loading, isStaff, signOut } = useAuth();
 
   useEffect(() => {
-    if (!loading && !user) navigate({ to: "/auth", search: {}, replace: true });
+    if (!loading && !user) navigate({ to: "/auth", search: { redirect: undefined }, replace: true });
   }, [loading, user, navigate]);
 
   const { data: orders = [] } = useQuery({
