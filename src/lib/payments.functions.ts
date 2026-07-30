@@ -27,8 +27,9 @@ export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => checkoutSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: settings } = await supabase.from("payment_settings").select("*").maybeSingle();
+    const { data: settings } = await supabaseAdmin.from("payment_settings").select("*").maybeSingle();
     if (!settings) throw new Error("Payments are not configured yet.");
 
     // Re-price against the live catalogue; never trust browser prices when we can help it.
