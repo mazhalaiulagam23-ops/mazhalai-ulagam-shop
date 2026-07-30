@@ -265,7 +265,8 @@ export const retryPayment = createServerFn({ method: "POST" })
     if (!order) throw new Error("Order not found.");
     if (order.payment_status === "paid") throw new Error("This order is already paid.");
 
-    const { data: settings } = await context.supabase.from("payment_settings").select("*").maybeSingle();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: settings } = await supabaseAdmin.from("payment_settings").select("*").maybeSingle();
     if (!settings) throw new Error("Payments are not configured yet.");
     if (order.payment_attempts >= settings.max_retries + 1) {
       throw new Error("Maximum payment attempts reached. Please contact support.");
@@ -273,7 +274,6 @@ export const retryPayment = createServerFn({ method: "POST" })
 
     const mode = settings.mode === "live" ? ("live" as const) : ("test" as const);
     const { createRazorpayOrder } = await import("./razorpay.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const rzp = await createRazorpayOrder({
       mode,
