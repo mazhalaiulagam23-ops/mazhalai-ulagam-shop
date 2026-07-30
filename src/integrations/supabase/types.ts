@@ -188,6 +188,56 @@ export type Database = {
         }
         Relationships: []
       }
+      nav_items: {
+        Row: {
+          created_at: string
+          icon: string
+          id: string
+          is_visible: boolean
+          label: string
+          link_type: string
+          link_value: string
+          open_new_tab: boolean
+          parent_id: string | null
+          position: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          link_type?: string
+          link_value?: string
+          open_new_tab?: boolean
+          parent_id?: string | null
+          position?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          link_type?: string
+          link_value?: string
+          open_new_tab?: boolean
+          parent_id?: string | null
+          position?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "nav_items_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "nav_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_items: {
         Row: {
           created_at: string
@@ -496,11 +546,14 @@ export type Database = {
       site_settings: {
         Row: {
           address: string
+          business_hours: string
+          company_name: string
           created_at: string
           email: string
           facebook: string
           favicon_url: string | null
           footer_note: string
+          google_maps_url: string
           id: boolean
           instagram: string
           logo_url: string | null
@@ -509,15 +562,19 @@ export type Database = {
           tagline: string
           updated_at: string
           whatsapp: string
+          whatsapp_number: string
           youtube: string
         }
         Insert: {
           address?: string
+          business_hours?: string
+          company_name?: string
           created_at?: string
           email?: string
           facebook?: string
           favicon_url?: string | null
           footer_note?: string
+          google_maps_url?: string
           id?: boolean
           instagram?: string
           logo_url?: string | null
@@ -526,15 +583,19 @@ export type Database = {
           tagline?: string
           updated_at?: string
           whatsapp?: string
+          whatsapp_number?: string
           youtube?: string
         }
         Update: {
           address?: string
+          business_hours?: string
+          company_name?: string
           created_at?: string
           email?: string
           facebook?: string
           favicon_url?: string | null
           footer_note?: string
+          google_maps_url?: string
           id?: boolean
           instagram?: string
           logo_url?: string | null
@@ -543,7 +604,50 @@ export type Database = {
           tagline?: string
           updated_at?: string
           whatsapp?: string
+          whatsapp_number?: string
           youtube?: string
+        }
+        Relationships: []
+      }
+      social_links: {
+        Row: {
+          created_at: string
+          id: string
+          is_visible: boolean
+          label: string
+          placements: string[]
+          platform: string
+          position: number
+          qr_image_url: string | null
+          show_qr: boolean
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          placements?: string[]
+          platform: string
+          position?: number
+          qr_image_url?: string | null
+          show_qr?: boolean
+          updated_at?: string
+          url?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_visible?: boolean
+          label?: string
+          placements?: string[]
+          platform?: string
+          position?: number
+          qr_image_url?: string | null
+          show_qr?: boolean
+          updated_at?: string
+          url?: string
         }
         Relationships: []
       }

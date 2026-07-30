@@ -6,6 +6,7 @@ import { useFooterLinks, useSiteCategories, useSiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WhatsAppIcon } from "./Header";
+import { QrCodes, SocialIcons } from "./SocialIcons";
 
 const quickLinks = [
   { label: "Home", to: "/" },
@@ -98,35 +99,8 @@ export function Footer() {
               {settings.footerNote ||
                 "Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore."}
             </p>
-            <div className="mt-4 flex gap-2">
-              <a
-                href={store.instagram}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-primary"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a
-                href={store.facebook}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Facebook"
-                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-primary"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a
-                href={store.whatsapp}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="WhatsApp"
-                className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] hover:text-teal"
-              >
-                <WhatsAppIcon className="h-4 w-4" />
-              </a>
-            </div>
+            <SocialIcons placement="footer" className="mt-4 gap-1" />
+            <QrCodes placement="footer" className="mt-4" />
           </div>
 
           {(groupNames.length
