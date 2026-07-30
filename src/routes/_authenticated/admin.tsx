@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { BarChart3, Boxes, FileText, LayoutTemplate, LogOut, Settings, ShoppingCart, Store } from "lucide-react";
+import { BarChart3, Boxes, FileText, LayoutTemplate, LogOut, Menu, Settings, Share2, ShoppingCart, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
@@ -23,6 +23,8 @@ const links = [
   { to: "/admin/products", label: "Products", icon: Boxes },
   { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
   { to: "/admin/homepage", label: "Homepage", icon: LayoutTemplate },
+  { to: "/admin/navigation", label: "Navigation", icon: Menu },
+  { to: "/admin/social", label: "Social & QR", icon: Share2 },
   { to: "/admin/content", label: "Content", icon: FileText },
   { to: "/admin/settings", label: "Site settings", icon: Settings },
 ] as const;

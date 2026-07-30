@@ -37,6 +37,10 @@ export function useSiteSettings() {
     facebook: data?.facebook || staticStore.facebook,
     youtube: data?.youtube || "",
     footerNote: data?.footer_note || "",
+    companyName: data?.company_name || data?.site_name || staticStore.name,
+    googleMapsUrl: data?.google_maps_url || "",
+    businessHours: data?.business_hours || "",
+    whatsappNumber: data?.whatsapp_number || "",
   };
 
   return { settings, raw: data ?? null, isLoading };
@@ -155,4 +159,89 @@ export function useSiteCategories() {
   }));
   const liveSlugs = new Set(live.map((c) => c.slug));
   return [...live, ...staticCategories.filter((c) => !liveSlugs.has(c.slug))];
+}
+
+export type NavItem = Tables<"nav_items">;
+export type SocialLink = Tables<"social_links">;
+
+export const NAV_LINK_TYPES = [
+  { value: "home", label: "Home" },
+  { value: "category", label: "Category" },
+  { value: "product", label: "Product" },
+  { value: "page", label: "Custom Page" },
+  { value: "external", label: "External URL" },
+] as const;
+
+/** Turns a stored link type + value into a browsable href. */
+export function navHref(item: Pick<NavItem, "link_type" | "link_value">) {
+  const value = (item.link_value || "").trim();
+  switch (item.link_type) {
+    case "home":
+      return "/";
+    case "category":
+      return `/category/${value.replace(/^\/+|^category\//g, "")}`;
+    case "product":
+      return `/product/${value.replace(/^\/+|^product\//g, "")}`;
+    case "external":
+      return value;
+    default:
+      return value.startsWith("/") || value.startsWith("http") ? value : `/${value}`;
+  }
+}
+
+export type NavTreeItem = NavItem & { children: NavItem[] };
+
+function toTree(rows: NavItem[]): NavTreeItem[] {
+  const sorted = [...rows].sort((a, b) => a.position - b.position);
+  const roots = sorted.filter((r) => !r.parent_id).map((r) => ({ ...r, children: [] as NavItem[] }));
+  for (const row of sorted) {
+    if (!row.parent_id) continue;
+    roots.find((r) => r.id === row.parent_id)?.children.push(row);
+  }
+  return roots;
+}
+
+/** Visible navigation tree for the storefront. */
+export function useNavigationMenu() {
+  const { data } = useQuery({
+    queryKey: ["cms", "nav_items"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("nav_items")
+        .select("*")
+        .eq("is_visible", true)
+        .order("position", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+  return toTree(data ?? []);
+}
+
+export { toTree as buildNavTree };
+
+/** Social links / QR codes, optionally filtered by where they should show. */
+export function useSocialLinks(placement?: string) {
+  const query = useQuery({
+    queryKey: ["cms", "social_links"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("social_links")
+        .select("*")
+        .order("position", { ascending: true });
+      if (error) throw error;
+      return data;
+    },
+  });
+  const rows = query.data ?? [];
+  const visible = rows.filter(
+    (r) => r.is_visible && r.url && (!placement || (r.placements ?? []).includes(placement)),
+  );
+  return { all: rows, links: visible, isLoading: query.isLoading };
+}
+
+/** QR codes that should render in a given placement. */
+export function useQrCodes(placement: string) {
+  const { all } = useSocialLinks();
+  return all.filter((r) => r.show_qr && r.qr_image_url && (r.placements ?? []).includes(placement));
 }

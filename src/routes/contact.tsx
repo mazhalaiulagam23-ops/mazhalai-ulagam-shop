@@ -3,6 +3,7 @@ import { useState, type FormEvent } from "react";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
+import { QrCodes, SocialIcons } from "@/components/site/SocialIcons";
 import { PageHeader } from "@/components/site/PageHeader";
 import { useSitePage, useSiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
@@ -122,6 +123,8 @@ function Contact() {
                 <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
               </a>
             </Button>
+            <SocialIcons placement="contact" className="pt-1" />
+            <QrCodes placement="contact" className="pt-1" />
           </div>
           <div className="surface-card overflow-hidden">
             <iframe

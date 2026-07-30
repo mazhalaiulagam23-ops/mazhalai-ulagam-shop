@@ -1,8 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
-  Facebook,
   Heart,
-  Instagram,
   Mail,
   MapPin,
   Menu,
@@ -12,27 +10,49 @@ import {
   User,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { useSiteCategories, useSiteSettings } from "@/lib/cms";
+import { useNavigationMenu, useSiteCategories, useSiteSettings, navHref, type NavTreeItem } from "@/lib/cms";
+import { NavIcon } from "@/lib/nav-icons";
 import { useShop } from "@/lib/shop-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import logoFallback from "@/assets/logo.png";
+import { SocialIcons, WhatsAppIcon } from "./SocialIcons";
 
-const mainNav = [
-  { label: "Home", to: "/" },
-  { label: "Shop", to: "/shop" },
-  { label: "Offers", to: "/offers" },
-  { label: "Blog", to: "/blog" },
-  { label: "About Us", to: "/about" },
-  { label: "Contact Us", to: "/contact" },
-] as const;
-
-function WhatsAppIcon({ className }: { className?: string }) {
+/** Renders a CMS menu link; external links use a plain anchor. */
+function MenuLink({
+  item,
+  className,
+  onNavigate,
+}: {
+  item: { label: string; icon: string | null; link_type: string; link_value: string; open_new_tab: boolean };
+  className?: string;
+  onNavigate?: () => void;
+}) {
+  const href = navHref(item);
+  const content = (
+    <>
+      <NavIcon name={item.icon} className="h-4 w-4" />
+      {item.label}
+    </>
+  );
+  if (item.link_type === "external" || item.open_new_tab) {
+    return (
+      <a href={href} target="_blank" rel="noreferrer" className={className} onClick={onNavigate}>
+        {content}
+      </a>
+    );
+  }
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm5.8 14.1c-.24.68-1.42 1.32-1.95 1.36-.5.05-.98.24-3.3-.69-2.78-1.1-4.53-3.95-4.67-4.13-.13-.18-1.11-1.48-1.11-2.82 0-1.34.7-2 .95-2.28.24-.27.53-.34.71-.34h.5c.16 0 .38-.06.59.45.24.55.8 1.9.87 2.04.07.14.12.3.02.48-.09.18-.14.29-.28.45l-.42.49c-.14.14-.29.3-.12.58.16.28.72 1.19 1.55 1.93 1.07.95 1.97 1.25 2.25 1.39.28.14.44.12.6-.07.17-.18.7-.81.88-1.09.18-.28.36-.23.6-.14.25.09 1.58.75 1.85.88.27.14.45.21.52.32.06.11.06.63-.18 1.3Z" />
-    </svg>
+    <Link
+      to={href}
+      activeOptions={{ exact: href === "/" }}
+      activeProps={{ className: "bg-card/20" }}
+      className={className}
+      onClick={onNavigate}
+    >
+      {content}
+    </Link>
   );
 }
 
@@ -40,6 +60,7 @@ export function Header() {
   const { cartCount, wishlist } = useShop();
   const { settings } = useSiteSettings();
   const categories = useSiteCategories();
+  const menu: NavTreeItem[] = useNavigationMenu();
   const store = {
     name: settings.siteName,
     tagline: settings.tagline,
@@ -77,17 +98,9 @@ export function Header() {
               <Mail className="h-3.5 w-3.5" /> {store.email}
             </a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <span>Follow us</span>
-            <a href={store.instagram} aria-label="Instagram" target="_blank" rel="noreferrer">
-              <Instagram className="h-4 w-4 hover:text-primary" />
-            </a>
-            <a href={store.facebook} aria-label="Facebook" target="_blank" rel="noreferrer">
-              <Facebook className="h-4 w-4 hover:text-primary" />
-            </a>
-            <a href={store.whatsapp} aria-label="WhatsApp" target="_blank" rel="noreferrer">
-              <WhatsAppIcon className="h-4 w-4 hover:text-teal" />
-            </a>
+            <SocialIcons placement="header" iconClassName="h-4 w-4" className="gap-0" />
           </div>
         </div>
       </div>
@@ -106,15 +119,22 @@ export function Header() {
                 <SheetTitle className="text-primary">{store.name}</SheetTitle>
               </SheetHeader>
               <nav className="mt-6 flex flex-col gap-1">
-                {mainNav.map((item) => (
-                  <Link
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setMenuOpen(false)}
-                    className="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-secondary"
-                  >
-                    {item.label}
-                  </Link>
+                {menu.map((item) => (
+                  <div key={item.id}>
+                    <MenuLink
+                      item={item}
+                      onNavigate={() => setMenuOpen(false)}
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold hover:bg-secondary"
+                    />
+                    {item.children.map((child) => (
+                      <MenuLink
+                        key={child.id}
+                        item={child}
+                        onNavigate={() => setMenuOpen(false)}
+                        className="ml-4 flex items-center gap-2 rounded-lg px-3 py-2 text-sm hover:bg-secondary"
+                      />
+                    ))}
+                  </div>
                 ))}
                 <p className="mt-4 px-3 text-xs font-bold uppercase text-muted-foreground">Categories</p>
                 {categories.map((c) => (
@@ -208,19 +228,27 @@ export function Header() {
         </form>
       </div>
 
-      {/* Category nav */}
-      <nav aria-label="Categories" className="hidden gradient-teal lg:block">
+      {/* Main navigation (CMS managed) */}
+      <nav aria-label="Main" className="hidden gradient-teal lg:block">
         <div className="container-page flex h-12 items-center gap-1 overflow-x-auto text-sm font-semibold text-teal-foreground">
-          {mainNav.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              activeOptions={{ exact: item.to === "/" }}
-              activeProps={{ className: "bg-card/20" }}
-              className="whitespace-nowrap rounded-full px-3 py-1.5 transition-colors hover:bg-card/20"
-            >
-              {item.label}
-            </Link>
+          {menu.map((item) => (
+            <div key={item.id} className="group relative">
+              <MenuLink
+                item={item}
+                className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 transition-colors hover:bg-card/20"
+              />
+              {item.children.length > 0 && (
+                <div className="invisible absolute left-0 top-full z-50 min-w-44 rounded-xl border border-border bg-card p-1 opacity-0 shadow-lg transition-opacity group-hover:visible group-hover:opacity-100">
+                  {item.children.map((child) => (
+                    <MenuLink
+                      key={child.id}
+                      item={child}
+                      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-secondary"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
           <span className="mx-2 h-5 w-px bg-card/30" aria-hidden="true" />
           {categories.slice(0, 5).map((c) => (

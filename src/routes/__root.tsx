@@ -15,6 +15,7 @@ import { ShopProvider } from "@/lib/shop-store";
 import { AuthProvider } from "@/lib/auth";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { FloatingSocial } from "@/components/site/SocialIcons";
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
 
@@ -180,6 +181,7 @@ function RootComponent() {
             <Outlet />
           </main>
           <Footer />
+          <FloatingSocial />
         </div>
         <Toaster position="top-center" richColors />
       </ShopProvider>
