@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Heart, Leaf, ShieldCheck, Store } from "lucide-react";
 import { PageHeader } from "@/components/site/PageHeader";
-import { store } from "@/data/catalog";
+import { useSitePage, useSiteSettings } from "@/lib/cms";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -17,22 +17,25 @@ export const Route = createFileRoute("/about")({
   component: About,
 });
 
+const FALLBACK_BODY = `<h2>Our story</h2><p>Mazhalai Ulagam began in Coimbatore with a simple idea — parents shouldn't have to choose between safe, good-looking baby products and a fair price. What started as a small return-gift counter has grown into a complete store for baby essentials, toys, kids fashion, organic care and stationery.</p><p>Every product we list is checked for material safety, finish and everyday practicality.</p>`;
+
 function About() {
+  const { data: page } = useSitePage("about");
+  const { settings } = useSiteSettings();
+
   return (
     <>
-      <PageHeader title="About Mazhalai Ulagam" subtitle={store.tagline} crumbs={[{ label: "About Us" }]} />
+      <PageHeader
+        title={page?.title || "About Mazhalai Ulagam"}
+        subtitle={page?.subtitle || settings.tagline}
+        crumbs={[{ label: "About Us" }]}
+      />
       <div className="container-page grid gap-8 py-12 lg:grid-cols-[1.4fr_1fr]">
         <div className="space-y-4 text-sm leading-relaxed text-muted-foreground">
-          <h2 className="font-display text-2xl font-bold text-foreground">Our story</h2>
-          <p>
-            Mazhalai Ulagam began in Coimbatore with a simple idea — parents shouldn't have to choose between safe,
-            good-looking baby products and a fair price. What started as a small return-gift counter has grown into a
-            complete store for baby essentials, toys, kids fashion, organic care and stationery.
-          </p>
-          <p>
-            Every product we list is checked for material safety, finish and everyday practicality. We buy in volume so
-            families and event organisers across Tamil Nadu can order in bulk at genuine wholesale rates.
-          </p>
+          <div
+            className="prose-sm space-y-4 [&_h2]:font-display [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-foreground [&_ul]:list-disc [&_ul]:pl-5"
+            dangerouslySetInnerHTML={{ __html: page?.body_html || FALLBACK_BODY }}
+          />
           <h2 className="font-display text-2xl font-bold text-foreground">What we promise</h2>
           <ul className="grid gap-4 sm:grid-cols-2">
             {[
@@ -53,13 +56,15 @@ function About() {
         </div>
         <aside className="surface-card h-fit space-y-2 p-6 text-sm">
           <h2 className="font-display text-lg font-bold">Visit or call us</h2>
-          <p className="text-muted-foreground">{store.address}</p>
-          <p className="text-muted-foreground">{store.hours}</p>
-          <a href={store.phoneHref} className="block font-semibold text-primary hover:underline">
-            {store.phone}
+          <p className="text-muted-foreground">{settings.address}</p>
+          <a
+            href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}
+            className="block font-semibold text-primary hover:underline"
+          >
+            {settings.phone}
           </a>
-          <a href={`mailto:${store.email}`} className="block font-semibold text-primary hover:underline">
-            {store.email}
+          <a href={`mailto:${settings.email}`} className="block font-semibold text-primary hover:underline">
+            {settings.email}
           </a>
         </aside>
       </div>
