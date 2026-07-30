@@ -95,7 +95,8 @@ export function Footer() {
           <div className="lg:col-span-1">
             <h2 className="font-display text-xl font-bold text-primary">{store.name}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore.
+              {settings.footerNote ||
+                "Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore."}
             </p>
             <div className="mt-4 flex gap-2">
               <a
@@ -128,18 +129,26 @@ export function Footer() {
             </div>
           </div>
 
-          <nav aria-label="Quick links">
-            <h3 className="text-sm font-bold uppercase tracking-wide">Quick Links</h3>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {quickLinks.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="hover:text-primary">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {(groupNames.length
+            ? groupNames.map((name) => ({ name, links: groups[name] }))
+            : [
+                { name: "Quick Links", links: quickLinks.map((l) => ({ label: l.label, href: l.to })) },
+                { name: "Customer Service", links: serviceLinks.map((l) => ({ label: l.label, href: l.to })) },
+              ]
+          ).map((group) => (
+            <nav key={group.name} aria-label={group.name}>
+              <h3 className="text-sm font-bold uppercase tracking-wide">{group.name}</h3>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {group.links.map((l) => (
+                  <li key={`${group.name}-${l.href}-${l.label}`}>
+                    <a href={l.href} className="hover:text-primary">
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
 
           <nav aria-label="Shop by category">
             <h3 className="text-sm font-bold uppercase tracking-wide">Categories</h3>
@@ -154,18 +163,6 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Customer service">
-            <h3 className="text-sm font-bold uppercase tracking-wide">Customer Service</h3>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {serviceLinks.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="hover:text-primary">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
 
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wide">Contact Us</h3>
