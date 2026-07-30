@@ -12,12 +12,12 @@ import {
   User,
 } from "lucide-react";
 import { useState, type FormEvent } from "react";
-import { categories, store } from "@/data/catalog";
+import { useSiteCategories, useSiteSettings } from "@/lib/cms";
 import { useShop } from "@/lib/shop-store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import logo from "@/assets/logo.png";
+import logoFallback from "@/assets/logo.png";
 
 const mainNav = [
   { label: "Home", to: "/" },
@@ -38,6 +38,20 @@ function WhatsAppIcon({ className }: { className?: string }) {
 
 export function Header() {
   const { cartCount, wishlist } = useShop();
+  const { settings } = useSiteSettings();
+  const categories = useSiteCategories();
+  const store = {
+    name: settings.siteName,
+    tagline: settings.tagline,
+    address: settings.address,
+    phone: settings.phone,
+    phoneHref: `tel:${settings.phone.replace(/[^+\d]/g, "")}`,
+    email: settings.email,
+    instagram: settings.instagram,
+    facebook: settings.facebook,
+    whatsapp: settings.whatsapp,
+  };
+  const logo = settings.logoUrl || logoFallback;
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();

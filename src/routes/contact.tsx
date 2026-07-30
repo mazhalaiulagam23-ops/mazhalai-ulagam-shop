@@ -4,7 +4,7 @@ import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { PageHeader } from "@/components/site/PageHeader";
-import { store } from "@/data/catalog";
+import { useSitePage, useSiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -34,6 +34,16 @@ const schema = z.object({
 
 function Contact() {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { settings } = useSiteSettings();
+  const { data: page } = useSitePage("contact");
+  const store = {
+    address: settings.address,
+    phone: settings.phone,
+    phoneHref: `tel:${settings.phone.replace(/[^+\d]/g, "")}`,
+    email: settings.email,
+    hours: "Mon-Sun, 9 AM - 8 PM",
+    whatsapp: settings.whatsapp,
+  };
 
   const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,10 +62,16 @@ function Contact() {
   return (
     <>
       <PageHeader
-        title="Contact Us"
-        subtitle="Questions about a product, a bulk order or a delivery? We're here."
+        title={page?.title || "Contact Us"}
+        subtitle={page?.subtitle || "Questions about a product, a bulk order or a delivery? We're here."}
         crumbs={[{ label: "Contact Us" }]}
       />
+      {page?.body_html ? (
+        <div
+          className="container-page pt-10 text-sm leading-relaxed text-muted-foreground [&_p]:mb-3"
+          dangerouslySetInnerHTML={{ __html: page.body_html }}
+        />
+      ) : null}
       <div className="container-page grid gap-8 py-12 lg:grid-cols-[1fr_1fr]">
         <form onSubmit={submit} className="surface-card space-y-4 p-6" noValidate>
           <h2 className="font-display text-lg font-bold">Send us a message</h2>

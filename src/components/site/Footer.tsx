@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Clock, Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, ShieldCheck } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { categories, store } from "@/data/catalog";
+import { useFooterLinks, useSiteCategories, useSiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WhatsAppIcon } from "./Header";
@@ -30,6 +30,25 @@ const serviceLinks = [
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const { settings } = useSiteSettings();
+  const categories = useSiteCategories();
+  const { data: cmsLinks = [] } = useFooterLinks();
+  const store = {
+    name: settings.siteName,
+    address: settings.address,
+    phone: settings.phone,
+    phoneHref: `tel:${settings.phone.replace(/[^+\d]/g, "")}`,
+    email: settings.email,
+    hours: "Mon-Sun, 9 AM - 8 PM",
+    instagram: settings.instagram,
+    facebook: settings.facebook,
+    whatsapp: settings.whatsapp,
+  };
+  const groups = cmsLinks.reduce<Record<string, { label: string; href: string }[]>>((acc, l) => {
+    (acc[l.group_name] ??= []).push({ label: l.label, href: l.href });
+    return acc;
+  }, {});
+  const groupNames = Object.keys(groups);
 
   const subscribe = (e: FormEvent) => {
     e.preventDefault();
@@ -76,7 +95,8 @@ export function Footer() {
           <div className="lg:col-span-1">
             <h2 className="font-display text-xl font-bold text-primary">{store.name}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
-              Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore.
+              {settings.footerNote ||
+                "Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore."}
             </p>
             <div className="mt-4 flex gap-2">
               <a
@@ -109,18 +129,26 @@ export function Footer() {
             </div>
           </div>
 
-          <nav aria-label="Quick links">
-            <h3 className="text-sm font-bold uppercase tracking-wide">Quick Links</h3>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {quickLinks.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="hover:text-primary">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          {(groupNames.length
+            ? groupNames.map((name) => ({ name, links: groups[name] }))
+            : [
+                { name: "Quick Links", links: quickLinks.map((l) => ({ label: l.label, href: l.to })) },
+                { name: "Customer Service", links: serviceLinks.map((l) => ({ label: l.label, href: l.to })) },
+              ]
+          ).map((group) => (
+            <nav key={group.name} aria-label={group.name}>
+              <h3 className="text-sm font-bold uppercase tracking-wide">{group.name}</h3>
+              <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+                {group.links.map((l) => (
+                  <li key={`${group.name}-${l.href}-${l.label}`}>
+                    <a href={l.href} className="hover:text-primary">
+                      {l.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
 
           <nav aria-label="Shop by category">
             <h3 className="text-sm font-bold uppercase tracking-wide">Categories</h3>
@@ -135,18 +163,6 @@ export function Footer() {
             </ul>
           </nav>
 
-          <nav aria-label="Customer service">
-            <h3 className="text-sm font-bold uppercase tracking-wide">Customer Service</h3>
-            <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              {serviceLinks.map((l) => (
-                <li key={l.to}>
-                  <Link to={l.to} className="hover:text-primary">
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
 
           <div>
             <h3 className="text-sm font-bold uppercase tracking-wide">Contact Us</h3>

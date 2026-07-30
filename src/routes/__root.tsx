@@ -16,6 +16,7 @@ import { AuthProvider } from "@/lib/auth";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
+import { useSiteSettings } from "@/lib/cms";
 
 
 function NotFoundComponent() {
@@ -145,6 +146,25 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/** Applies the CMS-managed favicon to the document. */
+function BrandHead() {
+  const { settings } = useSiteSettings();
+
+  useEffect(() => {
+    if (typeof document === "undefined" || !settings.faviconUrl) return;
+    let link = document.querySelector<HTMLLinkElement>("link[rel='icon']");
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.href = settings.faviconUrl;
+    link.removeAttribute("type");
+  }, [settings.faviconUrl]);
+
+  return null;
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -152,6 +172,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
       <ShopProvider>
+        <BrandHead />
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">
@@ -166,4 +187,5 @@ function RootComponent() {
     </QueryClientProvider>
   );
 }
+
 
