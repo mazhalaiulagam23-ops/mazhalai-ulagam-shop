@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/lib/auth";
 import { PAYMENT_SETTINGS_KEY, type PaymentSettings } from "@/lib/payments";
+import { getPaymentSettings, savePaymentSettings } from "@/lib/payments.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/payments")({
   component: AdminPayments,
@@ -63,30 +64,28 @@ function AdminPayments() {
   const { isAdmin } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState<Form>(empty);
+  const loadSettings = useServerFn(getPaymentSettings);
+  const persistSettings = useServerFn(savePaymentSettings);
 
   const { data, isLoading } = useQuery({
-    queryKey: PAYMENT_SETTINGS_KEY,
-    queryFn: async () => {
-      const { data, error } = await supabase.from("payment_settings").select("*").maybeSingle();
-      if (error) throw error;
-      return data;
-    },
+    queryKey: [...PAYMENT_SETTINGS_KEY, "admin"],
+    queryFn: () => loadSettings(),
   });
 
   useEffect(() => {
     if (!data) return;
-    const { created_at, updated_at, id, ...rest } = data;
-    setForm(rest);
+    const { created_at, updated_at, id, ...rest } = data as PaymentSettings;
+    setForm(rest as Form);
   }, [data]);
 
   const save = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from("payment_settings").update(form).eq("id", true);
-      if (error) throw error;
+      await persistSettings({ data: { ...form, mode: form.mode === "live" ? "live" : "test" } });
     },
     onSuccess: () => {
       toast.success("Payment settings saved");
       void qc.invalidateQueries({ queryKey: PAYMENT_SETTINGS_KEY });
+      void qc.invalidateQueries({ queryKey: [...PAYMENT_SETTINGS_KEY, "admin"] });
     },
     onError: (e) => toast.error(e instanceof Error ? e.message : "Could not save"),
   });

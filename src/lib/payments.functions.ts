@@ -27,8 +27,9 @@ export const placeOrder = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => checkoutSchema.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const { data: settings } = await supabase.from("payment_settings").select("*").maybeSingle();
+    const { data: settings } = await supabaseAdmin.from("payment_settings").select("*").maybeSingle();
     if (!settings) throw new Error("Payments are not configured yet.");
 
     // Re-price against the live catalogue; never trust browser prices when we can help it.
@@ -99,7 +100,6 @@ export const placeOrder = createServerFn({ method: "POST" })
 
     const mode = settings.mode === "live" ? ("live" as const) : ("test" as const);
     const { createRazorpayOrder } = await import("./razorpay.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const rzp = await createRazorpayOrder({
       mode,
@@ -265,7 +265,8 @@ export const retryPayment = createServerFn({ method: "POST" })
     if (!order) throw new Error("Order not found.");
     if (order.payment_status === "paid") throw new Error("This order is already paid.");
 
-    const { data: settings } = await context.supabase.from("payment_settings").select("*").maybeSingle();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: settings } = await supabaseAdmin.from("payment_settings").select("*").maybeSingle();
     if (!settings) throw new Error("Payments are not configured yet.");
     if (order.payment_attempts >= settings.max_retries + 1) {
       throw new Error("Maximum payment attempts reached. Please contact support.");
@@ -273,7 +274,6 @@ export const retryPayment = createServerFn({ method: "POST" })
 
     const mode = settings.mode === "live" ? ("live" as const) : ("test" as const);
     const { createRazorpayOrder } = await import("./razorpay.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const rzp = await createRazorpayOrder({
       mode,
@@ -313,4 +313,51 @@ export const retryPayment = createServerFn({ method: "POST" })
         contact: order.customer_phone,
       },
     };
+  });
+
+const settingsSchema = z.object({
+  mode: z.enum(["test", "live"]),
+  razorpay_key_id_test: z.string().trim().max(120),
+  razorpay_key_id_live: z.string().trim().max(120),
+  razorpay_enabled: z.boolean(),
+  upi_enabled: z.boolean(),
+  card_enabled: z.boolean(),
+  netbanking_enabled: z.boolean(),
+  wallet_enabled: z.boolean(),
+  cod_enabled: z.boolean(),
+  cod_min_order: z.number().int().min(0).max(10_000_000),
+  cod_max_order: z.number().int().min(0).max(10_000_000),
+  currency: z.string().trim().min(3).max(6),
+  checkout_name: z.string().trim().min(1).max(120),
+  checkout_description: z.string().trim().max(200),
+  auto_capture: z.boolean(),
+  max_retries: z.number().int().min(0).max(10),
+});
+
+async function assertStaff(context: { supabase: any; userId: string }) {
+  const { data: isStaff, error } = await context.supabase.rpc("is_staff", { _user_id: context.userId });
+  if (error || !isStaff) throw new Error("Forbidden");
+}
+
+/** Full payment settings — staff only (includes gateway key IDs). */
+export const getPaymentSettings = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertStaff(context as never);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data, error } = await supabaseAdmin.from("payment_settings").select("*").maybeSingle();
+    if (error) throw new Error("Could not load payment settings.");
+    return data;
+  });
+
+/** Saves payment settings — staff only. */
+export const savePaymentSettings = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => settingsSchema.parse(data))
+  .handler(async ({ data, context }) => {
+    await assertStaff(context as never);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("payment_settings").update(data).eq("id", true);
+    if (error) throw new Error("Could not save payment settings.");
+    return { ok: true };
   });

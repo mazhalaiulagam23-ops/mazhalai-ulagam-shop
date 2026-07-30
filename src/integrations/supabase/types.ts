@@ -850,7 +850,48 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      payment_config: {
+        Row: {
+          card_enabled: boolean | null
+          cod_enabled: boolean | null
+          cod_max_order: number | null
+          cod_min_order: number | null
+          currency: string | null
+          id: boolean | null
+          mode: string | null
+          netbanking_enabled: boolean | null
+          razorpay_enabled: boolean | null
+          upi_enabled: boolean | null
+          wallet_enabled: boolean | null
+        }
+        Insert: {
+          card_enabled?: boolean | null
+          cod_enabled?: boolean | null
+          cod_max_order?: number | null
+          cod_min_order?: number | null
+          currency?: string | null
+          id?: boolean | null
+          mode?: string | null
+          netbanking_enabled?: boolean | null
+          razorpay_enabled?: boolean | null
+          upi_enabled?: boolean | null
+          wallet_enabled?: boolean | null
+        }
+        Update: {
+          card_enabled?: boolean | null
+          cod_enabled?: boolean | null
+          cod_max_order?: number | null
+          cod_min_order?: number | null
+          currency?: string | null
+          id?: boolean | null
+          mode?: string | null
+          netbanking_enabled?: boolean | null
+          razorpay_enabled?: boolean | null
+          upi_enabled?: boolean | null
+          wallet_enabled?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {
