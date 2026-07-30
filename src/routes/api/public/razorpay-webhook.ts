@@ -60,9 +60,15 @@ export const Route = createFileRoute("/api/public/razorpay-webhook")({
           })
           .eq("id", row.id);
 
-        const orderUpdate: Record<string, unknown> = { payment_status: status };
-        if (status === "paid") orderUpdate.status = "confirmed";
-        await supabaseAdmin.from("orders").update(orderUpdate).eq("id", row.order_id);
+        await supabaseAdmin
+          .from("orders")
+          .update(
+            status === "paid"
+              ? { payment_status: status, status: "confirmed" as const }
+              : { payment_status: status },
+          )
+          .eq("id", row.order_id);
+
 
         return new Response("ok");
       },
