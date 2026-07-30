@@ -146,56 +146,143 @@ export type Database = {
         Row: {
           age_group: string
           badge: string | null
+          barcode: string | null
+          brand: string
+          care_instructions: string
           category_slug: string
+          color: string
+          cost_price: number
+          cover_image: string | null
           created_at: string
           description: string
+          dimensions: string
+          discount_percent: number
+          gender: string
+          gst_percent: number
+          hsn_code: string | null
           id: string
           images: string[]
           is_active: boolean
+          is_best_seller: boolean
+          is_featured: boolean
+          is_new_arrival: boolean
+          is_trending: boolean
+          low_stock_alert: number
+          material: string
           mrp: number
           name: string
+          offer_price: number | null
           price: number
+          seo_description: string
+          seo_keywords: string
+          seo_title: string
           short_description: string
+          size: string
           sku: string | null
           slug: string
+          specifications: string
+          status: string
           stock: number
+          subcategory: string
+          tags: string[]
+          tax_inclusive: boolean
+          unit: string
           updated_at: string
+          weight_grams: number
         }
         Insert: {
           age_group?: string
           badge?: string | null
+          barcode?: string | null
+          brand?: string
+          care_instructions?: string
           category_slug: string
+          color?: string
+          cost_price?: number
+          cover_image?: string | null
           created_at?: string
           description?: string
+          dimensions?: string
+          discount_percent?: number
+          gender?: string
+          gst_percent?: number
+          hsn_code?: string | null
           id?: string
           images?: string[]
           is_active?: boolean
+          is_best_seller?: boolean
+          is_featured?: boolean
+          is_new_arrival?: boolean
+          is_trending?: boolean
+          low_stock_alert?: number
+          material?: string
           mrp?: number
           name: string
+          offer_price?: number | null
           price?: number
+          seo_description?: string
+          seo_keywords?: string
+          seo_title?: string
           short_description?: string
+          size?: string
           sku?: string | null
           slug: string
+          specifications?: string
+          status?: string
           stock?: number
+          subcategory?: string
+          tags?: string[]
+          tax_inclusive?: boolean
+          unit?: string
           updated_at?: string
+          weight_grams?: number
         }
         Update: {
           age_group?: string
           badge?: string | null
+          barcode?: string | null
+          brand?: string
+          care_instructions?: string
           category_slug?: string
+          color?: string
+          cost_price?: number
+          cover_image?: string | null
           created_at?: string
           description?: string
+          dimensions?: string
+          discount_percent?: number
+          gender?: string
+          gst_percent?: number
+          hsn_code?: string | null
           id?: string
           images?: string[]
           is_active?: boolean
+          is_best_seller?: boolean
+          is_featured?: boolean
+          is_new_arrival?: boolean
+          is_trending?: boolean
+          low_stock_alert?: number
+          material?: string
           mrp?: number
           name?: string
+          offer_price?: number | null
           price?: number
+          seo_description?: string
+          seo_keywords?: string
+          seo_title?: string
           short_description?: string
+          size?: string
           sku?: string | null
           slug?: string
+          specifications?: string
+          status?: string
           stock?: number
+          subcategory?: string
+          tags?: string[]
+          tax_inclusive?: boolean
+          unit?: string
           updated_at?: string
+          weight_grams?: number
         }
         Relationships: []
       }
