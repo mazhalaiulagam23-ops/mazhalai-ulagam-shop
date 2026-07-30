@@ -6,12 +6,16 @@ export type PaymentSettings = Tables<"payment_settings">;
 
 export const PAYMENT_SETTINGS_KEY = ["cms", "payment_settings"] as const;
 
-/** Checkout configuration (methods enabled, COD limits, mode). */
+/**
+ * Public checkout configuration (methods enabled, COD limits, mode).
+ * Reads the `payment_config` view, which exposes only non-sensitive fields —
+ * gateway key IDs and capture/retry settings stay staff-only.
+ */
 export function usePaymentSettings() {
   return useQuery({
     queryKey: PAYMENT_SETTINGS_KEY,
     queryFn: async () => {
-      const { data, error } = await supabase.from("payment_settings").select("*").maybeSingle();
+      const { data, error } = await supabase.from("payment_config").select("*").maybeSingle();
       if (error) throw error;
       return data;
     },
