@@ -8,6 +8,8 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { inr, useShop } from "@/lib/shop-store";
+import { supabase } from "@/integrations/supabase/client";
+import { mapDbProduct } from "@/lib/db-products";
 
 export const Route = createFileRoute("/product/$slug")({
   loader: async ({ params }) => {
