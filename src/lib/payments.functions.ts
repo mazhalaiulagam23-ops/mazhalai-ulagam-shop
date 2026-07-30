@@ -100,7 +100,6 @@ export const placeOrder = createServerFn({ method: "POST" })
 
     const mode = settings.mode === "live" ? ("live" as const) : ("test" as const);
     const { createRazorpayOrder } = await import("./razorpay.server");
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
     const rzp = await createRazorpayOrder({
       mode,
