@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { faqs } from "@/data/catalog";
+import { faqs as staticFaqs } from "@/data/catalog";
+import { useFaqs } from "@/lib/cms";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -19,7 +20,7 @@ export const Route = createFileRoute("/faq")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: faqs.map((f) => ({
+          mainEntity: staticFaqs.map((f) => ({
             "@type": "Question",
             name: f.q,
             acceptedAnswer: { "@type": "Answer", text: f.a },
@@ -32,13 +33,18 @@ export const Route = createFileRoute("/faq")({
 });
 
 function Faq() {
+  const { data } = useFaqs();
+  const items = data?.length
+    ? data.map((f) => ({ q: f.question, a: f.answer }))
+    : staticFaqs.map((f) => ({ q: f.q, a: f.a }));
+
   return (
     <>
       <PageHeader title="Frequently Asked Questions" crumbs={[{ label: "FAQ" }]} />
       <div className="container-page py-12">
         <Accordion type="single" collapsible className="surface-card mx-auto max-w-3xl p-6">
-          {faqs.map((f, i) => (
-            <AccordionItem key={f.q} value={`item-${i}`}>
+          {items.map((f, i) => (
+            <AccordionItem key={`${f.q}-${i}`} value={`item-${i}`}>
               <AccordionTrigger className="text-left text-sm font-semibold">{f.q}</AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent>
             </AccordionItem>
