@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Clock, Facebook, Globe, Instagram, Mail, MapPin, Phone, Send, ShieldCheck } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { categories, store } from "@/data/catalog";
+import { useFooterLinks, useSiteCategories, useSiteSettings } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { WhatsAppIcon } from "./Header";
@@ -30,6 +30,25 @@ const serviceLinks = [
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const { settings } = useSiteSettings();
+  const categories = useSiteCategories();
+  const { data: cmsLinks = [] } = useFooterLinks();
+  const store = {
+    name: settings.siteName,
+    address: settings.address,
+    phone: settings.phone,
+    phoneHref: `tel:${settings.phone.replace(/[^+\d]/g, "")}`,
+    email: settings.email,
+    hours: "Mon-Sun, 9 AM - 8 PM",
+    instagram: settings.instagram,
+    facebook: settings.facebook,
+    whatsapp: settings.whatsapp,
+  };
+  const groups = cmsLinks.reduce<Record<string, { label: string; href: string }[]>>((acc, l) => {
+    (acc[l.group_name] ??= []).push({ label: l.label, href: l.href });
+    return acc;
+  }, {});
+  const groupNames = Object.keys(groups);
 
   const subscribe = (e: FormEvent) => {
     e.preventDefault();
