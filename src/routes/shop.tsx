@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { products } from "@/data/catalog";
+import { useCatalog } from "@/lib/db-products";
 import { ProductListing } from "@/components/shop/ProductListing";
 import { PageHeader } from "@/components/site/PageHeader";
 
