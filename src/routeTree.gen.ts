@@ -31,9 +31,11 @@ import { Route as ProductSlugRouteImport } from './routes/product/$slug'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as ApiPublicRazorpayWebhookRouteImport } from './routes/api/public/razorpay-webhook'
 import { Route as AuthenticatedAdminSocialRouteImport } from './routes/_authenticated/admin/social'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin/products'
+import { Route as AuthenticatedAdminPaymentsRouteImport } from './routes/_authenticated/admin/payments'
 import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin/orders'
 import { Route as AuthenticatedAdminNavigationRouteImport } from './routes/_authenticated/admin/navigation'
 import { Route as AuthenticatedAdminHomepageRouteImport } from './routes/_authenticated/admin/homepage'
@@ -148,6 +150,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const ApiPublicRazorpayWebhookRoute =
+  ApiPublicRazorpayWebhookRouteImport.update({
+    id: '/api/public/razorpay-webhook',
+    path: '/api/public/razorpay-webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthenticatedAdminSocialRoute =
   AuthenticatedAdminSocialRouteImport.update({
     id: '/social',
@@ -164,6 +172,12 @@ const AuthenticatedAdminProductsRoute =
   AuthenticatedAdminProductsRouteImport.update({
     id: '/products',
     path: '/products',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminPaymentsRoute =
+  AuthenticatedAdminPaymentsRouteImport.update({
+    id: '/payments',
+    path: '/payments',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 const AuthenticatedAdminOrdersRoute =
@@ -216,9 +230,11 @@ export interface FileRoutesByFullPath {
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/admin/navigation': typeof AuthenticatedAdminNavigationRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/payments': typeof AuthenticatedAdminPaymentsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/social': typeof AuthenticatedAdminSocialRoute
+  '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -245,9 +261,11 @@ export interface FileRoutesByTo {
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/admin/navigation': typeof AuthenticatedAdminNavigationRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/payments': typeof AuthenticatedAdminPaymentsRoute
   '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/social': typeof AuthenticatedAdminSocialRoute
+  '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -277,9 +295,11 @@ export interface FileRoutesById {
   '/_authenticated/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/_authenticated/admin/navigation': typeof AuthenticatedAdminNavigationRoute
   '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/_authenticated/admin/payments': typeof AuthenticatedAdminPaymentsRoute
   '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/social': typeof AuthenticatedAdminSocialRoute
+  '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -309,9 +329,11 @@ export interface FileRouteTypes {
     | '/admin/homepage'
     | '/admin/navigation'
     | '/admin/orders'
+    | '/admin/payments'
     | '/admin/products'
     | '/admin/settings'
     | '/admin/social'
+    | '/api/public/razorpay-webhook'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -338,9 +360,11 @@ export interface FileRouteTypes {
     | '/admin/homepage'
     | '/admin/navigation'
     | '/admin/orders'
+    | '/admin/payments'
     | '/admin/products'
     | '/admin/settings'
     | '/admin/social'
+    | '/api/public/razorpay-webhook'
     | '/admin'
   id:
     | '__root__'
@@ -369,9 +393,11 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/homepage'
     | '/_authenticated/admin/navigation'
     | '/_authenticated/admin/orders'
+    | '/_authenticated/admin/payments'
     | '/_authenticated/admin/products'
     | '/_authenticated/admin/settings'
     | '/_authenticated/admin/social'
+    | '/api/public/razorpay-webhook'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -396,6 +422,7 @@ export interface RootRouteChildren {
   WishlistRoute: typeof WishlistRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
+  ApiPublicRazorpayWebhookRoute: typeof ApiPublicRazorpayWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -554,6 +581,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/api/public/razorpay-webhook': {
+      id: '/api/public/razorpay-webhook'
+      path: '/api/public/razorpay-webhook'
+      fullPath: '/api/public/razorpay-webhook'
+      preLoaderRoute: typeof ApiPublicRazorpayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/admin/social': {
       id: '/_authenticated/admin/social'
       path: '/social'
@@ -573,6 +607,13 @@ declare module '@tanstack/react-router' {
       path: '/products'
       fullPath: '/admin/products'
       preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/payments': {
+      id: '/_authenticated/admin/payments'
+      path: '/payments'
+      fullPath: '/admin/payments'
+      preLoaderRoute: typeof AuthenticatedAdminPaymentsRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
     '/_authenticated/admin/orders': {
@@ -611,6 +652,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminHomepageRoute: typeof AuthenticatedAdminHomepageRoute
   AuthenticatedAdminNavigationRoute: typeof AuthenticatedAdminNavigationRoute
   AuthenticatedAdminOrdersRoute: typeof AuthenticatedAdminOrdersRoute
+  AuthenticatedAdminPaymentsRoute: typeof AuthenticatedAdminPaymentsRoute
   AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminSocialRoute: typeof AuthenticatedAdminSocialRoute
@@ -622,6 +664,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminHomepageRoute: AuthenticatedAdminHomepageRoute,
   AuthenticatedAdminNavigationRoute: AuthenticatedAdminNavigationRoute,
   AuthenticatedAdminOrdersRoute: AuthenticatedAdminOrdersRoute,
+  AuthenticatedAdminPaymentsRoute: AuthenticatedAdminPaymentsRoute,
   AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
   AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminSocialRoute: AuthenticatedAdminSocialRoute,
@@ -663,6 +706,7 @@ const rootRouteChildren: RootRouteChildren = {
   WishlistRoute: WishlistRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
+  ApiPublicRazorpayWebhookRoute: ApiPublicRazorpayWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

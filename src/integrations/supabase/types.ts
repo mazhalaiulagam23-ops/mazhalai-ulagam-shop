@@ -287,7 +287,9 @@ export type Database = {
           id: string
           notes: string | null
           order_number: string
+          payment_attempts: number
           payment_method: string
+          payment_status: Database["public"]["Enums"]["payment_status"]
           pincode: string
           shipping: number
           status: Database["public"]["Enums"]["order_status"]
@@ -306,7 +308,9 @@ export type Database = {
           id?: string
           notes?: string | null
           order_number?: string
+          payment_attempts?: number
           payment_method?: string
+          payment_status?: Database["public"]["Enums"]["payment_status"]
           pincode: string
           shipping?: number
           status?: Database["public"]["Enums"]["order_status"]
@@ -325,7 +329,9 @@ export type Database = {
           id?: string
           notes?: string | null
           order_number?: string
+          payment_attempts?: number
           payment_method?: string
+          payment_status?: Database["public"]["Enums"]["payment_status"]
           pincode?: string
           shipping?: number
           status?: Database["public"]["Enums"]["order_status"]
@@ -335,6 +341,140 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: []
+      }
+      payment_settings: {
+        Row: {
+          auto_capture: boolean
+          card_enabled: boolean
+          checkout_description: string
+          checkout_name: string
+          cod_enabled: boolean
+          cod_max_order: number
+          cod_min_order: number
+          created_at: string
+          currency: string
+          id: boolean
+          max_retries: number
+          mode: string
+          netbanking_enabled: boolean
+          razorpay_enabled: boolean
+          razorpay_key_id_live: string
+          razorpay_key_id_test: string
+          updated_at: string
+          upi_enabled: boolean
+          wallet_enabled: boolean
+        }
+        Insert: {
+          auto_capture?: boolean
+          card_enabled?: boolean
+          checkout_description?: string
+          checkout_name?: string
+          cod_enabled?: boolean
+          cod_max_order?: number
+          cod_min_order?: number
+          created_at?: string
+          currency?: string
+          id?: boolean
+          max_retries?: number
+          mode?: string
+          netbanking_enabled?: boolean
+          razorpay_enabled?: boolean
+          razorpay_key_id_live?: string
+          razorpay_key_id_test?: string
+          updated_at?: string
+          upi_enabled?: boolean
+          wallet_enabled?: boolean
+        }
+        Update: {
+          auto_capture?: boolean
+          card_enabled?: boolean
+          checkout_description?: string
+          checkout_name?: string
+          cod_enabled?: boolean
+          cod_max_order?: number
+          cod_min_order?: number
+          created_at?: string
+          currency?: string
+          id?: boolean
+          max_retries?: number
+          mode?: string
+          netbanking_enabled?: boolean
+          razorpay_enabled?: boolean
+          razorpay_key_id_live?: string
+          razorpay_key_id_test?: string
+          updated_at?: string
+          upi_enabled?: boolean
+          wallet_enabled?: boolean
+        }
+        Relationships: []
+      }
+      payments: {
+        Row: {
+          amount: number
+          attempt: number
+          created_at: string
+          currency: string
+          error_code: string | null
+          error_description: string | null
+          id: string
+          method: string
+          mode: string
+          order_id: string
+          provider: string
+          raw: Json
+          razorpay_order_id: string | null
+          razorpay_payment_id: string | null
+          razorpay_signature: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          updated_at: string
+        }
+        Insert: {
+          amount?: number
+          attempt?: number
+          created_at?: string
+          currency?: string
+          error_code?: string | null
+          error_description?: string | null
+          id?: string
+          method?: string
+          mode?: string
+          order_id: string
+          provider?: string
+          raw?: Json
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          attempt?: number
+          created_at?: string
+          currency?: string
+          error_code?: string | null
+          error_description?: string | null
+          id?: string
+          method?: string
+          mode?: string
+          order_id?: string
+          provider?: string
+          raw?: Json
+          razorpay_order_id?: string | null
+          razorpay_payment_id?: string | null
+          razorpay_signature?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       products: {
         Row: {
@@ -731,6 +871,13 @@ export type Database = {
         | "shipped"
         | "delivered"
         | "cancelled"
+      payment_status:
+        | "created"
+        | "pending"
+        | "paid"
+        | "failed"
+        | "refunded"
+        | "cancelled"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -865,6 +1012,14 @@ export const Constants = {
         "packed",
         "shipped",
         "delivered",
+        "cancelled",
+      ],
+      payment_status: [
+        "created",
+        "pending",
+        "paid",
+        "failed",
+        "refunded",
         "cancelled",
       ],
     },
