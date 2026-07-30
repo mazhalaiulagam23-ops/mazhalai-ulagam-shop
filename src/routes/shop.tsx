@@ -28,6 +28,7 @@ export const Route = createFileRoute("/shop")({
 
 function Shop() {
   const { q } = Route.useSearch();
+  const { products } = useCatalog();
   return (
     <>
       <PageHeader
