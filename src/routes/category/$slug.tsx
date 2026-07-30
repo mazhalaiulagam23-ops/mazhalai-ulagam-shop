@@ -1,5 +1,6 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { getCategory, products } from "@/data/catalog";
+import { getCategory } from "@/data/catalog";
+import { useCatalog } from "@/lib/db-products";
 import { ProductListing } from "@/components/shop/ProductListing";
 import { PageHeader } from "@/components/site/PageHeader";
 
@@ -40,6 +41,7 @@ export const Route = createFileRoute("/category/$slug")({
 
 function CategoryPage() {
   const { category } = Route.useLoaderData();
+  const { products } = useCatalog();
   const items = products.filter((p) => p.category === category.slug);
 
   return (

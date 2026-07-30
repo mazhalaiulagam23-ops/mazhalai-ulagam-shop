@@ -8,12 +8,22 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { inr, useShop } from "@/lib/shop-store";
+import { supabase } from "@/integrations/supabase/client";
+import { mapDbProduct } from "@/lib/db-products";
 
 export const Route = createFileRoute("/product/$slug")({
-  loader: ({ params }) => {
-    const product = getProduct(params.slug);
-    if (!product) throw notFound();
-    return { product };
+  loader: async ({ params }) => {
+    const staticProduct = getProduct(params.slug);
+    if (staticProduct) return { product: staticProduct };
+    const { data } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", params.slug)
+      .eq("is_active", true)
+      .eq("status", "active")
+      .maybeSingle();
+    if (!data) throw notFound();
+    return { product: mapDbProduct(data) };
   },
   head: ({ loaderData }) => {
     const p = loaderData?.product;
