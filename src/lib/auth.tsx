@@ -1,8 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
+import { usePermissions, type PermissionAction } from "@/lib/security";
 
-export type AppRole = "admin" | "staff" | "customer";
+export type AppRole = "super_admin" | "admin" | "manager" | "staff" | "customer";
 
 type AuthState = {
   user: User | null;
@@ -11,10 +12,15 @@ type AuthState = {
   loading: boolean;
   isStaff: boolean;
   isAdmin: boolean;
+  isSuperAdmin: boolean;
+  emailVerified: boolean;
+  can: (module: string, action: PermissionAction) => boolean;
   signOut: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
+
+const STAFF_ROLES: AppRole[] = ["super_admin", "admin", "manager", "staff"];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
@@ -51,20 +57,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const { can } = usePermissions(session?.user?.id, roles);
+
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    setRoles([]);
+  }, []);
+
   const value = useMemo<AuthState>(
     () => ({
       user: session?.user ?? null,
       session,
       roles,
       loading,
-      isStaff: roles.includes("admin") || roles.includes("staff"),
-      isAdmin: roles.includes("admin"),
-      signOut: async () => {
-        await supabase.auth.signOut();
-        setRoles([]);
-      },
+      isStaff: roles.some((r) => STAFF_ROLES.includes(r)),
+      isAdmin: roles.includes("admin") || roles.includes("super_admin"),
+      isSuperAdmin: roles.includes("super_admin"),
+      emailVerified: Boolean(session?.user?.email_confirmed_at),
+      can,
+      signOut,
     }),
-    [session, roles, loading],
+    [session, roles, loading, can, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

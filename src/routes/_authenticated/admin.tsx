@@ -1,5 +1,21 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { BarChart3, Boxes, CreditCard, FileText, LayoutTemplate, LogOut, Menu, Settings, Share2, ShoppingCart, Store } from "lucide-react";
+import {
+  Activity,
+  BarChart3,
+  Boxes,
+  CreditCard,
+  FileText,
+  LayoutTemplate,
+  LogOut,
+  Menu,
+  ScrollText,
+  Settings,
+  Share2,
+  Shield,
+  ShoppingCart,
+  Store,
+  UserCog,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
@@ -29,7 +45,13 @@ const links = [
   { to: "/admin/social", label: "Social & QR", icon: Share2 },
   { to: "/admin/content", label: "Content", icon: FileText },
   { to: "/admin/settings", label: "Site settings", icon: Settings },
+
+  { to: "/admin/team", label: "Team & roles", icon: UserCog },
+  { to: "/admin/security", label: "Security", icon: Shield },
+  { to: "/admin/logs", label: "Audit logs", icon: ScrollText },
+  { to: "/admin/health", label: "Health", icon: Activity },
 ] as const;
+
 
 
 function AdminLayout() {
