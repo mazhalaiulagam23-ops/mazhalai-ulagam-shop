@@ -1,6 +1,26 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { BarChart3, Boxes, CreditCard, FileText, LayoutTemplate, LogOut, Menu, Settings, Share2, ShoppingCart, Store } from "lucide-react";
+import {
+  Activity,
+  BarChart3,
+  Boxes,
+  CreditCard,
+  FileText,
+  LayoutTemplate,
+  LogOut,
+  Menu,
+  ScrollText,
+  Settings,
+  Share2,
+  Shield,
+  ShoppingCart,
+  Store,
+  UserCog,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { checkAdminAccess, verify2faCode } from "@/lib/security.functions";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
@@ -29,12 +49,33 @@ const links = [
   { to: "/admin/social", label: "Social & QR", icon: Share2 },
   { to: "/admin/content", label: "Content", icon: FileText },
   { to: "/admin/settings", label: "Site settings", icon: Settings },
+
+  { to: "/admin/team", label: "Team & roles", icon: UserCog },
+  { to: "/admin/security", label: "Security", icon: Shield },
+  { to: "/admin/logs", label: "Audit logs", icon: ScrollText },
+  { to: "/admin/health", label: "Health", icon: Activity },
 ] as const;
 
+
+
+const TWOFA_SESSION_KEY = "mu-admin-2fa-ok";
 
 function AdminLayout() {
   const { isStaff, loading, signOut, user } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const [gate, setGate] = useState<Awaited<ReturnType<typeof checkAdminAccess>> | null>(null);
+  const [gateError, setGateError] = useState<string | null>(null);
+  const [code, setCode] = useState("");
+  const [verified, setVerified] = useState(
+    typeof window !== "undefined" && window.sessionStorage.getItem(TWOFA_SESSION_KEY) === "1",
+  );
+
+  useEffect(() => {
+    if (!isStaff) return;
+    void checkAdminAccess()
+      .then(setGate)
+      .catch((e: Error) => setGateError(e.message));
+  }, [isStaff]);
 
   if (loading) {
     return <div className="container-page py-20 text-center text-sm text-muted-foreground">Loading admin…</div>;
@@ -56,6 +97,72 @@ function AdminLayout() {
       </div>
     );
   }
+
+  if (gateError || (gate && !gate.allowed)) {
+    return (
+      <div className="container-page py-20">
+        <div className="surface-card mx-auto max-w-md p-8 text-center">
+          <h1 className="font-display text-xl font-bold">Admin access blocked</h1>
+          <p className="mt-2 text-sm text-muted-foreground">{gate?.reason ?? gateError}</p>
+          <Button className="mt-4" variant="outline" onClick={() => void signOut()}>
+            Sign out
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  const mustChallenge = Boolean(gate?.needs2fa) && !verified && pathname !== "/admin/security";
+
+  if (mustChallenge) {
+    return (
+      <div className="container-page py-20">
+        <div className="surface-card mx-auto max-w-md p-8">
+          <h1 className="font-display text-xl font-bold">Two-factor verification</h1>
+          {gate?.has2fa ? (
+            <>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Enter the 6-digit code from your authenticator app to open the admin panel.
+              </p>
+              <Input
+                className="mt-4"
+                inputMode="numeric"
+                placeholder="123456"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+              />
+              <Button
+                className="mt-3 w-full"
+                onClick={() =>
+                  void verify2faCode({ data: { code } })
+                    .then(() => {
+                      window.sessionStorage.setItem(TWOFA_SESSION_KEY, "1");
+                      setVerified(true);
+                    })
+                    .catch((e: Error) => toast.error(e.message))
+                }
+              >
+                Verify
+              </Button>
+            </>
+          ) : (
+            <>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Two-factor authentication is required for admins. Set up your authenticator app to continue.
+              </p>
+              <Button className="mt-4 w-full" asChild>
+                <Link to="/admin/security">Set up two-factor authentication</Link>
+              </Button>
+            </>
+          )}
+          <Button className="mt-2 w-full" variant="ghost" onClick={() => void signOut()}>
+            Sign out
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
 
   return (
     <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">

@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_lockouts: {
+        Row: {
+          created_at: string
+          failed_count: number
+          id: string
+          identifier: string
+          last_failure_at: string
+          locked_until: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          failed_count?: number
+          id?: string
+          identifier: string
+          last_failure_at?: string
+          locked_until?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          failed_count?: number
+          id?: string
+          identifier?: string
+          last_failure_at?: string
+          locked_until?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      admin_activity_log: {
+        Row: {
+          action: string
+          actor_email: string
+          actor_id: string | null
+          created_at: string
+          details: Json
+          entity_id: string | null
+          id: string
+          ip_address: string | null
+          module: string
+          summary: string
+        }
+        Insert: {
+          action: string
+          actor_email?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          entity_id?: string | null
+          id?: string
+          ip_address?: string | null
+          module?: string
+          summary?: string
+        }
+        Update: {
+          action?: string
+          actor_email?: string
+          actor_id?: string | null
+          created_at?: string
+          details?: Json
+          entity_id?: string | null
+          id?: string
+          ip_address?: string | null
+          module?: string
+          summary?: string
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           created_at: string
@@ -86,6 +155,69 @@ export type Database = {
           slug?: string
           tagline?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      cookie_settings: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: boolean
+          message: string
+          policy_href: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: boolean
+          message?: string
+          policy_href?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: boolean
+          message?: string
+          policy_href?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      error_logs: {
+        Row: {
+          created_at: string
+          id: string
+          level: string
+          message: string
+          meta: Json
+          path: string | null
+          source: string
+          stack: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          level?: string
+          message: string
+          meta?: Json
+          path?: string | null
+          source?: string
+          stack?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          level?: string
+          message?: string
+          meta?: Json
+          path?: string | null
+          source?: string
+          stack?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -185,6 +317,42 @@ export type Database = {
           subtitle?: string
           title?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      login_history: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          ip_address: string | null
+          method: string
+          reason: string | null
+          success: boolean
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          method?: string
+          reason?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          ip_address?: string | null
+          method?: string
+          reason?: string | null
+          success?: boolean
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -644,6 +812,135 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limit_counters: {
+        Row: {
+          bucket: string
+          created_at: string
+          hits: number
+          id: string
+          identifier: string
+          window_start: string
+        }
+        Insert: {
+          bucket: string
+          created_at?: string
+          hits?: number
+          id?: string
+          identifier: string
+          window_start: string
+        }
+        Update: {
+          bucket?: string
+          created_at?: string
+          hits?: number
+          id?: string
+          identifier?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      role_permissions: {
+        Row: {
+          can_create: boolean
+          can_delete: boolean
+          can_export: boolean
+          can_read: boolean
+          can_settings: boolean
+          can_update: boolean
+          created_at: string
+          id: string
+          module: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at: string
+        }
+        Insert: {
+          can_create?: boolean
+          can_delete?: boolean
+          can_export?: boolean
+          can_read?: boolean
+          can_settings?: boolean
+          can_update?: boolean
+          created_at?: string
+          id?: string
+          module: string
+          role: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Update: {
+          can_create?: boolean
+          can_delete?: boolean
+          can_export?: boolean
+          can_read?: boolean
+          can_settings?: boolean
+          can_update?: boolean
+          created_at?: string
+          id?: string
+          module?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      security_settings: {
+        Row: {
+          admin_ip_allowlist: string[]
+          alert_email: string
+          captcha_enabled: boolean
+          created_at: string
+          failed_login_alerts: boolean
+          id: boolean
+          ip_restriction_enabled: boolean
+          lockout_minutes: number
+          low_stock_alerts: boolean
+          max_failed_attempts: number
+          require_2fa_for_admins: boolean
+          retention_activity_log_days: number
+          retention_error_log_days: number
+          retention_login_history_days: number
+          session_timeout_minutes: number
+          session_warning_seconds: number
+          updated_at: string
+        }
+        Insert: {
+          admin_ip_allowlist?: string[]
+          alert_email?: string
+          captcha_enabled?: boolean
+          created_at?: string
+          failed_login_alerts?: boolean
+          id?: boolean
+          ip_restriction_enabled?: boolean
+          lockout_minutes?: number
+          low_stock_alerts?: boolean
+          max_failed_attempts?: number
+          require_2fa_for_admins?: boolean
+          retention_activity_log_days?: number
+          retention_error_log_days?: number
+          retention_login_history_days?: number
+          session_timeout_minutes?: number
+          session_warning_seconds?: number
+          updated_at?: string
+        }
+        Update: {
+          admin_ip_allowlist?: string[]
+          alert_email?: string
+          captcha_enabled?: boolean
+          created_at?: string
+          failed_login_alerts?: boolean
+          id?: boolean
+          ip_restriction_enabled?: boolean
+          lockout_minutes?: number
+          low_stock_alerts?: boolean
+          max_failed_attempts?: number
+          require_2fa_for_admins?: boolean
+          retention_activity_log_days?: number
+          retention_error_log_days?: number
+          retention_login_history_days?: number
+          session_timeout_minutes?: number
+          session_warning_seconds?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_pages: {
         Row: {
           body_html: string
@@ -698,6 +995,7 @@ export type Database = {
           instagram: string
           logo_url: string | null
           phone: string
+          recaptcha_site_key: string
           site_name: string
           tagline: string
           updated_at: string
@@ -719,6 +1017,7 @@ export type Database = {
           instagram?: string
           logo_url?: string | null
           phone?: string
+          recaptcha_site_key?: string
           site_name?: string
           tagline?: string
           updated_at?: string
@@ -740,6 +1039,7 @@ export type Database = {
           instagram?: string
           logo_url?: string | null
           phone?: string
+          recaptcha_site_key?: string
           site_name?: string
           tagline?: string
           updated_at?: string
@@ -854,6 +1154,81 @@ export type Database = {
         }
         Relationships: []
       }
+      user_2fa: {
+        Row: {
+          confirmed_at: string | null
+          created_at: string
+          enabled: boolean
+          last_verified_at: string | null
+          recovery_codes: string[]
+          secret: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confirmed_at?: string | null
+          created_at?: string
+          enabled?: boolean
+          last_verified_at?: string | null
+          recovery_codes?: string[]
+          secret: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confirmed_at?: string | null
+          created_at?: string
+          enabled?: boolean
+          last_verified_at?: string | null
+          recovery_codes?: string[]
+          secret?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_permissions: {
+        Row: {
+          can_create: boolean
+          can_delete: boolean
+          can_export: boolean
+          can_read: boolean
+          can_settings: boolean
+          can_update: boolean
+          created_at: string
+          id: string
+          module: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          can_create?: boolean
+          can_delete?: boolean
+          can_export?: boolean
+          can_read?: boolean
+          can_settings?: boolean
+          can_update?: boolean
+          created_at?: string
+          id?: string
+          module: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          can_create?: boolean
+          can_delete?: boolean
+          can_export?: boolean
+          can_read?: boolean
+          can_settings?: boolean
+          can_update?: boolean
+          created_at?: string
+          id?: string
+          module?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -921,6 +1296,10 @@ export type Database = {
       }
     }
     Functions: {
+      has_permission: {
+        Args: { _action: string; _module: string; _user_id: string }
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -928,10 +1307,11 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_admin: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "staff" | "customer"
+      app_role: "admin" | "staff" | "customer" | "super_admin" | "manager"
       order_status:
         | "pending"
         | "confirmed"
@@ -1073,7 +1453,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "staff", "customer"],
+      app_role: ["admin", "staff", "customer", "super_admin", "manager"],
       order_status: [
         "pending",
         "confirmed",

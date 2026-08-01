@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Download, Search, X } from "lucide-react";
+import { logAdminActivity } from "@/lib/security.functions";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -47,6 +48,9 @@ function AdminOrders() {
     mutationFn: async ({ id, status: next }: { id: string; status: OrderStatus }) => {
       const { error } = await supabase.from("orders").update({ status: next }).eq("id", id);
       if (error) throw error;
+      await logAdminActivity({
+        data: { action: "update", module: "orders", entityId: id, summary: `Order status set to ${next}` },
+      }).catch(() => undefined);
     },
     onSuccess: () => {
       toast.success("Order status updated");

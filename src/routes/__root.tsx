@@ -17,6 +17,9 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingSocial } from "@/components/site/SocialIcons";
 import { SupportChatWidget } from "@/components/support/SupportChatWidget";
+import { CookieConsent } from "@/components/site/CookieConsent";
+import { SessionGuard } from "@/components/site/SessionGuard";
+import { ErrorReporter } from "@/components/site/ErrorReporter";
 
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
@@ -185,6 +188,10 @@ function RootComponent() {
           <Footer />
           <FloatingSocial />
           <SupportChatWidget />
+          <CookieConsent />
+          <SessionGuard />
+          <ErrorReporter />
+
 
         </div>
         <Toaster position="top-center" richColors />
