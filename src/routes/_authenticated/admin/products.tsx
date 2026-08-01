@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
+import { logAdminActivity } from "@/lib/security.functions";
 import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -290,6 +291,14 @@ function AdminProducts() {
         : supabase.from("products").insert(payload);
       const { error } = await query;
       if (error) throw error;
+      await logAdminActivity({
+        data: {
+          action: editing ? "update" : "create",
+          module: "products",
+          entityId: editing?.id ?? payload.slug,
+          summary: `${editing ? "Updated" : "Added"} product “${payload.name}”`,
+        },
+      }).catch(() => undefined);
     },
     onSuccess: () => {
       toast.success(editing ? "Product updated" : "Product added");
