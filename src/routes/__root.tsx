@@ -184,6 +184,8 @@ function RootComponent() {
           </main>
           <Footer />
           <FloatingSocial />
+          <SupportChatWidget />
+
         </div>
         <Toaster position="top-center" richColors />
       </ShopProvider>
