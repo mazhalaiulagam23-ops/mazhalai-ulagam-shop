@@ -10,5 +10,14 @@ export function createLovableAiGatewayProvider(apiKey: string) {
       "Lovable-API-Key": apiKey,
       "X-Lovable-AIG-SDK": "vercel-ai-sdk",
     },
+    fetch: async (input, init) => {
+      const res = await fetch(input, init);
+      if (!res.ok) {
+        const body = await res.clone().text();
+        console.error("AI gateway error", res.status, body.slice(0, 600));
+      }
+      return res;
+    },
   });
+
 }
