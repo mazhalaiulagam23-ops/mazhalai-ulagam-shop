@@ -68,11 +68,12 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        headers: async () => {
+        headers: async (): Promise<Record<string, string>> => {
           const { data } = await supabase.auth.getSession();
           const token = data.session?.access_token;
           return token ? { Authorization: `Bearer ${token}` } : {};
         },
+
       }),
     [],
   );
