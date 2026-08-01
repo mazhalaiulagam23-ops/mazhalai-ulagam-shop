@@ -81,7 +81,11 @@ export const Route = createFileRoute("/api/chat")({
             customerName,
           })}`,
           messages: await convertToModelMessages(uiMessages),
+          onError: ({ error }) => {
+            console.error("SUPPORT_AI_ERROR", JSON.stringify(error, Object.getOwnPropertyNames(error as object)).slice(0, 900));
+          },
         });
+
 
         return result.toUIMessageStreamResponse({
           originalMessages: uiMessages,
