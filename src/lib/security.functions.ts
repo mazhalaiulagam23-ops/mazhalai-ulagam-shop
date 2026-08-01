@@ -489,3 +489,47 @@ export const purgeExpiredLogs = createServerFn({ method: "POST" })
     await supabaseAdmin.from("rate_limit_counters").delete().lt("created_at", cutoff(1));
     return { ok: true, purgedAt: new Date().toISOString() };
   });
+
+/* ---------------------------------------------------- admin access gating */
+
+/** Checks IP allowlist + 2FA enforcement before the admin panel is shown. */
+export const checkAdminAccess = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    await assertStaff(supabase, userId);
+    const { requestMeta } = await import("@/lib/security.server");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { ip } = requestMeta();
+
+    const { data: settings } = await supabaseAdmin
+      .from("security_settings")
+      .select("ip_restriction_enabled, admin_ip_allowlist, require_2fa_for_admins")
+      .maybeSingle();
+
+    if (settings?.ip_restriction_enabled && (settings.admin_ip_allowlist ?? []).length) {
+      const allowed = (settings.admin_ip_allowlist ?? []).some((entry) => entry.trim() === ip);
+      if (!allowed) {
+        await supabaseAdmin.from("error_logs").insert({
+          level: "warning",
+          source: "admin",
+          message: "Admin access blocked by IP allowlist",
+          meta: { ip, userId },
+        });
+        return { allowed: false, reason: `Admin access is restricted to approved networks. Your IP (${ip ?? "unknown"}) is not on the allowlist.`, needs2fa: false };
+      }
+    }
+
+    const { data: twoFa } = await supabaseAdmin
+      .from("user_2fa")
+      .select("enabled")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    return {
+      allowed: true,
+      reason: null as string | null,
+      needs2fa: Boolean(settings?.require_2fa_for_admins),
+      has2fa: Boolean(twoFa?.enabled),
+    };
+  });
