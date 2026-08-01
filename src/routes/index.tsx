@@ -42,15 +42,19 @@ export const Route = createFileRoute("/")({
 
 const fallbackImages = [hero1, hero2, hero3];
 
-const offerEnd = new Date(Date.now() + 1000 * 60 * 60 * 52);
+const OFFER_WINDOW_MS = 1000 * 60 * 60 * 52;
 
 function Countdown() {
-  const [left, setLeft] = useState(offerEnd.getTime() - Date.now());
+  // Computed only after mount so the server and client markup always match.
+  const [left, setLeft] = useState<number | null>(null);
   useEffect(() => {
-    const t = setInterval(() => setLeft(offerEnd.getTime() - Date.now()), 1000);
+    const end = Date.now() + OFFER_WINDOW_MS;
+    setLeft(end - Date.now());
+    const t = setInterval(() => setLeft(end - Date.now()), 1000);
     return () => clearInterval(t);
   }, []);
-  if (left <= 0) return null;
+  if (left === null || left <= 0) return null;
+
   const parts = [
     { label: "Hrs", value: Math.floor(left / 3600000) },
     { label: "Min", value: Math.floor((left / 60000) % 60) },
