@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { MessageCircle, X, Maximize2 } from "lucide-react";
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { SupportChat } from "./SupportChat";
 import logo from "@/assets/logo.png";
 
 /** Floating support assistant available on every page. */
 export function SupportChatWidget() {
   const [open, setOpen] = useState(false);
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  if (pathname.startsWith("/support") || pathname.startsWith("/admin")) return null;
+
+
 
   return (
     <>
