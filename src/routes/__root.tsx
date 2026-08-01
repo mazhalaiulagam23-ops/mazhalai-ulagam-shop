@@ -16,6 +16,8 @@ import { AuthProvider } from "@/lib/auth";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingSocial } from "@/components/site/SocialIcons";
+import { SupportChatWidget } from "@/components/support/SupportChatWidget";
+
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
 

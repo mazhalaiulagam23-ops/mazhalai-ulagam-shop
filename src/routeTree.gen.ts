@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as ReturnsRefundsRouteImport } from './routes/returns-refunds'
@@ -50,6 +51,11 @@ const WishlistRoute = WishlistRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -260,6 +267,7 @@ export interface FileRoutesByTo {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/api/chat': typeof ApiChatRoute
@@ -294,6 +302,7 @@ export interface FileRoutesById {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
@@ -329,6 +338,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
     | '/admin'
@@ -362,6 +372,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
     | '/api/chat'
@@ -395,6 +406,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
     | '/_authenticated/admin'
@@ -430,6 +442,7 @@ export interface RootRouteChildren {
   ReturnsRefundsRoute: typeof ReturnsRefundsRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopRoute: typeof ShopRoute
+  SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
   WishlistRoute: typeof WishlistRoute
   ApiChatRoute: typeof ApiChatRoute
@@ -452,6 +465,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -722,6 +742,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnsRefundsRoute: ReturnsRefundsRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,
   ShopRoute: ShopRoute,
+  SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
   WishlistRoute: WishlistRoute,
   ApiChatRoute: ApiChatRoute,
