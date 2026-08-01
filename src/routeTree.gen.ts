@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as ReturnsRefundsRouteImport } from './routes/returns-refunds'
@@ -29,6 +30,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProductSlugRouteImport } from './routes/product/$slug'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as ApiPublicRazorpayWebhookRouteImport } from './routes/api/public/razorpay-webhook'
@@ -49,6 +51,11 @@ const WishlistRoute = WishlistRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -140,6 +147,11 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -221,9 +233,11 @@ export interface FileRoutesByFullPath {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
@@ -253,8 +267,10 @@ export interface FileRoutesByTo {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
+  '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
@@ -286,9 +302,11 @@ export interface FileRoutesById {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
@@ -320,9 +338,11 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
     | '/admin'
+    | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/content'
@@ -352,8 +372,10 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
+    | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/content'
@@ -384,9 +406,11 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/support'
     | '/terms'
     | '/wishlist'
     | '/_authenticated/admin'
+    | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
     | '/_authenticated/admin/content'
@@ -418,8 +442,10 @@ export interface RootRouteChildren {
   ReturnsRefundsRoute: typeof ReturnsRefundsRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopRoute: typeof ShopRoute
+  SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
   WishlistRoute: typeof WishlistRoute
+  ApiChatRoute: typeof ApiChatRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
   ApiPublicRazorpayWebhookRoute: typeof ApiPublicRazorpayWebhookRoute
@@ -439,6 +465,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -565,6 +598,13 @@ declare module '@tanstack/react-router' {
       path: '/category/$slug'
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -702,8 +742,10 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnsRefundsRoute: ReturnsRefundsRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,
   ShopRoute: ShopRoute,
+  SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
   WishlistRoute: WishlistRoute,
+  ApiChatRoute: ApiChatRoute,
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
   ApiPublicRazorpayWebhookRoute: ApiPublicRazorpayWebhookRoute,
@@ -711,13 +753,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
