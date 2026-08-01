@@ -74,7 +74,7 @@ export const Route = createFileRoute("/api/chat")({
 
         const gateway = createLovableAiGatewayProvider(apiKey);
         const result = streamText({
-          model: gateway("google/gemini-3-flash"),
+          model: gateway("google/gemini-3-flash-preview"),
           system: `${SUPPORT_SYSTEM_PROMPT}\n\n${buildStoreContext({
             products: products ?? [],
             orders: (ordersRes.data ?? []) as never[],
