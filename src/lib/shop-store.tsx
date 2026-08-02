@@ -12,6 +12,10 @@ type ShopState = {
   clearCart: () => void;
   toggleWishlist: (slug: string) => void;
   inWishlist: (slug: string) => boolean;
+  compare: string[];
+  toggleCompare: (slug: string) => boolean;
+  inCompare: (slug: string) => boolean;
+  clearCompare: () => void;
   cartCount: number;
   cartItems: { product: Product; qty: number }[];
   subtotal: number;
@@ -32,11 +36,13 @@ const read = <T,>(key: string, fallback: T): T => {
 export function ShopProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartLine[]>([]);
   const [wishlist, setWishlist] = useState<string[]>([]);
+  const [compare, setCompare] = useState<string[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
     setCart(read<CartLine[]>("mu_cart", []));
     setWishlist(read<string[]>("mu_wishlist", []));
+    setCompare(read<string[]>("mu_compare", []));
     setHydrated(true);
   }, []);
 
@@ -47,6 +53,10 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (hydrated) window.localStorage.setItem("mu_wishlist", JSON.stringify(wishlist));
   }, [wishlist, hydrated]);
+
+  useEffect(() => {
+    if (hydrated) window.localStorage.setItem("mu_compare", JSON.stringify(compare));
+  }, [compare, hydrated]);
 
   const addToCart = useCallback((slug: string, qty = 1) => {
     setCart((prev) => {
@@ -72,6 +82,22 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     setWishlist((prev) => (prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]));
   }, []);
 
+  /** Returns false when the compare tray is already full (max 4). */
+  const toggleCompare = useCallback((slug: string) => {
+    let ok = true;
+    setCompare((prev) => {
+      if (prev.includes(slug)) return prev.filter((s) => s !== slug);
+      if (prev.length >= 4) {
+        ok = false;
+        return prev;
+      }
+      return [...prev, slug];
+    });
+    return ok;
+  }, []);
+
+  const clearCompare = useCallback(() => setCompare([]), []);
+
   const value = useMemo<ShopState>(() => {
     const cartItems = cart
       .map((line) => {
@@ -89,11 +115,26 @@ export function ShopProvider({ children }: { children: ReactNode }) {
       clearCart,
       toggleWishlist,
       inWishlist: (slug: string) => wishlist.includes(slug),
+      compare,
+      toggleCompare,
+      inCompare: (slug: string) => compare.includes(slug),
+      clearCompare,
       cartCount: cart.reduce((n, l) => n + l.qty, 0),
       cartItems,
       subtotal: cartItems.reduce((sum, i) => sum + i.product.price * i.qty, 0),
     };
-  }, [cart, wishlist, addToCart, setQty, removeFromCart, clearCart, toggleWishlist]);
+  }, [
+    cart,
+    wishlist,
+    compare,
+    addToCart,
+    setQty,
+    removeFromCart,
+    clearCart,
+    toggleWishlist,
+    toggleCompare,
+    clearCompare,
+  ]);
 
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 }
