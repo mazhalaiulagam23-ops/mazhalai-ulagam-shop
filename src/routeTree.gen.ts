@@ -25,6 +25,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AiChatRouteImport } from './routes/ai-chat'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -126,6 +127,11 @@ const BlogRoute = BlogRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/ai-chat',
+  path: '/ai-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -253,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -292,6 +299,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -373,6 +382,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -492,6 +504,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
+  AiChatRoute: typeof AiChatRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CartRoute: typeof CartRoute
@@ -626,6 +639,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -836,6 +856,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
+  AiChatRoute: AiChatRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   CartRoute: CartRoute,
