@@ -19,7 +19,6 @@ import {
   Truck,
   TrendingUp,
   User,
-  X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
@@ -553,4 +552,4 @@ export function Header() {
   );
 }
 
-export { WhatsAppIcon, X };
+export { WhatsAppIcon };
