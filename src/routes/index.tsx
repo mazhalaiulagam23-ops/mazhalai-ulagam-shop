@@ -8,6 +8,7 @@ import {
   PackageCheck,
   RefreshCcw,
   ShieldCheck,
+  Sparkles,
   Truck,
 } from "lucide-react";
 import { blogPosts, discountPercent, type Product } from "@/data/catalog";
@@ -219,11 +220,11 @@ function SectionHeading({ title, link, linkLabel }: { title: string; link?: stri
   return (
     <div className="mb-6 flex items-end justify-between gap-4">
       <div>
-        <h2 className="font-display text-2xl font-bold sm:text-3xl">{title}</h2>
-        <span className="mt-2 block h-1 w-16 rounded-full gradient-primary" aria-hidden="true" />
+        <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-[2rem]">{title}</h2>
+        <span className="mt-2 block h-0.5 w-14 rounded-full gradient-gold" aria-hidden="true" />
       </div>
       {link && (
-        <Link to={link} className="inline-flex items-center gap-1 text-sm font-semibold text-teal hover:underline">
+        <Link to={link} className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
           {linkLabel} <ArrowRight className="h-4 w-4" />
         </Link>
       )}
@@ -275,43 +276,67 @@ function Home() {
 
       case "categories":
         return (
-          <section className="container-page -mt-8 relative z-10">
-            <div className="surface-card grid grid-cols-2 gap-2 p-5 sm:grid-cols-4 lg:grid-cols-8">
-              {categories.map((c) => (
-                <Link
-                  key={c.slug}
-                  to="/category/$slug"
-                  params={{ slug: c.slug }}
-                  className="group flex flex-col items-center gap-2 rounded-2xl p-3 text-center transition-colors hover:bg-secondary"
-                >
-                  <img
-                    src={c.image}
-                    alt={c.name}
-                    loading="lazy"
-                    width={200}
-                    height={200}
-                    className="h-16 w-16 rounded-full object-cover ring-2 ring-blush transition-transform group-hover:scale-105"
-                  />
-                  <span className="text-xs font-semibold">{c.name}</span>
-                </Link>
-              ))}
-            </div>
-          </section>
+          <>
+            <section className="container-page mt-16">
+              <SectionHeading title="Shop by Age" link="/shop" linkLabel="Browse all" />
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+                {AGE_GROUPS.map((a) => (
+                  <Link
+                    key={a.label}
+                    to="/category/$slug"
+                    params={{ slug: a.slug }}
+                    className={`hover-lift rounded-3xl ${a.tint} p-5 transition-colors`}
+                  >
+                    <span className="block font-display text-base font-semibold">{a.label}</span>
+                    <span className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+                      Shop now <ArrowRight className="h-3.5 w-3.5" />
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+
+            <section className="container-page mt-16">
+              <SectionHeading title={title || "Shop by Category"} link="/shop" linkLabel="View all" />
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+                {categories.map((c) => (
+                  <Link
+                    key={c.slug}
+                    to="/category/$slug"
+                    params={{ slug: c.slug }}
+                    className="group flex flex-col items-center gap-3 rounded-3xl border border-transparent p-3 text-center transition-all hover:border-border hover:bg-card hover:shadow-[var(--shadow-soft)]"
+                  >
+                    <img
+                      src={c.image}
+                      alt={c.name}
+                      loading="lazy"
+                      width={200}
+                      height={200}
+                      className="h-20 w-20 rounded-full object-cover ring-1 ring-border transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <span className="text-xs font-semibold">{c.name}</span>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          </>
         );
 
       case "trust":
         return (
-          <section className="container-page mt-8">
-            <ul className="grid gap-3 rounded-3xl bg-accent/60 p-5 sm:grid-cols-2 lg:grid-cols-4">
+          <section className="container-page mt-16">
+            <ul className="grid gap-6 rounded-3xl border border-border bg-card p-7 shadow-[var(--shadow-soft)] sm:grid-cols-2 lg:grid-cols-4">
               {[
-                { icon: ShieldCheck, title: "100% Safe Products", sub: "For your little ones" },
+                { icon: ShieldCheck, title: "100% Safe Products", sub: "Non-toxic & certified" },
                 { icon: BadgeIndianRupee, title: "Secure Payments", sub: "UPI, cards & net banking" },
-                { icon: Truck, title: "Fast & Reliable Delivery", sub: "Pan-India shipping" },
+                { icon: Truck, title: "Fast Delivery", sub: "Same-day dispatch" },
                 { icon: RefreshCcw, title: "Easy Returns", sub: "Hassle-free 7-day returns" },
               ].map((t) => (
                 <li key={t.title} className="flex items-center gap-3">
-                  <t.icon className="h-8 w-8 shrink-0 text-teal" aria-hidden="true" />
-                  <span>
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-secondary">
+                    <t.icon className="h-5 w-5 text-primary" aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0">
                     <span className="block text-sm font-bold">{t.title}</span>
                     <span className="block text-xs text-muted-foreground">{t.sub}</span>
                   </span>
