@@ -109,53 +109,94 @@ function HeroCarousel() {
 
   return (
     <section className="relative overflow-hidden gradient-hero">
-      <img
-        src={s.image}
-        alt=""
+      {/* Floating toy motifs */}
+      <span
         aria-hidden="true"
-        width={1600}
-        height={900}
-        className="absolute inset-0 h-full w-full object-cover opacity-70"
+        className="pointer-events-none absolute left-[6%] top-16 h-16 w-16 rounded-full bg-gold/25 blur-[2px] animate-float"
       />
-      <div className="container-page relative py-16 sm:py-24">
-        <div className="max-w-xl rounded-3xl bg-card/80 p-7 backdrop-blur-sm sm:p-10">
-          <p className="font-display text-lg text-primary">{s.eyebrow}</p>
-          <h1 className="mt-1 font-display text-3xl font-extrabold leading-tight text-foreground sm:text-5xl">
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-[12%] top-24 h-10 w-10 rounded-3xl bg-sale/25 animate-float-slow"
+      />
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-16 left-[42%] h-20 w-20 rounded-full bg-primary/10 animate-float-slow"
+      />
+
+      <div className="container-page relative grid items-center gap-10 py-14 lg:grid-cols-[1.05fr_1fr] lg:py-24">
+        <div className="animate-rise">
+          <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground backdrop-blur">
+            <Sparkles className="h-3.5 w-3.5 text-gold" /> {s.eyebrow || "Premium quality · Safe & non-toxic"}
+          </p>
+          <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
             {s.title}
           </h1>
-          <p className="mt-3 text-sm text-muted-foreground sm:text-base">{s.subtitle}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-4">
-            {s.cta && (
-              <Button variant="hero" size="lg" asChild>
-                <a href={s.href}>
-                  {s.cta} <ArrowRight className="h-4 w-4" />
-                </a>
-              </Button>
-            )}
+          <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">{s.subtitle}</p>
+
+          <div className="mt-8 flex flex-wrap items-center gap-3">
+            <Button size="lg" asChild>
+              <a href={s.href}>
+                {s.cta || "Shop Now"} <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+            <Button variant="outline" size="lg" asChild>
+              <Link to="/ai-chat">
+                <Sparkles className="h-4 w-4 text-gold" /> Talk to AI Assistant
+              </Link>
+            </Button>
+          </div>
+
+          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-semibold text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <ShieldCheck className="h-4 w-4 text-primary" /> 100% Safe
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <PackageCheck className="h-4 w-4 text-primary" /> Premium Quality
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Truck className="h-4 w-4 text-primary" /> Fast Delivery
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <RefreshCcw className="h-4 w-4 text-primary" /> Easy Returns
+            </span>
+          </div>
+          <div className="mt-6">
             <Countdown />
           </div>
-          <div className="mt-6 flex flex-wrap gap-4 text-xs font-semibold text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck className="h-4 w-4 text-teal" /> Premium Quality
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <PackageCheck className="h-4 w-4 text-teal" /> Wholesale Available
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Truck className="h-4 w-4 text-teal" /> Fast Delivery
-            </span>
+        </div>
+
+        <div className="relative">
+          <div className="overflow-hidden rounded-[2rem] border border-border/60 shadow-[var(--shadow-lift)]">
+            <img
+              src={s.image}
+              alt="Happy baby with soft toys from Mazhalai Ulagam"
+              width={1200}
+              height={1000}
+              fetchPriority="high"
+              className="aspect-[6/5] w-full object-cover"
+            />
+          </div>
+          <div className="glass-panel absolute -bottom-6 left-4 w-56 p-4 sm:left-auto sm:right-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+              Limited time offer
+            </p>
+            <p className="mt-1 font-display text-3xl font-semibold text-gold-gradient">FLAT 30% OFF</p>
+            <p className="text-xs text-muted-foreground">On selected items</p>
+            <Button size="sm" className="mt-3 w-full" asChild>
+              <Link to="/offers">Shop the sale</Link>
+            </Button>
           </div>
         </div>
 
         {slides.length > 1 && (
-          <div className="mt-6 flex gap-2">
+          <div className="flex gap-2 lg:col-span-2">
             {slides.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setI(idx)}
                 aria-label={`Go to slide ${idx + 1}`}
                 aria-current={idx === i}
-                className={`h-2.5 rounded-full transition-all ${idx === i ? "w-8 bg-primary" : "w-2.5 bg-card"}`}
+                className={`h-2 rounded-full transition-all ${idx === i ? "w-8 bg-primary" : "w-2 bg-border"}`}
               />
             ))}
           </div>
@@ -164,6 +205,15 @@ function HeroCarousel() {
     </section>
   );
 }
+
+const AGE_GROUPS = [
+  { label: "0 – 12 Months", slug: "baby-products", tint: "bg-mint" },
+  { label: "1 – 3 Years", slug: "toys-games", tint: "bg-blush" },
+  { label: "3 – 5 Years", slug: "educational-toys", tint: "bg-cream" },
+  { label: "5 – 10 Years", slug: "stationery", tint: "bg-secondary" },
+  { label: "Gift Collections", slug: "return-gifts", tint: "bg-accent" },
+];
+
 
 function SectionHeading({ title, link, linkLabel }: { title: string; link?: string; linkLabel?: string }) {
   return (
