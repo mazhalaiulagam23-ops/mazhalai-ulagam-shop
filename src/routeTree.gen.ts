@@ -25,6 +25,7 @@ import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AiChatRouteImport } from './routes/ai-chat'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -47,6 +48,7 @@ import { Route as AuthenticatedAdminLogsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminHomepageRouteImport } from './routes/_authenticated/admin/homepage'
 import { Route as AuthenticatedAdminHealthRouteImport } from './routes/_authenticated/admin/health'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
+import { Route as AuthenticatedAdminAiChatRouteImport } from './routes/_authenticated/admin/ai-chat'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -126,6 +128,11 @@ const BlogRoute = BlogRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiChatRoute = AiChatRouteImport.update({
+  id: '/ai-chat',
+  path: '/ai-chat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRoute = AccountRouteImport.update({
@@ -248,11 +255,18 @@ const AuthenticatedAdminContentRoute =
     path: '/content',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAiChatRoute =
+  AuthenticatedAdminAiChatRouteImport.update({
+    id: '/ai-chat',
+    path: '/ai-chat',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -273,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -292,6 +307,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -311,6 +327,7 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -332,6 +349,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/account': typeof AccountRoute
+  '/ai-chat': typeof AiChatRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
@@ -352,6 +370,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/_authenticated/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/health': typeof AuthenticatedAdminHealthRoute
   '/_authenticated/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -373,6 +392,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -393,6 +413,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/admin/ai-chat'
     | '/admin/content'
     | '/admin/health'
     | '/admin/homepage'
@@ -412,6 +433,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -431,6 +453,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/admin/ai-chat'
     | '/admin/content'
     | '/admin/health'
     | '/admin/homepage'
@@ -451,6 +474,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/about'
     | '/account'
+    | '/ai-chat'
     | '/auth'
     | '/blog'
     | '/cart'
@@ -471,6 +495,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/_authenticated/admin/ai-chat'
     | '/_authenticated/admin/content'
     | '/_authenticated/admin/health'
     | '/_authenticated/admin/homepage'
@@ -492,6 +517,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRoute
+  AiChatRoute: typeof AiChatRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   CartRoute: typeof CartRoute
@@ -626,6 +652,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-chat': {
+      id: '/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/ai-chat'
+      preLoaderRoute: typeof AiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -782,10 +815,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/ai-chat': {
+      id: '/_authenticated/admin/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/admin/ai-chat'
+      preLoaderRoute: typeof AuthenticatedAdminAiChatRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAiChatRoute: typeof AuthenticatedAdminAiChatRoute
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminHealthRoute: typeof AuthenticatedAdminHealthRoute
   AuthenticatedAdminHomepageRoute: typeof AuthenticatedAdminHomepageRoute
@@ -802,6 +843,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAiChatRoute: AuthenticatedAdminAiChatRoute,
   AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminHealthRoute: AuthenticatedAdminHealthRoute,
   AuthenticatedAdminHomepageRoute: AuthenticatedAdminHomepageRoute,
@@ -836,6 +878,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AccountRoute: AccountRoute,
+  AiChatRoute: AiChatRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   CartRoute: CartRoute,

@@ -83,6 +83,114 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_chat_blocks: {
+        Row: {
+          created_at: string
+          reason: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          reason?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          reason?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_chat_display: {
+        Row: {
+          accent_color: string
+          ai_avatar_url: string | null
+          ai_name: string
+          business_hours_enabled: boolean
+          business_hours_note: string
+          created_at: string
+          floating_enabled: boolean
+          floating_position: string
+          id: boolean
+          is_enabled: boolean
+          live_chat_enabled: boolean
+          suggested_questions: string[]
+          updated_at: string
+          welcome_message: string
+          welcome_title: string
+        }
+        Insert: {
+          accent_color?: string
+          ai_avatar_url?: string | null
+          ai_name?: string
+          business_hours_enabled?: boolean
+          business_hours_note?: string
+          created_at?: string
+          floating_enabled?: boolean
+          floating_position?: string
+          id?: boolean
+          is_enabled?: boolean
+          live_chat_enabled?: boolean
+          suggested_questions?: string[]
+          updated_at?: string
+          welcome_message?: string
+          welcome_title?: string
+        }
+        Update: {
+          accent_color?: string
+          ai_avatar_url?: string | null
+          ai_name?: string
+          business_hours_enabled?: boolean
+          business_hours_note?: string
+          created_at?: string
+          floating_enabled?: boolean
+          floating_position?: string
+          id?: boolean
+          is_enabled?: boolean
+          live_chat_enabled?: boolean
+          suggested_questions?: string[]
+          updated_at?: string
+          welcome_message?: string
+          welcome_title?: string
+        }
+        Relationships: []
+      }
+      ai_chat_settings: {
+        Row: {
+          auto_reply_enabled: boolean
+          created_at: string
+          email_notifications: boolean
+          id: boolean
+          knowledge_notes: string
+          rate_limit_per_hour: number
+          system_prompt: string
+          updated_at: string
+          whatsapp_notifications: boolean
+        }
+        Insert: {
+          auto_reply_enabled?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: boolean
+          knowledge_notes?: string
+          rate_limit_per_hour?: number
+          system_prompt?: string
+          updated_at?: string
+          whatsapp_notifications?: boolean
+        }
+        Update: {
+          auto_reply_enabled?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: boolean
+          knowledge_notes?: string
+          rate_limit_per_hour?: number
+          system_prompt?: string
+          updated_at?: string
+          whatsapp_notifications?: boolean
+        }
+        Relationships: []
+      }
       banners: {
         Row: {
           created_at: string
@@ -1095,7 +1203,9 @@ export type Database = {
         Row: {
           client_message_id: string | null
           created_at: string
+          feedback: number
           id: string
+          needs_human: boolean
           parts: Json
           role: string
           user_id: string
@@ -1103,7 +1213,9 @@ export type Database = {
         Insert: {
           client_message_id?: string | null
           created_at?: string
+          feedback?: number
           id?: string
+          needs_human?: boolean
           parts?: Json
           role: string
           user_id: string
@@ -1111,7 +1223,9 @@ export type Database = {
         Update: {
           client_message_id?: string | null
           created_at?: string
+          feedback?: number
           id?: string
+          needs_human?: boolean
           parts?: Json
           role?: string
           user_id?: string

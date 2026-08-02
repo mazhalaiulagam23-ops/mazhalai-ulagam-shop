@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import {
   Activity,
+  Bot,
   BarChart3,
   Boxes,
   CreditCard,
@@ -47,6 +48,7 @@ const links = [
   { to: "/admin/homepage", label: "Homepage", icon: LayoutTemplate },
   { to: "/admin/navigation", label: "Navigation", icon: Menu },
   { to: "/admin/social", label: "Social & QR", icon: Share2 },
+  { to: "/admin/ai-chat", label: "AI Chat", icon: Bot },
   { to: "/admin/content", label: "Content", icon: FileText },
   { to: "/admin/settings", label: "Site settings", icon: Settings },
 

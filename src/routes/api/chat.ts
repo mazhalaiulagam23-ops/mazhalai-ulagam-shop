@@ -51,6 +51,40 @@ export const Route = createFileRoute("/api/chat")({
           customerName = (data.user?.user_metadata?.["full_name"] as string | undefined) ?? null;
         }
 
+        const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+        // Assistant configuration (private prompt + limits) and enable switch.
+        const [{ data: config }, { data: display }] = await Promise.all([
+          supabaseAdmin.from("ai_chat_settings").select("*").maybeSingle(),
+          supabaseAdmin.from("ai_chat_display").select("is_enabled").maybeSingle(),
+        ]);
+
+        if (display && !display.is_enabled) {
+          return new Response("The assistant is currently offline.", { status: 503 });
+        }
+
+        if (userId) {
+          const { data: blocked } = await supabaseAdmin
+            .from("ai_chat_blocks")
+            .select("user_id")
+            .eq("user_id", userId)
+            .maybeSingle();
+          if (blocked) {
+            return new Response("Chat access has been disabled for this account.", { status: 403 });
+          }
+
+          const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+          const { count } = await supabaseAdmin
+            .from("support_messages")
+            .select("id", { count: "exact", head: true })
+            .eq("user_id", userId)
+            .eq("role", "user")
+            .gte("created_at", since);
+          if ((count ?? 0) >= (config?.rate_limit_per_hour ?? 60)) {
+            return new Response("Too many messages. Please try again later.", { status: 429 });
+          }
+        }
+
         const [{ data: products }, ordersRes] = await Promise.all([
           anon
             .from("products")
@@ -75,11 +109,18 @@ export const Route = createFileRoute("/api/chat")({
         const gateway = createLovableAiGatewayProvider(apiKey);
         const result = streamText({
           model: gateway("google/gemini-3-flash-preview"),
-          system: `${SUPPORT_SYSTEM_PROMPT}\n\n${buildStoreContext({
-            products: products ?? [],
-            orders: (ordersRes.data ?? []) as never[],
-            customerName,
-          })}`,
+          system: [
+            SUPPORT_SYSTEM_PROMPT,
+            config?.system_prompt?.trim() ? `STORE OWNER INSTRUCTIONS:\n${config.system_prompt}` : "",
+            config?.knowledge_notes?.trim() ? `KNOWLEDGE BASE:\n${config.knowledge_notes}` : "",
+            buildStoreContext({
+              products: products ?? [],
+              orders: (ordersRes.data ?? []) as never[],
+              customerName,
+            }),
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
           messages: await convertToModelMessages(uiMessages),
           onError: ({ error }) => {
             console.error("SUPPORT_AI_ERROR", JSON.stringify(error, Object.getOwnPropertyNames(error as object)).slice(0, 900));
