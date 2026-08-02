@@ -291,7 +291,7 @@ export function SupportChat({
           {status === "submitted" ? (
             <Message from="assistant">
               <MessageContent className="bg-transparent p-0">
-                <Shimmer>{settings.ai_name} is typing…</Shimmer>
+                <Shimmer>{`${settings.ai_name} is typing…`}</Shimmer>
               </MessageContent>
             </Message>
           ) : null}
