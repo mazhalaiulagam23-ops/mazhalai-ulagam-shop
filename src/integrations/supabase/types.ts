@@ -101,74 +101,92 @@ export type Database = {
         }
         Relationships: []
       }
-      ai_chat_settings: {
+      ai_chat_display: {
         Row: {
           accent_color: string
           ai_avatar_url: string | null
           ai_name: string
-          auto_reply_enabled: boolean
           business_hours_enabled: boolean
           business_hours_note: string
           created_at: string
-          email_notifications: boolean
           floating_enabled: boolean
           floating_position: string
           id: boolean
           is_enabled: boolean
-          knowledge_notes: string
           live_chat_enabled: boolean
-          rate_limit_per_hour: number
           suggested_questions: string[]
-          system_prompt: string
           updated_at: string
           welcome_message: string
           welcome_title: string
-          whatsapp_notifications: boolean
         }
         Insert: {
           accent_color?: string
           ai_avatar_url?: string | null
           ai_name?: string
-          auto_reply_enabled?: boolean
           business_hours_enabled?: boolean
           business_hours_note?: string
           created_at?: string
-          email_notifications?: boolean
           floating_enabled?: boolean
           floating_position?: string
           id?: boolean
           is_enabled?: boolean
-          knowledge_notes?: string
           live_chat_enabled?: boolean
-          rate_limit_per_hour?: number
           suggested_questions?: string[]
-          system_prompt?: string
           updated_at?: string
           welcome_message?: string
           welcome_title?: string
-          whatsapp_notifications?: boolean
         }
         Update: {
           accent_color?: string
           ai_avatar_url?: string | null
           ai_name?: string
-          auto_reply_enabled?: boolean
           business_hours_enabled?: boolean
           business_hours_note?: string
           created_at?: string
-          email_notifications?: boolean
           floating_enabled?: boolean
           floating_position?: string
           id?: boolean
           is_enabled?: boolean
-          knowledge_notes?: string
           live_chat_enabled?: boolean
-          rate_limit_per_hour?: number
           suggested_questions?: string[]
-          system_prompt?: string
           updated_at?: string
           welcome_message?: string
           welcome_title?: string
+        }
+        Relationships: []
+      }
+      ai_chat_settings: {
+        Row: {
+          auto_reply_enabled: boolean
+          created_at: string
+          email_notifications: boolean
+          id: boolean
+          knowledge_notes: string
+          rate_limit_per_hour: number
+          system_prompt: string
+          updated_at: string
+          whatsapp_notifications: boolean
+        }
+        Insert: {
+          auto_reply_enabled?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: boolean
+          knowledge_notes?: string
+          rate_limit_per_hour?: number
+          system_prompt?: string
+          updated_at?: string
+          whatsapp_notifications?: boolean
+        }
+        Update: {
+          auto_reply_enabled?: boolean
+          created_at?: string
+          email_notifications?: boolean
+          id?: boolean
+          knowledge_notes?: string
+          rate_limit_per_hour?: number
+          system_prompt?: string
+          updated_at?: string
           whatsapp_notifications?: boolean
         }
         Relationships: []
@@ -1348,51 +1366,6 @@ export type Database = {
       }
     }
     Views: {
-      ai_chat_public: {
-        Row: {
-          accent_color: string | null
-          ai_avatar_url: string | null
-          ai_name: string | null
-          business_hours_enabled: boolean | null
-          business_hours_note: string | null
-          floating_enabled: boolean | null
-          floating_position: string | null
-          is_enabled: boolean | null
-          live_chat_enabled: boolean | null
-          suggested_questions: string[] | null
-          welcome_message: string | null
-          welcome_title: string | null
-        }
-        Insert: {
-          accent_color?: string | null
-          ai_avatar_url?: string | null
-          ai_name?: string | null
-          business_hours_enabled?: boolean | null
-          business_hours_note?: string | null
-          floating_enabled?: boolean | null
-          floating_position?: string | null
-          is_enabled?: boolean | null
-          live_chat_enabled?: boolean | null
-          suggested_questions?: string[] | null
-          welcome_message?: string | null
-          welcome_title?: string | null
-        }
-        Update: {
-          accent_color?: string | null
-          ai_avatar_url?: string | null
-          ai_name?: string | null
-          business_hours_enabled?: boolean | null
-          business_hours_note?: string | null
-          floating_enabled?: boolean | null
-          floating_position?: string | null
-          is_enabled?: boolean | null
-          live_chat_enabled?: boolean | null
-          suggested_questions?: string[] | null
-          welcome_message?: string | null
-          welcome_title?: string | null
-        }
-        Relationships: []
-      }
       payment_config: {
         Row: {
           card_enabled: boolean | null
