@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Heart, Eye, ShoppingCart, Star } from "lucide-react";
+import { Heart, Eye, Scale, ShoppingCart, Star, Truck, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { discountPercent, type Product } from "@/data/catalog";
@@ -22,57 +22,104 @@ export function Stars({ rating, className }: { rating: number; className?: strin
   );
 }
 
+/** Friendly delivery estimate, three days out. */
+export function deliveryEstimate(days = 3) {
+  const d = new Date();
+  d.setDate(d.getDate() + days);
+  return d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+}
+
+function IconAction({
+  label,
+  active,
+  onClick,
+  children,
+}: {
+  label: string;
+  active?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      aria-pressed={active}
+      className={cn(
+        "flex h-9 w-9 items-center justify-center rounded-full border border-border/70 backdrop-blur-md transition-all hover:scale-105",
+        active ? "bg-primary text-primary-foreground" : "bg-card/85 text-muted-foreground hover:text-foreground",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
 export function ProductCard({ product }: { product: Product }) {
-  const { addToCart, toggleWishlist, inWishlist } = useShop();
+  const { addToCart, toggleWishlist, inWishlist, toggleCompare, inCompare } = useShop();
   const [quickView, setQuickView] = useState(false);
   const off = discountPercent(product);
   const wished = inWishlist(product.slug);
+  const compared = inCompare(product.slug);
+  const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
-    <article className="group surface-card relative flex flex-col overflow-hidden transition-shadow hover:shadow-[var(--shadow-lift)]">
-      <div className="absolute left-3 top-3 z-10 flex flex-col gap-1">
+    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)]">
+      <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
         {product.badge && (
-          <span className="rounded-full bg-teal px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-teal-foreground">
+          <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
             {product.badge}
           </span>
         )}
         {off > 0 && (
-          <span className="rounded-full bg-sale px-2.5 py-1 text-[11px] font-bold text-primary-foreground">
+          <span className="rounded-full bg-sale px-2.5 py-1 text-[10px] font-bold text-primary-foreground">
             {off}% OFF
           </span>
         )}
       </div>
 
-      <div className="absolute right-3 top-3 z-10 flex flex-col gap-2 opacity-100 sm:opacity-0 sm:transition-opacity sm:group-hover:opacity-100">
-        <button
-          type="button"
+      <div className="absolute right-3 top-3 z-10 flex flex-col gap-2 sm:translate-x-2 sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-x-0 sm:group-hover:opacity-100">
+        <IconAction
+          label={wished ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
+          active={wished}
           onClick={() => {
             toggleWishlist(product.slug);
             toast.success(wished ? "Removed from wishlist" : "Added to wishlist");
           }}
-          aria-label={wished ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
-          className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] transition-colors hover:bg-secondary"
         >
-          <Heart className={cn("h-4 w-4", wished ? "fill-primary text-primary" : "text-muted-foreground")} />
-        </button>
-        <button
-          type="button"
-          onClick={() => setQuickView(true)}
-          aria-label={`Quick view ${product.name}`}
-          className="rounded-full bg-card p-2 shadow-[var(--shadow-soft)] transition-colors hover:bg-secondary"
+          <Heart className={cn("h-4 w-4", wished && "fill-current")} />
+        </IconAction>
+        <IconAction
+          label={`Compare ${product.name}`}
+          active={compared}
+          onClick={() => {
+            const ok = toggleCompare(product.slug);
+            if (!ok) toast.error("You can compare up to 4 products");
+            else toast.success(compared ? "Removed from compare" : "Added to compare");
+          }}
         >
-          <Eye className="h-4 w-4 text-muted-foreground" />
-        </button>
+          <Scale className="h-4 w-4" />
+        </IconAction>
+        <IconAction label={`Quick view ${product.name}`} onClick={() => setQuickView(true)}>
+          <Eye className="h-4 w-4" />
+        </IconAction>
       </div>
 
-      <Link to="/product/$slug" params={{ slug: product.slug }} className="block bg-secondary/40">
+      <Link
+        to="/product/$slug"
+        params={{ slug: product.slug }}
+        className="block overflow-hidden bg-secondary/40"
+        aria-label={product.name}
+      >
         <img
           src={product.images[0]}
           alt={product.name}
           loading="lazy"
+          decoding="async"
           width={800}
           height={800}
-          className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-107"
         />
       </Link>
 
@@ -80,64 +127,92 @@ export function ProductCard({ product }: { product: Product }) {
         <Link
           to="/category/$slug"
           params={{ slug: product.category }}
-          className="text-[11px] font-semibold uppercase tracking-wide text-teal hover:underline"
+          className="text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground hover:text-primary"
         >
           {product.category.replace(/-/g, " ")}
         </Link>
         <Link
           to="/product/$slug"
           params={{ slug: product.slug }}
-          className="line-clamp-2 text-sm font-semibold text-foreground hover:text-primary"
+          className="line-clamp-2 font-display text-[15px] font-semibold leading-snug text-foreground hover:text-primary"
         >
           {product.name}
         </Link>
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <Stars rating={product.rating} />
-          <span>({product.reviews})</span>
+          <span>({product.reviews} reviews)</span>
         </div>
-        <div className="mt-auto flex items-baseline gap-2">
-          <span className="text-lg font-bold text-foreground">{inr(product.price)}</span>
-          {product.mrp > product.price && (
-            <span className="text-sm text-muted-foreground line-through">{inr(product.mrp)}</span>
-          )}
+
+        <div className="mt-auto space-y-2 pt-1">
+          <div className="flex items-baseline gap-2">
+            <span className="font-display text-xl font-semibold text-foreground">{inr(product.price)}</span>
+            {product.mrp > product.price && (
+              <span className="text-sm text-muted-foreground line-through">{inr(product.mrp)}</span>
+            )}
+          </div>
+          <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+            <Truck className="h-3.5 w-3.5 text-primary" /> Delivery by {deliveryEstimate()}
+          </p>
+          <p className="text-[11px] font-semibold">
+            {product.stock <= 0 ? (
+              <span className="text-destructive">Out of stock</span>
+            ) : lowStock ? (
+              <span className="text-sale">Only {product.stock} left</span>
+            ) : (
+              <span className="text-primary">In stock</span>
+            )}
+          </p>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1"
+              disabled={product.stock <= 0}
+              onClick={() => {
+                addToCart(product.slug);
+                toast.success(`${product.name} added to cart`);
+              }}
+            >
+              <ShoppingCart className="h-4 w-4" /> Add
+            </Button>
+            <Button size="sm" className="flex-1" disabled={product.stock <= 0} asChild>
+              <Link to="/checkout" onClick={() => addToCart(product.slug)}>
+                <Zap className="h-4 w-4" /> Buy
+              </Link>
+            </Button>
+          </div>
         </div>
-        <Button
-          variant="soft"
-          size="sm"
-          className="mt-2 w-full"
-          onClick={() => {
-            addToCart(product.slug);
-            toast.success(`${product.name} added to cart`);
-          }}
-        >
-          <ShoppingCart className="h-4 w-4" /> Add to Cart
-        </Button>
       </div>
 
       <Dialog open={quickView} onOpenChange={setQuickView}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
-            <DialogTitle>{product.name}</DialogTitle>
+            <DialogTitle className="font-display">{product.name}</DialogTitle>
           </DialogHeader>
           <div className="grid gap-5 sm:grid-cols-2">
             <img
               src={product.images[0]}
               alt={product.name}
               loading="lazy"
-              className="aspect-square w-full rounded-xl object-cover"
+              className="aspect-square w-full rounded-2xl object-cover"
             />
             <div className="space-y-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Stars rating={product.rating} /> ({product.reviews} reviews)
               </div>
               <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold">{inr(product.price)}</span>
-                <span className="text-sm text-muted-foreground line-through">{inr(product.mrp)}</span>
+                <span className="font-display text-2xl font-semibold">{inr(product.price)}</span>
+                {product.mrp > product.price && (
+                  <span className="text-sm text-muted-foreground line-through">{inr(product.mrp)}</span>
+                )}
               </div>
               <p className="text-sm text-muted-foreground">{product.shortDescription}</p>
+              <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Truck className="h-4 w-4 text-primary" /> Delivery by {deliveryEstimate()}
+              </p>
               <p className="text-sm">
                 {product.stock > 0 ? (
-                  <span className="font-medium text-teal">In stock ({product.stock} left)</span>
+                  <span className="font-medium text-primary">In stock ({product.stock} left)</span>
                 ) : (
                   <span className="font-medium text-destructive">Out of stock</span>
                 )}
