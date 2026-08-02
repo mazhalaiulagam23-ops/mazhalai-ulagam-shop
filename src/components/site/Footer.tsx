@@ -94,7 +94,7 @@ export function Footer() {
       <div className="bg-secondary/50">
         <div className="container-page grid gap-10 py-12 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-1">
-            <h2 className="font-display text-xl font-bold text-primary">{store.name}</h2>
+            <h2 className="font-display text-2xl font-semibold text-primary">{store.name}</h2>
             <p className="mt-2 text-sm text-muted-foreground">
               {settings.footerNote ||
                 "Your one-stop shop for baby products, return gifts, toys, stationery and more in Coimbatore."}
@@ -111,7 +111,7 @@ export function Footer() {
               ]
           ).map((group) => (
             <nav key={group.name} aria-label={group.name}>
-              <h3 className="text-sm font-bold uppercase tracking-wide">{group.name}</h3>
+              <h3 className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-foreground">{group.name}</h3>
               <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                 {group.links.map((l) => (
                   <li key={`${group.name}-${l.href}-${l.label}`}>
@@ -125,7 +125,7 @@ export function Footer() {
           ))}
 
           <nav aria-label="Shop by category">
-            <h3 className="text-sm font-bold uppercase tracking-wide">Categories</h3>
+            <h3 className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-foreground">Categories</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               {categories.map((c) => (
                 <li key={c.slug}>
@@ -139,7 +139,7 @@ export function Footer() {
 
 
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-wide">Contact Us</h3>
+            <h3 className="font-display text-sm font-semibold uppercase tracking-[0.14em] text-foreground">Contact Us</h3>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
               <li className="flex gap-2">
                 <MapPin className="h-4 w-4 shrink-0 text-primary" /> {store.address}
@@ -169,7 +169,7 @@ export function Footer() {
               </a>
             </Button>
 
-            <h3 className="mt-6 text-sm font-bold uppercase tracking-wide">We Accept</h3>
+            <h3 className="mt-6 font-display text-sm font-semibold uppercase tracking-[0.14em] text-foreground">We Accept</h3>
             <div className="mt-3 flex flex-wrap gap-2 text-[11px] font-bold">
               {["VISA", "Mastercard", "RuPay", "UPI", "Net Banking", "COD"].map((m) => (
                 <span key={m} className="rounded-md border border-border bg-card px-2.5 py-1.5">

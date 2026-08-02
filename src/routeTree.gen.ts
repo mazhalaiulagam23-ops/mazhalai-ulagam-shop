@@ -21,6 +21,7 @@ import { Route as OrderTrackingRouteImport } from './routes/order-tracking'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -108,6 +109,11 @@ const FaqRoute = FaqRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutRoute = CheckoutRouteImport.update({
@@ -271,6 +277,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
@@ -312,6 +319,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
@@ -354,6 +362,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
+  '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
@@ -397,6 +406,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
     | '/faq'
     | '/offers'
@@ -438,6 +448,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
     | '/faq'
     | '/offers'
@@ -479,6 +490,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/cart'
     | '/checkout'
+    | '/compare'
     | '/contact'
     | '/faq'
     | '/offers'
@@ -522,6 +534,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
+  CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   OffersRoute: typeof OffersRoute
@@ -624,6 +637,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout': {
@@ -883,6 +903,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
+  CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   OffersRoute: OffersRoute,
@@ -903,13 +924,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

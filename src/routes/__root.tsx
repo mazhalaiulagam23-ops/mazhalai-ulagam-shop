@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { ShopProvider } from "@/lib/shop-store";
 import { AuthProvider } from "@/lib/auth";
+import { ThemeProvider } from "@/lib/theme";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FloatingSocial } from "@/components/site/SocialIcons";
@@ -107,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@300;400;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -177,6 +178,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
+      <ThemeProvider>
       <ShopProvider>
         <BrandHead />
         <div className="flex min-h-screen flex-col">
@@ -196,6 +198,7 @@ function RootComponent() {
         </div>
         <Toaster position="top-center" richColors />
       </ShopProvider>
+      </ThemeProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
