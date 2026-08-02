@@ -48,6 +48,7 @@ import { Route as AuthenticatedAdminLogsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedAdminHomepageRouteImport } from './routes/_authenticated/admin/homepage'
 import { Route as AuthenticatedAdminHealthRouteImport } from './routes/_authenticated/admin/health'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
+import { Route as AuthenticatedAdminAiChatRouteImport } from './routes/_authenticated/admin/ai-chat'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -254,6 +255,12 @@ const AuthenticatedAdminContentRoute =
     path: '/content',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminAiChatRoute =
+  AuthenticatedAdminAiChatRouteImport.update({
+    id: '/ai-chat',
+    path: '/ai-chat',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -280,6 +287,7 @@ export interface FileRoutesByFullPath {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -319,6 +327,7 @@ export interface FileRoutesByTo {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -361,6 +370,7 @@ export interface FileRoutesById {
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
+  '/_authenticated/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/health': typeof AuthenticatedAdminHealthRoute
   '/_authenticated/admin/homepage': typeof AuthenticatedAdminHomepageRoute
@@ -403,6 +413,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/admin/ai-chat'
     | '/admin/content'
     | '/admin/health'
     | '/admin/homepage'
@@ -442,6 +453,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/admin/ai-chat'
     | '/admin/content'
     | '/admin/health'
     | '/admin/homepage'
@@ -483,6 +495,7 @@ export interface FileRouteTypes {
     | '/api/chat'
     | '/category/$slug'
     | '/product/$slug'
+    | '/_authenticated/admin/ai-chat'
     | '/_authenticated/admin/content'
     | '/_authenticated/admin/health'
     | '/_authenticated/admin/homepage'
@@ -802,10 +815,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/ai-chat': {
+      id: '/_authenticated/admin/ai-chat'
+      path: '/ai-chat'
+      fullPath: '/admin/ai-chat'
+      preLoaderRoute: typeof AuthenticatedAdminAiChatRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminAiChatRoute: typeof AuthenticatedAdminAiChatRoute
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminHealthRoute: typeof AuthenticatedAdminHealthRoute
   AuthenticatedAdminHomepageRoute: typeof AuthenticatedAdminHomepageRoute
@@ -822,6 +843,7 @@ interface AuthenticatedAdminRouteChildren {
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminAiChatRoute: AuthenticatedAdminAiChatRoute,
   AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminHealthRoute: AuthenticatedAdminHealthRoute,
   AuthenticatedAdminHomepageRoute: AuthenticatedAdminHomepageRoute,
