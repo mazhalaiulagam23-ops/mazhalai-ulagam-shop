@@ -109,11 +109,18 @@ export const Route = createFileRoute("/api/chat")({
         const gateway = createLovableAiGatewayProvider(apiKey);
         const result = streamText({
           model: gateway("google/gemini-3-flash-preview"),
-          system: `${SUPPORT_SYSTEM_PROMPT}\n\n${buildStoreContext({
-            products: products ?? [],
-            orders: (ordersRes.data ?? []) as never[],
-            customerName,
-          })}`,
+          system: [
+            SUPPORT_SYSTEM_PROMPT,
+            config?.system_prompt?.trim() ? `STORE OWNER INSTRUCTIONS:\n${config.system_prompt}` : "",
+            config?.knowledge_notes?.trim() ? `KNOWLEDGE BASE:\n${config.knowledge_notes}` : "",
+            buildStoreContext({
+              products: products ?? [],
+              orders: (ordersRes.data ?? []) as never[],
+              customerName,
+            }),
+          ]
+            .filter(Boolean)
+            .join("\n\n"),
           messages: await convertToModelMessages(uiMessages),
           onError: ({ error }) => {
             console.error("SUPPORT_AI_ERROR", JSON.stringify(error, Object.getOwnPropertyNames(error as object)).slice(0, 900));
