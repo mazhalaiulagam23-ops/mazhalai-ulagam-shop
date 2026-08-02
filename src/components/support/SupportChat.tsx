@@ -3,7 +3,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
-import { Loader2, RotateCcw } from "lucide-react";
+import { Check, Copy, Loader2, Mic, MicOff, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
 import { toast } from "sonner";
 import {
   Conversation,
@@ -22,18 +22,8 @@ import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
-import logo from "@/assets/logo.png";
-
-const QUICK_REPLIES = [
-  "Shop Products",
-  "Baby Toys",
-  "Books",
-  "Clothing",
-  "Track Order",
-  "Returns",
-  "Offers",
-  "Talk to Support",
-];
+import { useAiChatDisplay } from "@/lib/ai-chat";
+import logoFallback from "@/assets/logo.png";
 
 const HISTORY_KEY = ["support-chat", "history"] as const;
 
@@ -57,12 +47,72 @@ function useSupportHistory(userId: string | undefined) {
   });
 }
 
-export function SupportChat({ compact = false }: { compact?: boolean }) {
+/** Browser speech-to-text, when the browser supports it. */
+function useVoiceInput(onResult: (text: string) => void) {
+  const [listening, setListening] = useState(false);
+  const recognitionRef = useRef<any>(null);
+  const [supported, setSupported] = useState(false);
+
+  useEffect(() => {
+    const w = window as any;
+    const Ctor = w.SpeechRecognition ?? w.webkitSpeechRecognition;
+    if (!Ctor) return;
+    setSupported(true);
+    const rec = new Ctor();
+    rec.lang = "en-IN";
+    rec.interimResults = false;
+    rec.continuous = false;
+    rec.onresult = (e: any) => {
+      const text = e.results?.[0]?.[0]?.transcript as string | undefined;
+      if (text) onResult(text);
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recognitionRef.current = rec;
+    return () => {
+      try {
+        rec.abort();
+      } catch {
+        /* ignore */
+      }
+    };
+  }, [onResult]);
+
+  const toggle = () => {
+    const rec = recognitionRef.current;
+    if (!rec) return;
+    if (listening) {
+      rec.stop();
+      setListening(false);
+      return;
+    }
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      setListening(false);
+    }
+  };
+
+  return { supported, listening, toggle };
+}
+
+export function SupportChat({
+  compact = false,
+  onAssistantMessage,
+}: {
+  compact?: boolean;
+  onAssistantMessage?: () => void;
+}) {
   const { user, loading } = useAuth();
   const qc = useQueryClient();
+  const { settings } = useAiChatDisplay();
   const { data: history, isLoading: historyLoading } = useSupportHistory(user?.id);
   const [ready, setReady] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<Record<string, 1 | -1>>({});
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const avatar = settings.ai_avatar_url || logoFallback;
 
   const transport = useMemo(
     () =>
@@ -73,7 +123,6 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
           const token = data.session?.access_token;
           return token ? { Authorization: `Bearer ${token}` } : {};
         },
-
       }),
     [],
   );
@@ -82,6 +131,7 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
     id: "mazhalai-support",
     transport,
     onError: (err) => toast.error(err.message || "The assistant is unavailable right now."),
+    onFinish: () => onAssistantMessage?.(),
   });
 
   // Restore saved history once it arrives (one ongoing conversation per customer).
@@ -111,8 +161,31 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
     });
   };
 
+  const voice = useVoiceInput((text) => send(text));
+
+  const copy = async (id: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId((c) => (c === id ? null : c)), 1500);
+    } catch {
+      toast.error("Could not copy the message.");
+    }
+  };
+
+  const rate = async (id: string, value: 1 | -1) => {
+    setFeedback((f) => ({ ...f, [id]: value }));
+    if (!user) return;
+    await supabase
+      .from("support_messages")
+      .update({ feedback: value })
+      .eq("user_id", user.id)
+      .eq("client_message_id", id);
+  };
+
   const clearChat = async () => {
     setMessages([]);
+    setFeedback({});
     if (user) {
       const { error: delError } = await supabase
         .from("support_messages")
@@ -123,6 +196,18 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
     }
   };
 
+  if (!settings.is_enabled) {
+    return (
+      <div className="flex h-full items-center justify-center p-6 text-center text-sm text-muted-foreground">
+        Our AI assistant is currently offline. Please{" "}
+        <Link to="/contact" className="mx-1 underline">
+          contact our team
+        </Link>{" "}
+        for help.
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       <Conversation className="min-h-0 flex-1">
@@ -131,13 +216,13 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
             <ConversationEmptyState
               icon={
                 <img
-                  src={logo}
-                  alt="Mazhalai Ulagam assistant"
+                  src={avatar}
+                  alt={settings.ai_name}
                   className="h-14 w-14 rounded-full object-contain"
                 />
               }
-              title="Welcome to Mazhalai Ulagam! 👶💛"
-              description="How can I help you today? Pick an option below or type your question — Tamil is welcome too."
+              title={settings.welcome_title}
+              description={settings.welcome_message}
             />
           ) : null}
 
@@ -147,25 +232,66 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
               .join("")
               .trim();
             if (!text) return null;
+            const mine = m.role === "user";
             return (
-              <Message from={m.role} key={m.id}>
-                <MessageContent
-                  className={
-                    m.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-transparent p-0 text-foreground"
-                  }
-                >
-                  <MessageResponse>{text}</MessageResponse>
-                </MessageContent>
-              </Message>
+              <div key={m.id}>
+                <Message from={m.role}>
+                  <MessageContent
+                    className={
+                      mine
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-transparent p-0 text-foreground"
+                    }
+                  >
+                    <MessageResponse>{text}</MessageResponse>
+                  </MessageContent>
+                </Message>
+                {!mine ? (
+                  <div className="mt-1 flex items-center gap-1 pl-1">
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="Copy response"
+                      className="h-7 w-7 p-0 text-muted-foreground"
+                      onClick={() => void copy(m.id, text)}
+                    >
+                      {copiedId === m.id ? (
+                        <Check className="h-3.5 w-3.5" />
+                      ) : (
+                        <Copy className="h-3.5 w-3.5" />
+                      )}
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="Helpful"
+                      className={`h-7 w-7 p-0 ${feedback[m.id] === 1 ? "text-teal" : "text-muted-foreground"}`}
+                      onClick={() => void rate(m.id, 1)}
+                    >
+                      <ThumbsUp className="h-3.5 w-3.5" />
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      aria-label="Not helpful"
+                      className={`h-7 w-7 p-0 ${feedback[m.id] === -1 ? "text-destructive" : "text-muted-foreground"}`}
+                      onClick={() => void rate(m.id, -1)}
+                    >
+                      <ThumbsDown className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
             );
           })}
 
           {status === "submitted" ? (
             <Message from="assistant">
               <MessageContent className="bg-transparent p-0">
-                <Shimmer>Thinking…</Shimmer>
+                <Shimmer>{settings.ai_name} is typing…</Shimmer>
               </MessageContent>
             </Message>
           ) : null}
@@ -185,7 +311,7 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
 
       {messages.length === 0 ? (
         <div className="flex flex-wrap gap-1.5 px-3 pb-2">
-          {QUICK_REPLIES.map((q) => (
+          {settings.suggested_questions.map((q) => (
             <Button
               key={q}
               size="sm"
@@ -213,21 +339,40 @@ export function SupportChat({ compact = false }: { compact?: boolean }) {
             placeholder="Ask about products, orders, delivery…"
           />
           <PromptInputFooter className="justify-between">
-            <Button
-              type="button"
-              variant="ghost"
-              size="sm"
-              className="h-7 gap-1 px-2 text-[11px] text-muted-foreground"
-              onClick={() => void clearChat()}
-            >
-              <RotateCcw className="h-3 w-3" /> New conversation
-            </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="h-7 gap-1 px-2 text-[11px] text-muted-foreground"
+                onClick={() => void clearChat()}
+              >
+                <RotateCcw className="h-3 w-3" /> Clear chat
+              </Button>
+              {voice.supported ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  aria-label={voice.listening ? "Stop voice input" : "Start voice input"}
+                  className={`h-7 w-7 p-0 ${voice.listening ? "text-primary" : "text-muted-foreground"}`}
+                  onClick={voice.toggle}
+                >
+                  {voice.listening ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}
+                </Button>
+              ) : null}
+            </div>
             <PromptInputSubmit status={status} disabled={busy} />
           </PromptInputFooter>
         </PromptInput>
+        {settings.business_hours_enabled && settings.business_hours_note ? (
+          <p className="mt-2 text-center text-[11px] text-muted-foreground">
+            {settings.business_hours_note}
+          </p>
+        ) : null}
         {!user && !loading ? (
           <p className="mt-2 text-center text-[11px] text-muted-foreground">
-            <Link to="/auth" search={{ redirect: "/support" }} className="underline">
+            <Link to="/auth" search={{ redirect: "/ai-chat" }} className="underline">
               Sign in
             </Link>{" "}
             to save this chat and let us look up your orders.
