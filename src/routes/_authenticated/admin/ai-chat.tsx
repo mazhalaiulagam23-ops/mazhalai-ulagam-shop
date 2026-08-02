@@ -138,9 +138,9 @@ function AdminAiChat() {
       if (dErr) throw dErr;
       const { error: pErr } = await supabase.from("ai_chat_settings").update(priv).eq("id", true);
       if (pErr) throw pErr;
-      await logAdminActivity({ data: { action: "update", entity: "ai_chat_settings" } }).catch(
-        () => undefined,
-      );
+      await logAdminActivity({
+        data: { action: "update", module: "ai_chat", summary: "Updated AI chat settings" },
+      }).catch(() => undefined);
     },
     onSuccess: () => {
       toast.success("AI chat settings saved.");
