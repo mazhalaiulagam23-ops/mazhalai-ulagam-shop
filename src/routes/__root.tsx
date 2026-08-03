@@ -181,6 +181,7 @@ function RootComponent() {
       <ThemeProvider>
       <ShopProvider>
         <BrandHead />
+        <DesignTokens />
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">
