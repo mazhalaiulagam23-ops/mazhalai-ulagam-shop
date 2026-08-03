@@ -1,6 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Activity,
+  Blocks,
+  Palette,
   BarChart3,
   Bot,
   Boxes,
