@@ -50,6 +50,7 @@ import { Route as AuthenticatedAdminHomepageRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminHealthRouteImport } from './routes/_authenticated/admin/health'
 import { Route as AuthenticatedAdminDesignRouteImport } from './routes/_authenticated/admin/design'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
+import { Route as AuthenticatedAdminBuilderRouteImport } from './routes/_authenticated/admin/builder'
 import { Route as AuthenticatedAdminAiChatRouteImport } from './routes/_authenticated/admin/ai-chat'
 
 const WishlistRoute = WishlistRouteImport.update({
@@ -268,6 +269,12 @@ const AuthenticatedAdminContentRoute =
     path: '/content',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminBuilderRoute =
+  AuthenticatedAdminBuilderRouteImport.update({
+    id: '/builder',
+    path: '/builder',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminAiChatRoute =
   AuthenticatedAdminAiChatRouteImport.update({
     id: '/ai-chat',
@@ -302,6 +309,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
+  '/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/design': typeof AuthenticatedAdminDesignRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
@@ -344,6 +352,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
+  '/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/design': typeof AuthenticatedAdminDesignRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
@@ -389,6 +398,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/product/$slug': typeof ProductSlugRoute
   '/_authenticated/admin/ai-chat': typeof AuthenticatedAdminAiChatRoute
+  '/_authenticated/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/design': typeof AuthenticatedAdminDesignRoute
   '/_authenticated/admin/health': typeof AuthenticatedAdminHealthRoute
@@ -434,6 +444,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/ai-chat'
+    | '/admin/builder'
     | '/admin/content'
     | '/admin/design'
     | '/admin/health'
@@ -476,6 +487,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$slug'
     | '/admin/ai-chat'
+    | '/admin/builder'
     | '/admin/content'
     | '/admin/design'
     | '/admin/health'
@@ -520,6 +532,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/product/$slug'
     | '/_authenticated/admin/ai-chat'
+    | '/_authenticated/admin/builder'
     | '/_authenticated/admin/content'
     | '/_authenticated/admin/design'
     | '/_authenticated/admin/health'
@@ -855,6 +868,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminContentRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/builder': {
+      id: '/_authenticated/admin/builder'
+      path: '/builder'
+      fullPath: '/admin/builder'
+      preLoaderRoute: typeof AuthenticatedAdminBuilderRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/ai-chat': {
       id: '/_authenticated/admin/ai-chat'
       path: '/ai-chat'
@@ -867,6 +887,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminAiChatRoute: typeof AuthenticatedAdminAiChatRoute
+  AuthenticatedAdminBuilderRoute: typeof AuthenticatedAdminBuilderRoute
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminDesignRoute: typeof AuthenticatedAdminDesignRoute
   AuthenticatedAdminHealthRoute: typeof AuthenticatedAdminHealthRoute
@@ -885,6 +906,7 @@ interface AuthenticatedAdminRouteChildren {
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminAiChatRoute: AuthenticatedAdminAiChatRoute,
+  AuthenticatedAdminBuilderRoute: AuthenticatedAdminBuilderRoute,
   AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminDesignRoute: AuthenticatedAdminDesignRoute,
   AuthenticatedAdminHealthRoute: AuthenticatedAdminHealthRoute,
