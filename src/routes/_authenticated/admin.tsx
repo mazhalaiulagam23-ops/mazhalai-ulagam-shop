@@ -1,29 +1,14 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import {
-  Activity,
-  Bot,
-  BarChart3,
-  Boxes,
-  CreditCard,
-  FileText,
-  LayoutTemplate,
-  LogOut,
-  Menu,
-  ScrollText,
-  Settings,
-  Share2,
-  Shield,
-  ShoppingCart,
-  Store,
-  UserCog,
-} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { AdminSidebar, ADMIN_NAV } from "@/components/admin/AdminSidebar";
+import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { checkAdminAccess, verify2faCode } from "@/lib/security.functions";
 import { useAuth } from "@/lib/auth";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -39,28 +24,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const links = [
-  { to: "/admin", label: "Dashboard", icon: BarChart3 },
-  { to: "/admin/products", label: "Products", icon: Boxes },
-  { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
-  { to: "/admin/payments", label: "Payments", icon: CreditCard },
-
-  { to: "/admin/homepage", label: "Homepage", icon: LayoutTemplate },
-  { to: "/admin/navigation", label: "Navigation", icon: Menu },
-  { to: "/admin/social", label: "Social & QR", icon: Share2 },
-  { to: "/admin/ai-chat", label: "AI Chat", icon: Bot },
-  { to: "/admin/content", label: "Content", icon: FileText },
-  { to: "/admin/settings", label: "Site settings", icon: Settings },
-
-  { to: "/admin/team", label: "Team & roles", icon: UserCog },
-  { to: "/admin/security", label: "Security", icon: Shield },
-  { to: "/admin/logs", label: "Audit logs", icon: ScrollText },
-  { to: "/admin/health", label: "Health", icon: Activity },
-] as const;
-
-
-
 const TWOFA_SESSION_KEY = "mu-admin-2fa-ok";
+
 
 function AdminLayout() {
   const { isStaff, loading, signOut, user } = useAuth();
