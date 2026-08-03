@@ -21,6 +21,7 @@ import { SupportChatWidget } from "@/components/support/SupportChatWidget";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { SessionGuard } from "@/components/site/SessionGuard";
 import { ErrorReporter } from "@/components/site/ErrorReporter";
+import { DesignTokens } from "@/components/site/DesignTokens";
 
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
