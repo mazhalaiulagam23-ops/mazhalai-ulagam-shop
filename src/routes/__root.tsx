@@ -21,6 +21,7 @@ import { SupportChatWidget } from "@/components/support/SupportChatWidget";
 import { CookieConsent } from "@/components/site/CookieConsent";
 import { SessionGuard } from "@/components/site/SessionGuard";
 import { ErrorReporter } from "@/components/site/ErrorReporter";
+import { DesignTokens } from "@/components/site/DesignTokens";
 
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
@@ -181,6 +182,7 @@ function RootComponent() {
       <ThemeProvider>
       <ShopProvider>
         <BrandHead />
+        <DesignTokens />
         <div className="flex min-h-screen flex-col">
           <Header />
           <main className="flex-1">

@@ -1268,6 +1268,69 @@ export type Database = {
         }
         Relationships: []
       }
+      theme_settings: {
+        Row: {
+          accent_color: string
+          animations_enabled: boolean
+          background_color: string
+          base_radius: number
+          body_font: string
+          button_style: string
+          container_width: number
+          created_at: string
+          custom_css: string
+          dark_mode_enabled: boolean
+          foreground_color: string
+          heading_font: string
+          id: boolean
+          preset: string
+          primary_color: string
+          secondary_color: string
+          shadow_style: string
+          updated_at: string
+        }
+        Insert: {
+          accent_color?: string
+          animations_enabled?: boolean
+          background_color?: string
+          base_radius?: number
+          body_font?: string
+          button_style?: string
+          container_width?: number
+          created_at?: string
+          custom_css?: string
+          dark_mode_enabled?: boolean
+          foreground_color?: string
+          heading_font?: string
+          id?: boolean
+          preset?: string
+          primary_color?: string
+          secondary_color?: string
+          shadow_style?: string
+          updated_at?: string
+        }
+        Update: {
+          accent_color?: string
+          animations_enabled?: boolean
+          background_color?: string
+          base_radius?: number
+          body_font?: string
+          button_style?: string
+          container_width?: number
+          created_at?: string
+          custom_css?: string
+          dark_mode_enabled?: boolean
+          foreground_color?: string
+          heading_font?: string
+          id?: boolean
+          preset?: string
+          primary_color?: string
+          secondary_color?: string
+          shadow_style?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_2fa: {
         Row: {
           confirmed_at: string | null

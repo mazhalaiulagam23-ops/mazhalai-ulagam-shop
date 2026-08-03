@@ -1,6 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   Activity,
+  Blocks,
+  Palette,
   BarChart3,
   Bot,
   Boxes,
@@ -52,6 +54,8 @@ export const ADMIN_NAV: AdminNavGroup[] = [
   {
     label: "Storefront",
     items: [
+      { to: "/admin/builder", label: "Page builder", icon: Blocks, keywords: "drag drop sections layout live preview" },
+      { to: "/admin/design", label: "Design studio", icon: Palette, keywords: "theme colors fonts radius branding" },
       { to: "/admin/homepage", label: "Homepage", icon: LayoutTemplate, keywords: "hero banners sections" },
       { to: "/admin/navigation", label: "Navigation", icon: Menu, keywords: "menu links mega menu" },
       { to: "/admin/social", label: "Social & QR", icon: Share2, keywords: "instagram whatsapp qr" },
