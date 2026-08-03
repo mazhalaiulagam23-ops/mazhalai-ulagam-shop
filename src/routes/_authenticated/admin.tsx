@@ -129,41 +129,41 @@ function AdminLayout() {
       </div>
     );
   }
-
+  const current = ADMIN_NAV.flatMap((g) => g.items.map((i) => ({ ...i, group: g.label }))).find(
+    (i) => i.to === pathname,
+  );
 
   return (
-    <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">
-      <aside className="surface-card h-fit p-3">
-        <p className="px-3 pb-2 pt-1 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground">
-          Store Admin
-        </p>
-        <nav className="space-y-1">
-          {links.map(({ to, label, icon: Icon }) => (
-            <Link
-              key={to}
-              to={to}
-              className={cn(
-                "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors",
-                pathname === to ? "bg-primary text-primary-foreground" : "hover:bg-secondary",
-              )}
-            >
-              <Icon className="h-4 w-4" /> {label}
-            </Link>
-          ))}
-          <Link to="/" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold hover:bg-secondary">
-            <Store className="h-4 w-4" /> View storefront
-          </Link>
-          <button
-            onClick={() => void signOut()}
-            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-destructive hover:bg-secondary"
-          >
-            <LogOut className="h-4 w-4" /> Sign out
-          </button>
-        </nav>
-      </aside>
-      <section className="min-w-0">
-        <Outlet />
-      </section>
-    </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-muted/30">
+        <AdminSidebar onSignOut={() => void signOut()} />
+        <SidebarInset className="min-w-0">
+          <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-border/70 bg-background/85 px-4 backdrop-blur">
+            <SidebarTrigger />
+            <Separator orientation="vertical" className="h-5" />
+            <nav className="hidden items-center gap-1.5 text-sm text-muted-foreground sm:flex">
+              <Link to="/admin" className="hover:text-foreground">
+                Admin
+              </Link>
+              {current && current.to !== "/admin" ? (
+                <>
+                  <span>/</span>
+                  <span className="text-muted-foreground/80">{current.group}</span>
+                  <span>/</span>
+                  <span className="font-semibold text-foreground">{current.label}</span>
+                </>
+              ) : null}
+            </nav>
+            <div className="ml-auto flex items-center gap-2">
+              <AdminCommandPalette />
+            </div>
+          </header>
+          <main className="min-w-0 flex-1 p-4 md:p-6">
+            <Outlet />
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
+
 }
