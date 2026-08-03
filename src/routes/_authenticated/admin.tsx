@@ -1,29 +1,14 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import {
-  Activity,
-  Bot,
-  BarChart3,
-  Boxes,
-  CreditCard,
-  FileText,
-  LayoutTemplate,
-  LogOut,
-  Menu,
-  ScrollText,
-  Settings,
-  Share2,
-  Shield,
-  ShoppingCart,
-  Store,
-  UserCog,
-} from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Separator } from "@/components/ui/separator";
+import { AdminSidebar, ADMIN_NAV } from "@/components/admin/AdminSidebar";
+import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { checkAdminAccess, verify2faCode } from "@/lib/security.functions";
 import { useAuth } from "@/lib/auth";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -39,28 +24,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminLayout,
 });
 
-const links = [
-  { to: "/admin", label: "Dashboard", icon: BarChart3 },
-  { to: "/admin/products", label: "Products", icon: Boxes },
-  { to: "/admin/orders", label: "Orders", icon: ShoppingCart },
-  { to: "/admin/payments", label: "Payments", icon: CreditCard },
-
-  { to: "/admin/homepage", label: "Homepage", icon: LayoutTemplate },
-  { to: "/admin/navigation", label: "Navigation", icon: Menu },
-  { to: "/admin/social", label: "Social & QR", icon: Share2 },
-  { to: "/admin/ai-chat", label: "AI Chat", icon: Bot },
-  { to: "/admin/content", label: "Content", icon: FileText },
-  { to: "/admin/settings", label: "Site settings", icon: Settings },
-
-  { to: "/admin/team", label: "Team & roles", icon: UserCog },
-  { to: "/admin/security", label: "Security", icon: Shield },
-  { to: "/admin/logs", label: "Audit logs", icon: ScrollText },
-  { to: "/admin/health", label: "Health", icon: Activity },
-] as const;
-
-
-
 const TWOFA_SESSION_KEY = "mu-admin-2fa-ok";
+
 
 function AdminLayout() {
   const { isStaff, loading, signOut, user } = useAuth();
@@ -164,41 +129,41 @@ function AdminLayout() {
       </div>
     );
   }
-
+  const current = ADMIN_NAV.flatMap((g) => g.items.map((i) => ({ ...i, group: g.label }))).find(
+    (i) => i.to === pathname,
+  );
 
   return (
-    <div className="container-page grid gap-6 py-8 lg:grid-cols-[220px_1fr]">
-      <aside className="surface-card h-fit p-3">
-        <p className="px-3 pb-2 pt-1 font-display text-sm font-bold uppercase tracking-wide text-muted-foreground">
-          Store Admin
-        </p>
-        <nav className="space-y-1">
-          {links.map(({ to, label, icon: Icon }) => (
-            <Link
-              key={to}
-              to={to}
-              className={cn(
-                "flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition-colors",
-                pathname === to ? "bg-primary text-primary-foreground" : "hover:bg-secondary",
-              )}
-            >
-              <Icon className="h-4 w-4" /> {label}
-            </Link>
-          ))}
-          <Link to="/" className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold hover:bg-secondary">
-            <Store className="h-4 w-4" /> View storefront
-          </Link>
-          <button
-            onClick={() => void signOut()}
-            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold text-destructive hover:bg-secondary"
-          >
-            <LogOut className="h-4 w-4" /> Sign out
-          </button>
-        </nav>
-      </aside>
-      <section className="min-w-0">
-        <Outlet />
-      </section>
-    </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-muted/30">
+        <AdminSidebar onSignOut={() => void signOut()} />
+        <SidebarInset className="min-w-0">
+          <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-border/70 bg-background/85 px-4 backdrop-blur">
+            <SidebarTrigger />
+            <Separator orientation="vertical" className="h-5" />
+            <nav className="hidden items-center gap-1.5 text-sm text-muted-foreground sm:flex">
+              <Link to="/admin" className="hover:text-foreground">
+                Admin
+              </Link>
+              {current && current.to !== "/admin" ? (
+                <>
+                  <span>/</span>
+                  <span className="text-muted-foreground/80">{current.group}</span>
+                  <span>/</span>
+                  <span className="font-semibold text-foreground">{current.label}</span>
+                </>
+              ) : null}
+            </nav>
+            <div className="ml-auto flex items-center gap-2">
+              <AdminCommandPalette />
+            </div>
+          </header>
+          <main className="min-w-0 flex-1 p-4 md:p-6">
+            <Outlet />
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
+
 }
