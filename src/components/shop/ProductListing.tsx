@@ -85,14 +85,14 @@ export function ProductListing({
     setPage(1);
   };
 
-  const filters = (
+  const filters = (idPrefix: string) => (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="filter-search" className="text-sm font-bold">
+        <Label htmlFor={`${idPrefix}-filter-search`} className="text-sm font-bold">
           Search
         </Label>
         <Input
-          id="filter-search"
+          id={`${idPrefix}-filter-search`}
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -109,8 +109,8 @@ export function ProductListing({
           <div className="mt-2 space-y-1">
             {categories.map((c) => (
               <div key={c.slug} className="flex min-h-11 items-center gap-2">
-                <Checkbox id={`cat-${c.slug}`} checked={cats.includes(c.slug)} onCheckedChange={() => toggle(cats, setCats, c.slug)} />
-                <Label htmlFor={`cat-${c.slug}`} className="flex min-h-11 flex-1 items-center text-sm font-normal">{c.name}</Label>
+                <Checkbox id={`${idPrefix}-cat-${c.slug}`} checked={cats.includes(c.slug)} onCheckedChange={() => toggle(cats, setCats, c.slug)} />
+                <Label htmlFor={`${idPrefix}-cat-${c.slug}`} className="flex min-h-11 flex-1 items-center text-sm font-normal">{c.name}</Label>
               </div>
             ))}
           </div>
@@ -122,8 +122,8 @@ export function ProductListing({
         <div className="mt-2 space-y-1">
           {ageGroups.map((a) => (
             <div key={a} className="flex min-h-11 items-center gap-2">
-              <Checkbox id={`age-${a}`} checked={ages.includes(a)} onCheckedChange={() => toggle(ages, setAges, a)} />
-              <Label htmlFor={`age-${a}`} className="flex min-h-11 flex-1 items-center text-sm font-normal">{a}</Label>
+              <Checkbox id={`${idPrefix}-age-${a}`} checked={ages.includes(a)} onCheckedChange={() => toggle(ages, setAges, a)} />
+              <Label htmlFor={`${idPrefix}-age-${a}`} className="flex min-h-11 flex-1 items-center text-sm font-normal">{a}</Label>
             </div>
           ))}
         </div>
@@ -140,7 +140,7 @@ export function ProductListing({
 
   return (
     <div className="grid gap-8 lg:grid-cols-[260px_1fr]">
-      <aside className="surface-card hidden h-fit p-5 lg:block">{filters}</aside>
+      <aside className="surface-card hidden h-fit p-5 lg:block">{filters("desktop")}</aside>
 
       <div>
         <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">
@@ -156,7 +156,7 @@ export function ProductListing({
               </SheetTrigger>
               <SheetContent side="left" className="w-[min(88vw,340px)] overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
                 <SheetHeader><SheetTitle>Filters</SheetTitle></SheetHeader>
-                <div className="mt-6">{filters}</div>
+                <div className="mt-6">{filters("mobile")}</div>
               </SheetContent>
             </Sheet>
             <Label htmlFor="sort" className="hidden text-sm sm:block">

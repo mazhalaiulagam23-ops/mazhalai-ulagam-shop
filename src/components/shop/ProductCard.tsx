@@ -80,7 +80,7 @@ export function ProductCard({ product }: { product: Product }) {
       </div>
 
       <div className="absolute right-2 top-2 z-10 flex flex-col gap-1.5 sm:right-3 sm:top-3 sm:gap-2 sm:translate-x-2 sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-x-0 sm:group-hover:opacity-100">
-        <div className="hidden sm:block"><IconAction
+        <IconAction
           label={wished ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
           active={wished}
           onClick={() => {
@@ -90,6 +90,7 @@ export function ProductCard({ product }: { product: Product }) {
         >
           <Heart className={cn("h-4 w-4", wished && "fill-current")} />
         </IconAction>
+        <div className="hidden sm:block">
         <IconAction
           label={`Compare ${product.name}`}
           active={compared}
@@ -100,10 +101,13 @@ export function ProductCard({ product }: { product: Product }) {
           }}
         >
           <Scale className="h-4 w-4" />
-        </IconAction></div>
-        <div className="hidden sm:block"><IconAction label={`Quick view ${product.name}`} onClick={() => setQuickView(true)}>
+        </IconAction>
+        </div>
+        <div className="hidden sm:block">
+          <IconAction label={`Quick view ${product.name}`} onClick={() => setQuickView(true)}>
           <Eye className="h-4 w-4" />
-        </IconAction></div>
+          </IconAction>
+        </div>
       </div>
 
       <Link
