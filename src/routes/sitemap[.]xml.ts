@@ -65,7 +65,8 @@ export const Route = createFileRoute("/sitemap.xml")({
             .range(offset, offset + pageSize - 1);
           if (error) throw error;
           for (const p of data ?? []) {
-            if (!productSlugs.has(p.slug)) productSlugs.add(p.slug);
+            if (productSlugs.has(p.slug)) continue;
+            productSlugs.add(p.slug);
             entries.push({
               path: `/product/${encodeURIComponent(p.slug)}`,
               lastmod: p.updated_at ?? undefined,
