@@ -179,6 +179,12 @@ function SmartSearch({ id, onDone }: { id: string; onDone?: () => void }) {
               setOpen(true);
             }}
             onFocus={() => setOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                setOpen(false);
+                (e.target as HTMLInputElement).blur();
+              }
+            }}
             placeholder="Search toys, books, clothing and more…"
             className="min-w-0 flex-1 bg-transparent py-1.5 text-sm outline-none placeholder:text-muted-foreground"
           />
