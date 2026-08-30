@@ -93,15 +93,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { title: "Mazhalai Ulagam | Baby Products & Return Gifts, Coimbatore" },
+      { title: "MazhalaiHub – Baby & Kids Online Store" },
       {
         name: "description",
         content:
-          "Shop baby products, return gifts, toys, educational toys, baby gear, kids fashion, organic baby care and stationery in Coimbatore. Pan-India delivery.",
+          "MazhalaiHub is Coimbatore's trusted online store for baby & kids products — safe toys, educational toys, baby care, kids fashion, stationery and return gifts at honest prices with fast pan-India delivery.",
       },
-      { name: "author", content: "Mazhalai Ulagam" },
-      { property: "og:site_name", content: "Mazhalai Ulagam" },
+      {
+        name: "keywords",
+        content:
+          "baby products online, kids store India, baby toys, educational toys, kids fashion, baby care, return gifts, stationery, MazhalaiHub, Coimbatore baby store",
+      },
+      { name: "author", content: "MazhalaiHub" },
+      { property: "og:site_name", content: "MazhalaiHub" },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -112,16 +118,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],
     scripts: [
       {
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Store",
-          name: "Mazhalai Ulagam",
-          description: "Baby products, return gifts, toys and kids essentials store in Coimbatore.",
+          "@type": "OnlineStore",
+          name: "MazhalaiHub",
+          alternateName: "Mazhalai Ulagam",
+          url: "https://mazhalaihub.com/",
+          logo: "https://mazhalaihub.com/logo.png",
+          image: "https://mazhalaihub.com/og-cover.jpg",
+          description:
+            "Online store for baby & kids products — toys, educational toys, baby care, kids fashion, stationery and return gifts, shipping across India from Coimbatore.",
           telephone: "+91 97867 97970",
           email: "info@mazhalaiulagam.com",
           address: {
@@ -131,6 +142,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             addressCountry: "IN",
           },
           openingHours: "Mo-Sa 09:30-20:00",
+          priceRange: "₹₹",
         }),
       },
     ],

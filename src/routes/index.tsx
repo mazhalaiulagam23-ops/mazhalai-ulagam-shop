@@ -23,20 +23,30 @@ import hero3 from "@/assets/hero-3.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mazhalai Ulagam | Baby Products & Return Gifts in Coimbatore" },
+      { title: "MazhalaiHub – Baby & Kids Online Store" },
       {
         name: "description",
         content:
-          "Baby products, return gifts, toys, educational toys, baby gear, kids fashion, organic baby care and stationery. Premium quality, wholesale rates, pan-India delivery from Coimbatore.",
+          "Shop safe, premium baby & kids products online at MazhalaiHub — toys, educational toys, baby care, kids fashion, stationery and return gifts with pan-India delivery from Coimbatore.",
       },
-      { property: "og:title", content: "Mazhalai Ulagam | Baby Products & Return Gifts in Coimbatore" },
+      {
+        name: "keywords",
+        content:
+          "baby products online, kids toys, educational toys, baby care, kids fashion, return gifts, MazhalaiHub",
+      },
+      { property: "og:title", content: "MazhalaiHub – Baby & Kids Online Store" },
       {
         property: "og:description",
-        content: "Cute, safe and premium products for your little ones. Wholesale available. Fast delivery.",
+        content:
+          "Cute, safe and premium baby & kids products — toys, fashion, care and return gifts. Fast pan-India delivery.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/" },
+      { property: "og:image", content: "https://mazhalaihub.com/og-cover.jpg" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: "https://mazhalaihub.com/og-cover.jpg" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/" }],
   }),
   component: Home,
 });
