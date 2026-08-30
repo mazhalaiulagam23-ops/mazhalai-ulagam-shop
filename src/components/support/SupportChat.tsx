@@ -253,7 +253,7 @@ export function SupportChat({
                       size="sm"
                       variant="ghost"
                       aria-label="Copy response"
-                      className="h-7 w-7 p-0 text-muted-foreground"
+                       className="h-11 w-11 p-0 text-muted-foreground sm:h-7 sm:w-7"
                       onClick={() => void copy(m.id, text)}
                     >
                       {copiedId === m.id ? (
@@ -267,7 +267,7 @@ export function SupportChat({
                       size="sm"
                       variant="ghost"
                       aria-label="Helpful"
-                      className={`h-7 w-7 p-0 ${feedback[m.id] === 1 ? "text-teal" : "text-muted-foreground"}`}
+                       className={`h-11 w-11 p-0 sm:h-7 sm:w-7 ${feedback[m.id] === 1 ? "text-teal" : "text-muted-foreground"}`}
                       onClick={() => void rate(m.id, 1)}
                     >
                       <ThumbsUp className="h-3.5 w-3.5" />
@@ -277,7 +277,7 @@ export function SupportChat({
                       size="sm"
                       variant="ghost"
                       aria-label="Not helpful"
-                      className={`h-7 w-7 p-0 ${feedback[m.id] === -1 ? "text-destructive" : "text-muted-foreground"}`}
+                       className={`h-11 w-11 p-0 sm:h-7 sm:w-7 ${feedback[m.id] === -1 ? "text-destructive" : "text-muted-foreground"}`}
                       onClick={() => void rate(m.id, -1)}
                     >
                       <ThumbsDown className="h-3.5 w-3.5" />
@@ -316,7 +316,7 @@ export function SupportChat({
               key={q}
               size="sm"
               variant="soft"
-              className="h-7 px-3 text-[11px]"
+               className="min-h-11 whitespace-normal px-3 py-2 text-[11px] sm:h-7 sm:min-h-0 sm:whitespace-nowrap sm:py-0"
               onClick={() => send(q)}
             >
               {q}
@@ -344,7 +344,7 @@ export function SupportChat({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-7 gap-1 px-2 text-[11px] text-muted-foreground"
+                   className="min-h-11 gap-1 px-2 text-[11px] text-muted-foreground sm:h-7 sm:min-h-0"
                 onClick={() => void clearChat()}
               >
                 <RotateCcw className="h-3 w-3" /> Clear chat
@@ -355,7 +355,7 @@ export function SupportChat({
                   variant="ghost"
                   size="sm"
                   aria-label={voice.listening ? "Stop voice input" : "Start voice input"}
-                  className={`h-7 w-7 p-0 ${voice.listening ? "text-primary" : "text-muted-foreground"}`}
+                   className={`h-11 w-11 p-0 sm:h-7 sm:w-7 ${voice.listening ? "text-primary" : "text-muted-foreground"}`}
                   onClick={voice.toggle}
                 >
                   {voice.listening ? <MicOff className="h-3.5 w-3.5" /> : <Mic className="h-3.5 w-3.5" />}

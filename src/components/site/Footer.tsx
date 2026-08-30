@@ -72,7 +72,7 @@ export function Footer() {
               <p className="text-sm opacity-90">Get offers, new arrivals and parenting tips.</p>
             </div>
           </div>
-          <form onSubmit={subscribe} className="flex w-full max-w-md gap-2">
+          <form onSubmit={subscribe} className="grid w-full max-w-md gap-2 min-[390px]:grid-cols-[minmax(0,1fr)_auto]">
             <label htmlFor="newsletter-email" className="sr-only">
               Email address
             </label>
@@ -84,7 +84,7 @@ export function Footer() {
               placeholder="Enter your email address"
               className="bg-card text-foreground"
             />
-            <Button type="submit" variant="teal">
+            <Button type="submit" variant="teal" className="w-full min-[390px]:w-auto">
               Subscribe
             </Button>
           </form>

@@ -104,24 +104,24 @@ function ProductPage() {
         ]}
       />
 
-      <div className="container-page grid gap-10 py-10 lg:grid-cols-2">
+      <div className="container-page grid gap-7 py-7 sm:gap-10 sm:py-10 lg:grid-cols-2">
         <div>
           <img
             src={product.images[active]}
             alt={product.name}
             width={800}
             height={800}
-            className="aspect-square w-full rounded-3xl border border-border object-cover"
+            className="aspect-square w-full rounded-2xl border border-border object-cover sm:rounded-3xl"
           />
-          <div className="mt-3 flex gap-3">
+          <div className="mt-3 flex max-w-full gap-2 overflow-x-auto pb-2 sm:gap-3">
             {product.images.map((img, i) => (
               <button
                 key={img}
                 onClick={() => setActive(i)}
                 aria-label={`View image ${i + 1} of ${product.name}`}
-                className={`overflow-hidden rounded-xl border-2 ${i === active ? "border-primary" : "border-border"}`}
+                className={`h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 sm:h-20 sm:w-20 ${i === active ? "border-primary" : "border-border"}`}
               >
-                <img src={img} alt="" loading="lazy" width={100} height={100} className="h-20 w-20 object-cover" />
+                <img src={img} alt="" loading="lazy" width={100} height={100} className="h-full w-full object-cover" />
               </button>
             ))}
           </div>
@@ -150,12 +150,12 @@ function ProductPage() {
             )}
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3">
+          <div className="mt-6 grid grid-cols-[auto_1fr_auto] items-center gap-2 sm:flex sm:flex-wrap sm:gap-3">
             <div className="flex items-center rounded-full border border-border">
               <button
                 onClick={() => setQty((q) => Math.max(1, q - 1))}
                 aria-label="Decrease quantity"
-                className="p-2.5 hover:text-primary"
+                className="flex h-11 w-11 items-center justify-center hover:text-primary"
               >
                 <Minus className="h-4 w-4" />
               </button>
@@ -163,13 +163,14 @@ function ProductPage() {
               <button
                 onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
                 aria-label="Increase quantity"
-                className="p-2.5 hover:text-primary"
+                className="flex h-11 w-11 items-center justify-center hover:text-primary"
               >
                 <Plus className="h-4 w-4" />
               </button>
             </div>
             <Button
               size="lg"
+              className="min-w-0 px-4"
               disabled={product.stock === 0}
               onClick={() => {
                 addToCart(product.slug, qty);
@@ -178,7 +179,7 @@ function ProductPage() {
             >
               Add to Cart
             </Button>
-            <Button variant="hero" size="lg" disabled={product.stock === 0} asChild>
+            <Button variant="hero" size="lg" className="col-span-3 w-full sm:col-auto sm:w-auto" disabled={product.stock === 0} asChild>
               <Link to="/checkout" onClick={() => addToCart(product.slug, qty)}>
                 Buy Now
               </Link>
@@ -186,6 +187,7 @@ function ProductPage() {
             <Button
               variant="outline"
               size="icon"
+              className="h-11 w-11"
               aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
               onClick={() => {
                 toggleWishlist(product.slug);
@@ -212,16 +214,18 @@ function ProductPage() {
 
       <div className="container-page">
         <Tabs defaultValue="description">
-          <TabsList className="flex-wrap">
-            <TabsTrigger value="description">Description</TabsTrigger>
-            <TabsTrigger value="specs">Specifications</TabsTrigger>
-            <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews ({product.reviews})</TabsTrigger>
-          </TabsList>
-          <TabsContent value="description" className="surface-card mt-4 p-6 text-sm text-muted-foreground">
+          <div className="max-w-full overflow-x-auto pb-1">
+            <TabsList className="w-max">
+              <TabsTrigger value="description">Description</TabsTrigger>
+              <TabsTrigger value="specs">Specifications</TabsTrigger>
+              <TabsTrigger value="shipping">Shipping & Returns</TabsTrigger>
+              <TabsTrigger value="reviews">Reviews ({product.reviews})</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent value="description" className="surface-card mt-4 p-4 text-sm text-muted-foreground sm:p-6">
             {product.description}
           </TabsContent>
-          <TabsContent value="specs" className="surface-card mt-4 p-6">
+          <TabsContent value="specs" className="surface-card mt-4 p-4 sm:p-6">
             <dl className="grid gap-3 sm:grid-cols-2">
               {product.specs.map((s) => (
                 <div key={s.label} className="flex justify-between gap-4 border-b border-border pb-2 text-sm">
@@ -231,12 +235,12 @@ function ProductPage() {
               ))}
             </dl>
           </TabsContent>
-          <TabsContent value="shipping" className="surface-card mt-4 space-y-3 p-6 text-sm text-muted-foreground">
+          <TabsContent value="shipping" className="surface-card mt-4 space-y-3 p-4 text-sm text-muted-foreground sm:p-6">
             <p>Dispatched from Coimbatore within 24 hours on working days. Free shipping on orders above ₹999.</p>
             <p>Metro cities: 2-4 working days. Other pincodes: 4-7 working days. Tracking shared over SMS and email.</p>
             <p>Returns accepted within 7 days of delivery for unused products in original packaging. Personalised items are non-returnable unless damaged.</p>
           </TabsContent>
-          <TabsContent value="reviews" className="surface-card mt-4 space-y-4 p-6">
+          <TabsContent value="reviews" className="surface-card mt-4 space-y-4 p-4 sm:p-6">
             {reviewsSample.map((r) => (
               <div key={r.name} className="border-b border-border pb-4 last:border-0">
                 <div className="flex items-center gap-2">
@@ -253,7 +257,7 @@ function ProductPage() {
       {related.length > 0 && (
         <section className="container-page mt-14">
           <h2 className="mb-6 font-display text-2xl font-bold">Related Products</h2>
-          <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 min-[390px]:gap-3 sm:gap-5 lg:grid-cols-4">
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}

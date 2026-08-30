@@ -32,7 +32,7 @@ function SupportPage() {
         crumbs={[{ label: "Support" }]}
       />
       <div className="container-page py-8">
-        <div className="mx-auto flex h-[70vh] max-w-3xl flex-col overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-soft)]">
+        <div className="mx-auto flex h-[calc(100dvh-17rem)] min-h-[420px] max-w-3xl flex-col overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-soft)] sm:h-[70vh]">
           <SupportChat />
         </div>
       </div>

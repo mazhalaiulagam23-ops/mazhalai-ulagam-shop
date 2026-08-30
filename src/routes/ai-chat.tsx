@@ -31,8 +31,8 @@ function AiChatPage() {
         subtitle="Ask our assistant about products, age-wise toy picks, gifts by budget, orders, delivery, returns or offers — in English or Tamil."
         crumbs={[{ label: "AI Chat" }]}
       />
-      <div className="container-page py-8">
-        <div className="mx-auto flex h-[72vh] max-w-3xl flex-col overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-soft)]">
+      <div className="container-page py-4 sm:py-8">
+        <div className="mx-auto flex h-[calc(100dvh-17rem)] min-h-[420px] max-w-3xl flex-col overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-soft)] sm:h-[72vh]">
           <SupportChat />
         </div>
       </div>

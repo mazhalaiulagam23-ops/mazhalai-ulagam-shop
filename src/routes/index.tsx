@@ -63,7 +63,7 @@ function Countdown() {
   ];
   return (
     <div className="flex items-center gap-2" aria-label="Offer ends in">
-      <span className="text-xs font-semibold uppercase text-muted-foreground">Offer ends in</span>
+      <span className="text-[10px] font-semibold uppercase text-muted-foreground sm:text-xs">Offer ends in</span>
       {parts.map((p) => (
         <span key={p.label} className="rounded-lg bg-card px-2 py-1 text-center shadow-[var(--shadow-soft)]">
           <span className="block text-sm font-bold tabular-nums text-primary">
@@ -124,30 +124,30 @@ function HeroCarousel() {
         className="pointer-events-none absolute bottom-16 left-[42%] h-20 w-20 rounded-full bg-primary/10 animate-float-slow"
       />
 
-      <div className="container-page relative grid items-center gap-10 py-14 lg:grid-cols-[1.05fr_1fr] lg:py-24">
+      <div className="container-page relative grid items-center gap-8 py-10 sm:gap-10 sm:py-14 lg:grid-cols-[1.05fr_1fr] lg:py-24">
         <div className="animate-rise">
           <p className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-gold" /> {s.eyebrow || "Premium quality · Safe & non-toxic"}
           </p>
-          <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+          <h1 className="mt-5 font-display text-3xl font-semibold leading-[1.08] tracking-tight min-[390px]:text-4xl sm:text-6xl">
             {s.title}
           </h1>
           <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground">{s.subtitle}</p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
-            <Button size="lg" asChild>
+           <div className="mt-7 grid gap-3 min-[390px]:grid-cols-2 sm:flex sm:flex-wrap sm:items-center">
+             <Button size="lg" className="w-full px-5 sm:w-auto sm:px-8" asChild>
               <a href={s.href}>
                 {s.cta || "Shop Now"} <ArrowRight className="h-4 w-4" />
               </a>
             </Button>
-            <Button variant="outline" size="lg" asChild>
+             <Button variant="outline" size="lg" className="w-full px-5 sm:w-auto sm:px-8" asChild>
               <Link to="/ai-chat">
                 <Sparkles className="h-4 w-4 text-gold" /> Talk to AI Assistant
               </Link>
             </Button>
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-semibold text-muted-foreground">
+          <div className="mt-7 grid grid-cols-2 gap-x-3 gap-y-3 text-[11px] font-semibold text-muted-foreground sm:flex sm:flex-wrap sm:gap-x-6 sm:text-xs">
             <span className="inline-flex items-center gap-1.5">
               <ShieldCheck className="h-4 w-4 text-primary" /> 100% Safe
             </span>
@@ -167,7 +167,7 @@ function HeroCarousel() {
         </div>
 
         <div className="relative">
-          <div className="overflow-hidden rounded-[2rem] border border-border/60 shadow-[var(--shadow-lift)]">
+           <div className="overflow-hidden rounded-2xl border border-border/60 shadow-[var(--shadow-lift)] sm:rounded-[2rem]">
             <img
               src={s.image}
               alt="Happy baby with soft toys from Mazhalai Ulagam"
@@ -177,11 +177,11 @@ function HeroCarousel() {
               className="aspect-[6/5] w-full object-cover"
             />
           </div>
-          <div className="glass-panel absolute -bottom-6 left-4 w-56 p-4 sm:left-auto sm:right-6">
+          <div className="glass-panel absolute -bottom-5 left-3 w-52 p-3 sm:-bottom-6 sm:left-auto sm:right-6 sm:w-56 sm:p-4">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
               Limited time offer
             </p>
-            <p className="mt-1 font-display text-3xl font-semibold text-gold-gradient">FLAT 30% OFF</p>
+             <p className="mt-1 font-display text-2xl font-semibold text-gold-gradient sm:text-3xl">FLAT 30% OFF</p>
             <p className="text-xs text-muted-foreground">On selected items</p>
             <Button size="sm" className="mt-3 w-full" asChild>
               <Link to="/offers">Shop the sale</Link>
@@ -218,13 +218,13 @@ const AGE_GROUPS = [
 
 function SectionHeading({ title, link, linkLabel }: { title: string; link?: string; linkLabel?: string }) {
   return (
-    <div className="mb-6 flex items-end justify-between gap-4">
-      <div>
-        <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-[2rem]">{title}</h2>
+    <div className="mb-5 grid grid-cols-[minmax(0,1fr)_auto] items-end gap-3 sm:mb-6 sm:gap-4">
+      <div className="min-w-0">
+        <h2 className="font-display text-xl font-semibold tracking-tight sm:text-[2rem]">{title}</h2>
         <span className="mt-2 block h-0.5 w-14 rounded-full gradient-gold" aria-hidden="true" />
       </div>
       {link && (
-        <Link to={link} className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+        <Link to={link} className="inline-flex shrink-0 items-center gap-1 text-xs font-semibold text-primary hover:underline sm:text-sm">
           {linkLabel} <ArrowRight className="h-4 w-4" />
         </Link>
       )}
@@ -234,7 +234,7 @@ function SectionHeading({ title, link, linkLabel }: { title: string; link?: stri
 
 function Grid({ items }: { items: Product[] }) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2.5 min-[390px]:gap-3 sm:gap-5 lg:grid-cols-4">
       {items.map((p) => (
         <ProductCard key={p.id} product={p} />
       ))}
@@ -277,15 +277,15 @@ function Home() {
       case "categories":
         return (
           <>
-            <section className="container-page mt-16">
+            <section className="container-page mt-12 sm:mt-16">
               <SectionHeading title="Shop by Age" link="/shop" linkLabel="Browse all" />
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-5">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-5">
                 {AGE_GROUPS.map((a) => (
                   <Link
                     key={a.label}
                     to="/category/$slug"
                     params={{ slug: a.slug }}
-                    className={`hover-lift rounded-3xl ${a.tint} p-5 transition-colors`}
+                    className={`hover-lift min-w-0 rounded-2xl ${a.tint} p-4 transition-colors sm:rounded-3xl sm:p-5`}
                   >
                     <span className="block font-display text-base font-semibold">{a.label}</span>
                     <span className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
@@ -296,15 +296,15 @@ function Home() {
               </div>
             </section>
 
-            <section className="container-page mt-16">
+            <section className="container-page mt-12 sm:mt-16">
               <SectionHeading title={title || "Shop by Category"} link="/shop" linkLabel="View all" />
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-8">
+               <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-4 lg:grid-cols-8">
                 {categories.map((c) => (
                   <Link
                     key={c.slug}
                     to="/category/$slug"
                     params={{ slug: c.slug }}
-                    className="group flex flex-col items-center gap-3 rounded-3xl border border-transparent p-3 text-center transition-all hover:border-border hover:bg-card hover:shadow-[var(--shadow-soft)]"
+                     className="group flex min-w-0 flex-col items-center gap-2 rounded-2xl border border-transparent p-2 text-center transition-all hover:border-border hover:bg-card hover:shadow-[var(--shadow-soft)] sm:gap-3 sm:rounded-3xl sm:p-3"
                   >
                     <img
                       src={c.image}
@@ -312,7 +312,7 @@ function Home() {
                       loading="lazy"
                       width={200}
                       height={200}
-                      className="h-20 w-20 rounded-full object-cover ring-1 ring-border transition-transform duration-500 group-hover:scale-105"
+                       className="aspect-square w-full max-w-20 rounded-full object-cover ring-1 ring-border transition-transform duration-500 group-hover:scale-105"
                     />
                     <span className="text-xs font-semibold">{c.name}</span>
                   </Link>

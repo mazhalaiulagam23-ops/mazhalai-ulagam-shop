@@ -65,21 +65,21 @@ export function ProductCard({ product }: { product: Product }) {
   const lowStock = product.stock > 0 && product.stock <= 5;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)]">
-      <div className="pointer-events-none absolute left-3 top-3 z-10 flex flex-col items-start gap-1.5">
+    <article className="group relative flex min-w-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-[var(--shadow-lift)] sm:rounded-3xl">
+      <div className="pointer-events-none absolute left-2 top-2 z-10 flex max-w-[calc(100%-3rem)] flex-col items-start gap-1 sm:left-3 sm:top-3 sm:gap-1.5">
         {product.badge && (
-          <span className="rounded-full bg-primary px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-primary-foreground">
+          <span className="max-w-full truncate rounded-full bg-primary px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-primary-foreground sm:px-2.5 sm:text-[10px]">
             {product.badge}
           </span>
         )}
         {off > 0 && (
-          <span className="rounded-full bg-sale px-2.5 py-1 text-[10px] font-bold text-primary-foreground">
+          <span className="rounded-full bg-sale px-2 py-1 text-[9px] font-bold text-primary-foreground sm:px-2.5 sm:text-[10px]">
             {off}% OFF
           </span>
         )}
       </div>
 
-      <div className="absolute right-3 top-3 z-10 flex flex-col gap-2 sm:translate-x-2 sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-x-0 sm:group-hover:opacity-100">
+      <div className="absolute right-2 top-2 z-10 flex flex-col gap-1.5 sm:right-3 sm:top-3 sm:gap-2 sm:translate-x-2 sm:opacity-0 sm:transition-all sm:duration-300 sm:group-hover:translate-x-0 sm:group-hover:opacity-100">
         <IconAction
           label={wished ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
           active={wished}
@@ -90,6 +90,7 @@ export function ProductCard({ product }: { product: Product }) {
         >
           <Heart className={cn("h-4 w-4", wished && "fill-current")} />
         </IconAction>
+        <div className="hidden sm:block">
         <IconAction
           label={`Compare ${product.name}`}
           active={compared}
@@ -101,9 +102,12 @@ export function ProductCard({ product }: { product: Product }) {
         >
           <Scale className="h-4 w-4" />
         </IconAction>
-        <IconAction label={`Quick view ${product.name}`} onClick={() => setQuickView(true)}>
+        </div>
+        <div className="hidden sm:block">
+          <IconAction label={`Quick view ${product.name}`} onClick={() => setQuickView(true)}>
           <Eye className="h-4 w-4" />
-        </IconAction>
+          </IconAction>
+        </div>
       </div>
 
       <Link
@@ -123,7 +127,7 @@ export function ProductCard({ product }: { product: Product }) {
         />
       </Link>
 
-      <div className="flex flex-1 flex-col gap-2 p-4">
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5 p-3 sm:gap-2 sm:p-4">
         <Link
           to="/category/$slug"
           params={{ slug: product.category }}
@@ -134,23 +138,23 @@ export function ProductCard({ product }: { product: Product }) {
         <Link
           to="/product/$slug"
           params={{ slug: product.slug }}
-          className="line-clamp-2 font-display text-[15px] font-semibold leading-snug text-foreground hover:text-primary"
+          className="line-clamp-2 min-h-10 break-words font-display text-sm font-semibold leading-snug text-foreground hover:text-primary sm:text-[15px]"
         >
           {product.name}
         </Link>
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="flex min-w-0 items-center gap-1 text-[10px] text-muted-foreground sm:gap-1.5 sm:text-xs">
           <Stars rating={product.rating} />
-          <span>({product.reviews} reviews)</span>
+          <span className="truncate">({product.reviews})</span>
         </div>
 
         <div className="mt-auto space-y-2 pt-1">
           <div className="flex items-baseline gap-2">
-            <span className="font-display text-xl font-semibold text-foreground">{inr(product.price)}</span>
+             <span className="font-display text-base font-semibold text-foreground sm:text-xl">{inr(product.price)}</span>
             {product.mrp > product.price && (
-              <span className="text-sm text-muted-foreground line-through">{inr(product.mrp)}</span>
+               <span className="text-xs text-muted-foreground line-through sm:text-sm">{inr(product.mrp)}</span>
             )}
           </div>
-          <p className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+           <p className="hidden items-center gap-1.5 text-[11px] text-muted-foreground min-[390px]:flex">
             <Truck className="h-3.5 w-3.5 text-primary" /> Delivery by {deliveryEstimate()}
           </p>
           <p className="text-[11px] font-semibold">
@@ -162,22 +166,22 @@ export function ProductCard({ product }: { product: Product }) {
               <span className="text-primary">In stock</span>
             )}
           </p>
-          <div className="flex gap-2">
+           <div className="grid grid-cols-2 gap-1.5 sm:gap-2">
             <Button
               variant="outline"
               size="sm"
-              className="flex-1"
+               className="min-w-0 px-2 sm:px-4"
               disabled={product.stock <= 0}
               onClick={() => {
                 addToCart(product.slug);
                 toast.success(`${product.name} added to cart`);
               }}
             >
-              <ShoppingCart className="h-4 w-4" /> Add
+               <ShoppingCart className="hidden h-4 w-4 min-[390px]:block" /> Add
             </Button>
-            <Button size="sm" className="flex-1" disabled={product.stock <= 0} asChild>
+             <Button size="sm" className="min-w-0 px-2 sm:px-4" disabled={product.stock <= 0} asChild>
               <Link to="/checkout" onClick={() => addToCart(product.slug)}>
-                <Zap className="h-4 w-4" /> Buy
+                 <Zap className="hidden h-4 w-4 min-[390px]:block" /> Buy
               </Link>
             </Button>
           </div>

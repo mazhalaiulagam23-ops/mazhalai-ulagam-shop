@@ -221,6 +221,8 @@
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    padding-top: env(safe-area-inset-top);
   }
 
   h1,
@@ -301,6 +303,16 @@
   padding-inline: 1rem;
   @media (min-width: 1024px) {
     padding-inline: 2rem;
+  }
+}
+
+@media (max-width: 639px) {
+  button,
+  [role="button"],
+  input,
+  select,
+  textarea {
+    touch-action: manipulation;
   }
 }
 
