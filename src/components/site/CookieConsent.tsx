@@ -20,7 +20,7 @@ export function CookieConsent() {
   };
 
   return (
-    <div className="fixed inset-x-3 bottom-3 z-50 md:inset-x-auto md:right-6 md:max-w-md">
+    <div className="fixed inset-x-3 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-50 md:inset-x-auto md:bottom-6 md:right-6 md:max-w-md">
       <div className="surface-card border border-border/70 p-4 shadow-lg">
         <div className="flex items-start gap-3">
           <Cookie className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden />

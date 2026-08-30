@@ -315,7 +315,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full">
       {/* Level 1 — utility bar */}
       <div className="gradient-teal text-primary-foreground">
-        <div className="container-page flex h-9 items-center justify-between gap-4 text-[11px] font-medium">
+        <div className="container-page grid h-9 grid-cols-[minmax(0,1fr)_auto] items-center gap-2 text-[11px] font-medium sm:gap-4">
           <div className="flex min-w-0 items-center gap-5 overflow-hidden">
             <span className="inline-flex shrink-0 items-center gap-1.5">
               <Truck className="h-3.5 w-3.5 text-gold" /> Free shipping over ₹999
@@ -357,14 +357,14 @@ export function Header() {
 
       {/* Level 2 — brand, search, actions */}
       <div className="border-b border-border bg-card/85 backdrop-blur-xl">
-        <div className="container-page flex h-20 items-center gap-3 lg:gap-6">
+        <div className="container-page grid h-16 grid-cols-[44px_minmax(0,1fr)] items-center gap-2 sm:flex sm:h-20 sm:gap-3 lg:gap-6">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Open menu">
+              <Button variant="ghost" size="icon" className="h-11 w-11 lg:hidden" aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-80 overflow-y-auto">
+            <SheetContent side="left" className="w-[min(88vw,320px)] overflow-y-auto pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
               <SheetHeader>
                 <SheetTitle className="text-primary">{settings.siteName}</SheetTitle>
               </SheetHeader>
@@ -402,17 +402,17 @@ export function Header() {
             </SheetContent>
           </Sheet>
 
-          <Link to="/" className="flex shrink-0 items-center gap-2.5">
+          <Link to="/" className="flex min-w-0 items-center gap-2 sm:shrink-0 sm:gap-2.5">
             <img
               src={logo}
               alt=""
               aria-hidden="true"
               width={512}
               height={512}
-              className="h-11 w-11 rounded-2xl object-contain"
+              className="h-9 w-9 shrink-0 rounded-xl object-contain sm:h-11 sm:w-11 sm:rounded-2xl"
             />
-            <span className="leading-tight">
-              <span className="block font-display text-lg font-semibold tracking-tight text-primary sm:text-xl">
+            <span className="min-w-0 leading-tight">
+              <span className="block truncate font-display text-base font-semibold tracking-tight text-primary sm:text-xl">
                 {settings.siteName}
               </span>
               <span className="hidden text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:block">
@@ -425,7 +425,7 @@ export function Header() {
             <SmartSearch id="site-search" />
           </div>
 
-          <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
+          <div className="ml-auto hidden items-center gap-1 sm:flex">
             <Link
               to="/ai-chat"
               className="hidden items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs font-semibold transition-colors hover:bg-secondary xl:flex"

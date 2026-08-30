@@ -22,6 +22,7 @@ import { CookieConsent } from "@/components/site/CookieConsent";
 import { SessionGuard } from "@/components/site/SessionGuard";
 import { ErrorReporter } from "@/components/site/ErrorReporter";
 import { DesignTokens } from "@/components/site/DesignTokens";
+import { MobileBottomNav } from "@/components/site/MobileBottomNav";
 
 import { Toaster } from "@/components/ui/sonner";
 import { useSiteSettings } from "@/lib/cms";
@@ -91,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Mazhalai Ulagam | Baby Products & Return Gifts, Coimbatore" },
       {
         name: "description",
@@ -183,7 +184,7 @@ function RootComponent() {
       <ShopProvider>
         <BrandHead />
         <DesignTokens />
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col overflow-x-clip pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-0">
           <Header />
           <main className="flex-1">
             {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
@@ -192,6 +193,7 @@ function RootComponent() {
           <Footer />
           <FloatingSocial />
           <SupportChatWidget />
+           <MobileBottomNav />
           <CookieConsent />
           <SessionGuard />
           <ErrorReporter />
