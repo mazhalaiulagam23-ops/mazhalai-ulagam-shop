@@ -11,9 +11,9 @@ export const Route = createFileRoute("/account")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "My Account | Mazhalai Ulagam" },
+      { title: "My Account | MazhalaiHub" },
       { name: "description", content: "Track your Mazhalai Ulagam orders, manage your details and save favourites." },
-      { property: "og:title", content: "My Account | Mazhalai Ulagam" },
+      { property: "og:title", content: "My Account | MazhalaiHub" },
       { property: "og:description", content: "Manage your orders and account details." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

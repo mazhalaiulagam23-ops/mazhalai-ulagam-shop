@@ -30,9 +30,9 @@ export const Route = createFileRoute("/product/$slug")({
     if (!p) return {};
     return {
       meta: [
-        { title: `${p.name} | Mazhalai Ulagam` },
+        { title: `${p.name} | MazhalaiHub` },
         { name: "description", content: p.shortDescription },
-        { property: "og:title", content: `${p.name} | Mazhalai Ulagam` },
+        { property: "og:title", content: `${p.name} | MazhalaiHub` },
         { property: "og:description", content: p.shortDescription },
         { property: "og:type", content: "product" },
         { name: "twitter:card", content: "summary_large_image" },

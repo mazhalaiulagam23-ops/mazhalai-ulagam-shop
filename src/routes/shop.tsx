@@ -11,17 +11,19 @@ export const Route = createFileRoute("/shop")({
   }),
   head: () => ({
     meta: [
-      { title: "Shop All Baby Products & Gifts | Mazhalai Ulagam" },
+      { title: "Shop All Baby Products & Gifts | MazhalaiHub" },
       {
         name: "description",
         content:
           "Browse every product at Mazhalai Ulagam — baby essentials, return gifts, toys, kids fashion, organic care and stationery with filters by price and age group.",
       },
-      { property: "og:title", content: "Shop All Products | Mazhalai Ulagam" },
+      { property: "og:title", content: "Shop All Products | MazhalaiHub" },
       { property: "og:description", content: "Filter by category, price and age group. Pan-India delivery." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/shop" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/shop" }],
   }),
   component: Shop,
 });

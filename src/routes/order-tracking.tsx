@@ -17,13 +17,15 @@ import { retryPayment, verifyPayment, recordPaymentFailure } from "@/lib/payment
 export const Route = createFileRoute("/order-tracking")({
   head: () => ({
     meta: [
-      { title: "Track Your Order | Mazhalai Ulagam" },
+      { title: "Track Your Order | MazhalaiHub" },
       { name: "description", content: "Check the status of your Mazhalai Ulagam orders and complete any pending payment." },
-      { property: "og:title", content: "Track Your Order | Mazhalai Ulagam" },
+      { property: "og:title", content: "Track Your Order | MazhalaiHub" },
       { property: "og:description", content: "Check your order, payment and shipment status." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/order-tracking" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/order-tracking" }],
   }),
   component: OrderTracking,
 });

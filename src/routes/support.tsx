@@ -5,20 +5,22 @@ import { SupportChat } from "@/components/support/SupportChat";
 export const Route = createFileRoute("/support")({
   head: () => ({
     meta: [
-      { title: "Customer Support Chat | Mazhalai Ulagam" },
+      { title: "Customer Support Chat | MazhalaiHub" },
       {
         name: "description",
         content:
           "Chat with the Mazhalai Ulagam support assistant for product help, order tracking, delivery, returns, offers and payment questions. English and Tamil.",
       },
-      { property: "og:title", content: "Customer Support Chat | Mazhalai Ulagam" },
+      { property: "og:title", content: "Customer Support Chat | MazhalaiHub" },
       {
         property: "og:description",
         content: "Instant help with products, orders, delivery, returns and payments.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/support" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/support" }],
   }),
   component: SupportPage,
 });

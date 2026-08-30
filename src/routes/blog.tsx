@@ -5,13 +5,15 @@ import { PageHeader } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Parenting Tips & Baby Care Blog | Mazhalai Ulagam" },
+      { title: "Parenting Tips & Baby Care Blog | MazhalaiHub" },
       { name: "description", content: "Practical parenting tips, newborn checklists, return gift ideas and educational toy guides from the Mazhalai Ulagam team in Coimbatore." },
-      { property: "og:title", content: "Parenting Tips & Baby Care Blog | Mazhalai Ulagam" },
+      { property: "og:title", content: "Parenting Tips & Baby Care Blog | MazhalaiHub" },
       { property: "og:description", content: "Guides on baby care, gifting and educational play." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/blog" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/blog" }],
   }),
   component: Blog,
 });

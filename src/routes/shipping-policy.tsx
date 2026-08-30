@@ -4,13 +4,15 @@ import { PageHeader, Prose } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/shipping-policy")({
   head: () => ({
     meta: [
-      { title: "Shipping Policy | Mazhalai Ulagam" },
+      { title: "Shipping Policy | MazhalaiHub" },
       { name: "description", content: "Dispatch timelines, shipping charges, serviceable pincodes and tracking details for Mazhalai Ulagam orders." },
-      { property: "og:title", content: "Shipping Policy | Mazhalai Ulagam" },
+      { property: "og:title", content: "Shipping Policy | MazhalaiHub" },
       { property: "og:description", content: "How and when we ship your order across India." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/shipping-policy" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/shipping-policy" }],
   }),
   component: () => (
     <>

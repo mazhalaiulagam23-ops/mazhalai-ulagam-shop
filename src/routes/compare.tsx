@@ -11,17 +11,19 @@ import { discountPercent } from "@/data/catalog";
 export const Route = createFileRoute("/compare")({
   head: () => ({
     meta: [
-      { title: "Compare Products | Mazhalai Ulagam" },
+      { title: "Compare Products | MazhalaiHub" },
       {
         name: "description",
         content:
           "Compare baby products, toys and gifts side by side — price, rating, age group, stock and material — before you buy at Mazhalai Ulagam.",
       },
-      { property: "og:title", content: "Compare Products | Mazhalai Ulagam" },
+      { property: "og:title", content: "Compare Products | MazhalaiHub" },
       { property: "og:description", content: "Side-by-side comparison of up to four baby and kids products." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/compare" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/compare" }],
   }),
   component: ComparePage,
 });

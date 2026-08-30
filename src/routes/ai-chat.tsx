@@ -5,20 +5,22 @@ import { SupportChat } from "@/components/support/SupportChat";
 export const Route = createFileRoute("/ai-chat")({
   head: () => ({
     meta: [
-      { title: "AI Chat Assistant | Mazhalai Ulagam" },
+      { title: "AI Chat Assistant | MazhalaiHub" },
       {
         name: "description",
         content:
           "Chat with the Mazhalai Ulagam AI assistant for baby product picks, toys, books, gift ideas, order tracking, delivery, returns and offers — in English or Tamil.",
       },
-      { property: "og:title", content: "AI Chat Assistant | Mazhalai Ulagam" },
+      { property: "og:title", content: "AI Chat Assistant | MazhalaiHub" },
       {
         property: "og:description",
         content: "Instant AI help with products, gifts by age and budget, orders, delivery and returns.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/ai-chat" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/ai-chat" }],
   }),
   component: AiChatPage,
 });

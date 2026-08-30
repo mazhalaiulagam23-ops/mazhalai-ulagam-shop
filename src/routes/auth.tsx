@@ -20,12 +20,12 @@ export const Route = createFileRoute("/auth")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign In or Register | Mazhalai Ulagam" },
+      { title: "Sign In or Register | MazhalaiHub" },
       {
         name: "description",
         content: "Sign in to Mazhalai Ulagam to track orders, save favourites and manage your store account.",
       },
-      { property: "og:title", content: "Sign In or Register | Mazhalai Ulagam" },
+      { property: "og:title", content: "Sign In or Register | MazhalaiHub" },
       { property: "og:description", content: "Access your Mazhalai Ulagam account securely." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
