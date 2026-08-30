@@ -35,7 +35,7 @@ export function SessionGuard() {
     void (async () => {
       await supabase.auth.signOut();
       toast.info("You were signed out after a period of inactivity.");
-      navigate({ to: "/auth", replace: true });
+      navigate({ to: "/auth", search: { redirect: undefined }, replace: true });
     })();
   }, [navigate]);
 
