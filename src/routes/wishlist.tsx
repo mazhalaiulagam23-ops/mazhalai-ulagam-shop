@@ -27,9 +27,9 @@ function WishlistPage() {
   return (
     <>
       <PageHeader title="My Wishlist" crumbs={[{ label: "Wishlist" }]} />
-      <div className="container-page py-10">
+      <div className="container-page py-7 sm:py-10">
         {items.length === 0 ? (
-          <div className="surface-card mx-auto flex max-w-md flex-col items-center gap-3 p-12 text-center">
+          <div className="surface-card mx-auto flex max-w-md flex-col items-center gap-3 p-7 text-center sm:p-12">
             <HeartOff className="h-10 w-10 text-muted-foreground" aria-hidden="true" />
             <h2 className="font-display text-xl font-bold">Your wishlist is empty</h2>
             <p className="text-sm text-muted-foreground">Tap the heart on any product to save it here.</p>
@@ -38,7 +38,7 @@ function WishlistPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2.5 min-[390px]:gap-3 sm:gap-5 lg:grid-cols-4">
             {items.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
