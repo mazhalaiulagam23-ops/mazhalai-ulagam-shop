@@ -18,9 +18,9 @@ import { placeOrder, recordPaymentFailure, verifyPayment } from "@/lib/payments.
 export const Route = createFileRoute("/checkout")({
   head: () => ({
     meta: [
-      { title: "Secure Checkout | Mazhalai Ulagam" },
+      { title: "Secure Checkout | MazhalaiHub" },
       { name: "description", content: "Complete your Mazhalai Ulagam order with UPI, cards, net banking or cash on delivery." },
-      { property: "og:title", content: "Secure Checkout | Mazhalai Ulagam" },
+      { property: "og:title", content: "Secure Checkout | MazhalaiHub" },
       { property: "og:description", content: "Fast, secure checkout with multiple payment options." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

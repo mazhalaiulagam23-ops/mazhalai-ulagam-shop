@@ -6,13 +6,15 @@ import { PageHeader } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/offers")({
   head: () => ({
     meta: [
-      { title: "Offers & Deals on Baby Products | Mazhalai Ulagam" },
+      { title: "Offers & Deals on Baby Products | MazhalaiHub" },
       { name: "description", content: "Live discounts on baby products, return gifts, toys and kids essentials at Mazhalai Ulagam, Coimbatore." },
-      { property: "og:title", content: "Offers & Deals | Mazhalai Ulagam" },
+      { property: "og:title", content: "Offers & Deals | MazhalaiHub" },
       { property: "og:description", content: "Save on bestsellers and bulk return gift orders." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/offers" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/offers" }],
   }),
   component: Offers,
 });

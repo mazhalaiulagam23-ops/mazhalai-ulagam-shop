@@ -4,13 +4,15 @@ import { PageHeader, Prose } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/returns-refunds")({
   head: () => ({
     meta: [
-      { title: "Returns & Refunds | Mazhalai Ulagam" },
+      { title: "Returns & Refunds | MazhalaiHub" },
       { name: "description", content: "Our 7-day return window, refund timelines and what can and cannot be returned at Mazhalai Ulagam." },
-      { property: "og:title", content: "Returns & Refunds | Mazhalai Ulagam" },
+      { property: "og:title", content: "Returns & Refunds | MazhalaiHub" },
       { property: "og:description", content: "Simple 7-day returns on unused products." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/returns-refunds" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/returns-refunds" }],
   }),
   component: () => (
     <>

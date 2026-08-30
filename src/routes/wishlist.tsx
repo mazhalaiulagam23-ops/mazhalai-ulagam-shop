@@ -9,9 +9,9 @@ import { useShop } from "@/lib/shop-store";
 export const Route = createFileRoute("/wishlist")({
   head: () => ({
     meta: [
-      { title: "Your Wishlist | Mazhalai Ulagam" },
+      { title: "Your Wishlist | MazhalaiHub" },
       { name: "description", content: "Save baby products, toys and return gifts you love and buy them later." },
-      { property: "og:title", content: "Your Wishlist | Mazhalai Ulagam" },
+      { property: "og:title", content: "Your Wishlist | MazhalaiHub" },
       { property: "og:description", content: "Your saved baby products and gift ideas." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

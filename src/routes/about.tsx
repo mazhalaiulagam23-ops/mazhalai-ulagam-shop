@@ -11,8 +11,10 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About Mazhalai Ulagam" },
       { property: "og:description", content: "Our story, values and promise to Coimbatore families." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/about" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/about" }],
   }),
   component: About,
 });

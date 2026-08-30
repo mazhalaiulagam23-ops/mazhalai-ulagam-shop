@@ -7,9 +7,9 @@ import { inr, useShop } from "@/lib/shop-store";
 export const Route = createFileRoute("/cart")({
   head: () => ({
     meta: [
-      { title: "Your Cart | Mazhalai Ulagam" },
+      { title: "Your Cart | MazhalaiHub" },
       { name: "description", content: "Review the baby products and gifts in your Mazhalai Ulagam cart before checkout." },
-      { property: "og:title", content: "Your Cart | Mazhalai Ulagam" },
+      { property: "og:title", content: "Your Cart | MazhalaiHub" },
       { property: "og:description", content: "Review your items and proceed to a secure checkout." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

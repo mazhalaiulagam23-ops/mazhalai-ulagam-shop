@@ -7,11 +7,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ | Delivery, Returns & Wholesale | Mazhalai Ulagam" },
+      { title: "FAQ | Delivery, Returns & Wholesale | MazhalaiHub" },
       { name: "description", content: "Answers about delivery timelines, wholesale return gift pricing, product safety, returns and payment options at Mazhalai Ulagam." },
-      { property: "og:title", content: "Frequently Asked Questions | Mazhalai Ulagam" },
+      { property: "og:title", content: "Frequently Asked Questions | MazhalaiHub" },
       { property: "og:description", content: "Delivery, returns, wholesale and payment questions answered." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/faq" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     scripts: [
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/faq")({
         }),
       },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/faq" }],
   }),
   component: Faq,
 });

@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as ReturnsRefundsRouteImport } from './routes/returns-refunds'
@@ -66,6 +67,11 @@ const TermsRoute = TermsRouteImport.update({
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -301,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
@@ -345,6 +352,7 @@ export interface FileRoutesByTo {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
@@ -390,6 +398,7 @@ export interface FileRoutesById {
   '/returns-refunds': typeof ReturnsRefundsRoute
   '/shipping-policy': typeof ShippingPolicyRoute
   '/shop': typeof ShopRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/support': typeof SupportRoute
   '/terms': typeof TermsRoute
   '/wishlist': typeof WishlistRoute
@@ -436,6 +445,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/sitemap.xml'
     | '/support'
     | '/terms'
     | '/wishlist'
@@ -480,6 +490,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/sitemap.xml'
     | '/support'
     | '/terms'
     | '/wishlist'
@@ -524,6 +535,7 @@ export interface FileRouteTypes {
     | '/returns-refunds'
     | '/shipping-policy'
     | '/shop'
+    | '/sitemap.xml'
     | '/support'
     | '/terms'
     | '/wishlist'
@@ -570,6 +582,7 @@ export interface RootRouteChildren {
   ReturnsRefundsRoute: typeof ReturnsRefundsRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
   ShopRoute: typeof ShopRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SupportRoute: typeof SupportRoute
   TermsRoute: typeof TermsRoute
   WishlistRoute: typeof WishlistRoute
@@ -600,6 +613,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -957,6 +977,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnsRefundsRoute: ReturnsRefundsRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,
   ShopRoute: ShopRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SupportRoute: SupportRoute,
   TermsRoute: TermsRoute,
   WishlistRoute: WishlistRoute,

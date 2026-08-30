@@ -28,15 +28,21 @@ export const Route = createFileRoute("/product/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.product;
     if (!p) return {};
+    const url = `https://mazhalaihub.com/product/${p.slug}`;
+    const image = p.images[0] && p.images[0].startsWith("http") ? p.images[0] : "https://mazhalaihub.com/og-cover.jpg";
     return {
       meta: [
-        { title: `${p.name} | Mazhalai Ulagam` },
+        { title: `${p.name} | MazhalaiHub` },
         { name: "description", content: p.shortDescription },
-        { property: "og:title", content: `${p.name} | Mazhalai Ulagam` },
+        { property: "og:title", content: `${p.name} | MazhalaiHub` },
         { property: "og:description", content: p.shortDescription },
         { property: "og:type", content: "product" },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:image", content: image },
       ],
+      links: [{ rel: "canonical", href: url }],
       scripts: [
         {
           type: "application/ld+json",
@@ -45,6 +51,7 @@ export const Route = createFileRoute("/product/$slug")({
             "@type": "Product",
             name: p.name,
             description: p.description,
+            image,
             aggregateRating: {
               "@type": "AggregateRating",
               ratingValue: p.rating,
@@ -52,6 +59,7 @@ export const Route = createFileRoute("/product/$slug")({
             },
             offers: {
               "@type": "Offer",
+              url,
               price: p.price,
               priceCurrency: "INR",
               availability: p.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",

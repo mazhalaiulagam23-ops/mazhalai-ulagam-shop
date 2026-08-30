@@ -12,16 +12,19 @@ export const Route = createFileRoute("/category/$slug")({
   },
   head: ({ loaderData }) => {
     const name = loaderData?.category.name ?? "Category";
-    const desc = `${loaderData?.category.tagline ?? ""} Shop ${name.toLowerCase()} at Mazhalai Ulagam, Coimbatore with pan-India delivery.`;
+    const slug = loaderData?.category.slug ?? "";
+    const desc = `${loaderData?.category.tagline ?? ""} Shop ${name.toLowerCase()} at MazhalaiHub, Coimbatore with pan-India delivery.`;
     return {
       meta: [
-        { title: `${name} | Mazhalai Ulagam Coimbatore` },
+        { title: `${name} | MazhalaiHub Coimbatore` },
         { name: "description", content: desc },
-        { property: "og:title", content: `${name} | Mazhalai Ulagam` },
+        { property: "og:title", content: `${name} | MazhalaiHub` },
         { property: "og:description", content: desc },
         { property: "og:type", content: "website" },
+        { property: "og:url", content: `https://mazhalaihub.com/category/${slug}` },
         { name: "twitter:card", content: "summary_large_image" },
       ],
+      links: [{ rel: "canonical", href: `https://mazhalaihub.com/category/${slug}` }],
     };
   },
   errorComponent: () => (

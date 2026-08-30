@@ -20,8 +20,10 @@ export const Route = createFileRoute("/contact")({
       { property: "og:title", content: "Contact Mazhalai Ulagam" },
       { property: "og:description", content: "Reach our Coimbatore team for orders and wholesale enquiries." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/contact" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/contact" }],
   }),
   component: Contact,
 });

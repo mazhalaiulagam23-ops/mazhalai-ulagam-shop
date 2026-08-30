@@ -11,9 +11,9 @@ import { checkPassword } from "@/lib/security";
 export const Route = createFileRoute("/reset-password")({
   head: () => ({
     meta: [
-      { title: "Reset Your Password | Mazhalai Ulagam" },
+      { title: "Reset Your Password | MazhalaiHub" },
       { name: "description", content: "Choose a new password for your Mazhalai Ulagam account." },
-      { property: "og:title", content: "Reset Your Password | Mazhalai Ulagam" },
+      { property: "og:title", content: "Reset Your Password | MazhalaiHub" },
       { property: "og:description", content: "Securely set a new password for your store account." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

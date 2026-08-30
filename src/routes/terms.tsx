@@ -4,13 +4,15 @@ import { PageHeader, Prose } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/terms")({
   head: () => ({
     meta: [
-      { title: "Terms & Conditions | Mazhalai Ulagam" },
+      { title: "Terms & Conditions | MazhalaiHub" },
       { name: "description", content: "The terms that apply when you browse, order or use services on the Mazhalai Ulagam website." },
-      { property: "og:title", content: "Terms & Conditions | Mazhalai Ulagam" },
+      { property: "og:title", content: "Terms & Conditions | MazhalaiHub" },
       { property: "og:description", content: "Terms of use for the Mazhalai Ulagam store." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/terms" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/terms" }],
   }),
   component: () => (
     <>

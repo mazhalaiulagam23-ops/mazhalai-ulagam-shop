@@ -4,13 +4,15 @@ import { PageHeader, Prose } from "@/components/site/PageHeader";
 export const Route = createFileRoute("/privacy-policy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy | Mazhalai Ulagam" },
+      { title: "Privacy Policy | MazhalaiHub" },
       { name: "description", content: "How Mazhalai Ulagam collects, uses and protects your personal information when you shop with us." },
-      { property: "og:title", content: "Privacy Policy | Mazhalai Ulagam" },
+      { property: "og:title", content: "Privacy Policy | MazhalaiHub" },
       { property: "og:description", content: "How we handle and protect your data." },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://mazhalaihub.com/privacy-policy" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [{ rel: "canonical", href: "https://mazhalaihub.com/privacy-policy" }],
   }),
   component: () => (
     <>
