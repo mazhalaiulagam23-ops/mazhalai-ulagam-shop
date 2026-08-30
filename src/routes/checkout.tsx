@@ -170,7 +170,7 @@ function Checkout() {
   return (
     <>
       <PageHeader title="Checkout" crumbs={[{ label: "Cart", to: "/cart" }, { label: "Checkout" }]} />
-      <form onSubmit={submit} className="container-page grid gap-8 py-10 lg:grid-cols-[1fr_340px]" noValidate>
+      <form onSubmit={submit} className="container-page grid gap-6 py-7 sm:gap-8 sm:py-10 lg:grid-cols-[1fr_340px]" noValidate>
         <div className="space-y-6">
           {!authLoading && !user ? (
             <div className="surface-card flex flex-wrap items-center justify-between gap-3 p-4 text-sm">
@@ -181,7 +181,7 @@ function Checkout() {
             </div>
           ) : null}
 
-          <section className="surface-card space-y-4 p-6">
+           <section className="surface-card space-y-4 p-4 sm:p-6">
             <h2 className="font-display text-lg font-bold">Delivery details</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               {[
@@ -193,23 +193,23 @@ function Checkout() {
               ].map((f) => (
                 <div key={f.id}>
                   <Label htmlFor={f.id}>{f.label}</Label>
-                  <Input id={f.id} name={f.id} type={f.type} className="mt-1.5" aria-invalid={!!errors[f.id]} />
+                   <Input id={f.id} name={f.id} type={f.type} className="mt-1.5 h-11" aria-invalid={!!errors[f.id]} />
                   {errors[f.id] && <p className="mt-1 text-xs text-destructive">{errors[f.id]}</p>}
                 </div>
               ))}
             </div>
             <div>
               <Label htmlFor="address">Full address</Label>
-              <Textarea id="address" name="address" rows={3} className="mt-1.5" aria-invalid={!!errors.address} />
+               <Textarea id="address" name="address" rows={3} className="mt-1.5 text-base md:text-sm" aria-invalid={!!errors.address} />
               {errors.address && <p className="mt-1 text-xs text-destructive">{errors.address}</p>}
             </div>
             <div>
               <Label htmlFor="notes">Delivery notes (optional)</Label>
-              <Textarea id="notes" name="notes" rows={2} className="mt-1.5" />
+               <Textarea id="notes" name="notes" rows={2} className="mt-1.5 text-base md:text-sm" />
             </div>
           </section>
 
-          <section className="surface-card space-y-4 p-6">
+           <section className="surface-card space-y-4 p-4 sm:p-6">
             <h2 className="font-display text-lg font-bold">Payment method</h2>
             <RadioGroup
               value={payment}
@@ -224,7 +224,9 @@ function Checkout() {
                       Pay online — secured by Razorpay
                     </Label>
                   </div>
-                  <p className="mt-2 pl-7 text-xs text-muted-foreground">{methodChips.join(" · ")}</p>
+                   <div className="mt-2 flex flex-wrap gap-1.5 pl-7">
+                     {methodChips.map((method) => <span key={method} className="rounded-full bg-secondary px-2 py-1 text-[11px] text-muted-foreground">{method}</span>)}
+                   </div>
                 </div>
               ) : null}
               {codEnabled ? (
@@ -236,20 +238,20 @@ function Checkout() {
                 </div>
               ) : null}
             </RadioGroup>
-            <p className="flex items-center gap-2 text-xs text-muted-foreground">
-              <ShieldCheck className="h-4 w-4" />
+             <p className="flex items-start gap-2 text-xs text-muted-foreground">
+               <ShieldCheck className="h-4 w-4 shrink-0" />
               Orders are marked paid only after the payment is verified with the bank.
               {settings?.mode === "test" ? " Test mode is on — no real money is charged." : ""}
             </p>
           </section>
         </div>
 
-        <aside className="surface-card h-fit space-y-3 p-6">
+         <aside className="surface-card h-fit space-y-3 p-5 sm:p-6">
           <h2 className="font-display text-lg font-bold">Order summary</h2>
           <ul className="space-y-2 text-sm">
             {cartItems.map(({ product, qty }) => (
-              <li key={product.slug} className="flex justify-between gap-3">
-                <span className="text-muted-foreground">
+               <li key={product.slug} className="grid grid-cols-[minmax(0,1fr)_auto] gap-3">
+                 <span className="min-w-0 break-words text-muted-foreground">
                   {product.name} × {qty}
                 </span>
                 <span className="font-semibold">{inr(product.price * qty)}</span>
