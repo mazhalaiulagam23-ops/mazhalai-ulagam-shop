@@ -29,30 +29,8 @@ export async function notifyAdminOfEnquiry(payload: Payload) {
     const label = payload.type === "complaint" ? "Product Complaint" : "Product Enquiry";
     const subject = `New ${label} – MazhalaiHub – #${payload.reference}`;
 
-    // Delivery is wired through Lovable's managed email service once the
-    // sender domain is verified; until then the notification is logged.
-    let sendTemplateEmail:
-      | ((name: string, to: string, opts: { templateData: Record<string, unknown>; idempotencyKey?: string }) => Promise<unknown>)
-      | null = null;
-    try {
-      const mod = (await import(/* @vite-ignore */ "@/lib/email-templates/send-email")) as {
-        sendTemplateEmail?: typeof sendTemplateEmail;
-      };
-      sendTemplateEmail = mod.sendTemplateEmail ?? null;
-    } catch {
-      sendTemplateEmail = null;
-    }
-
-    if (!sendTemplateEmail) {
-      console.warn(`[enquiry] email not configured, would notify ${to}: ${subject}`);
-      return { sent: false, reason: "email_not_configured" as const };
-    }
-
-    await sendTemplateEmail("enquiry-notification", to, {
-      templateData: { ...payload, subject, label },
-      idempotencyKey: `enquiry-${payload.reference}`,
-    });
-    return { sent: true as const };
+    console.warn(`[enquiry] pending admin notification to ${to}: ${subject}`);
+    return { sent: false, reason: "email_not_configured" as const };
   } catch (error) {
     console.error("[enquiry] notification failed", error);
     return { sent: false, reason: "error" as const };
