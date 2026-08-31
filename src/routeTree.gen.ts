@@ -21,6 +21,7 @@ import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as OrderTrackingRouteImport } from './routes/order-tracking'
 import { Route as OffersRouteImport } from './routes/offers'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as EnquiryRouteImport } from './routes/enquiry'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -49,6 +50,7 @@ import { Route as AuthenticatedAdminNavigationRouteImport } from './routes/_auth
 import { Route as AuthenticatedAdminLogsRouteImport } from './routes/_authenticated/admin/logs'
 import { Route as AuthenticatedAdminHomepageRouteImport } from './routes/_authenticated/admin/homepage'
 import { Route as AuthenticatedAdminHealthRouteImport } from './routes/_authenticated/admin/health'
+import { Route as AuthenticatedAdminEnquiriesRouteImport } from './routes/_authenticated/admin/enquiries'
 import { Route as AuthenticatedAdminDesignRouteImport } from './routes/_authenticated/admin/design'
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
 import { Route as AuthenticatedAdminBuilderRouteImport } from './routes/_authenticated/admin/builder'
@@ -112,6 +114,11 @@ const OffersRoute = OffersRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnquiryRoute = EnquiryRouteImport.update({
+  id: '/enquiry',
+  path: '/enquiry',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -263,6 +270,12 @@ const AuthenticatedAdminHealthRoute =
     path: '/health',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const AuthenticatedAdminEnquiriesRoute =
+  AuthenticatedAdminEnquiriesRouteImport.update({
+    id: '/enquiries',
+    path: '/enquiries',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminDesignRoute =
   AuthenticatedAdminDesignRouteImport.update({
     id: '/design',
@@ -299,6 +312,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/enquiry': typeof EnquiryRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
@@ -319,6 +333,7 @@ export interface FileRoutesByFullPath {
   '/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/design': typeof AuthenticatedAdminDesignRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/admin/logs': typeof AuthenticatedAdminLogsRoute
@@ -344,6 +359,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/enquiry': typeof EnquiryRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
@@ -363,6 +379,7 @@ export interface FileRoutesByTo {
   '/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/admin/content': typeof AuthenticatedAdminContentRoute
   '/admin/design': typeof AuthenticatedAdminDesignRoute
+  '/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/admin/health': typeof AuthenticatedAdminHealthRoute
   '/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/admin/logs': typeof AuthenticatedAdminLogsRoute
@@ -390,6 +407,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
+  '/enquiry': typeof EnquiryRoute
   '/faq': typeof FaqRoute
   '/offers': typeof OffersRoute
   '/order-tracking': typeof OrderTrackingRoute
@@ -410,6 +428,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/builder': typeof AuthenticatedAdminBuilderRoute
   '/_authenticated/admin/content': typeof AuthenticatedAdminContentRoute
   '/_authenticated/admin/design': typeof AuthenticatedAdminDesignRoute
+  '/_authenticated/admin/enquiries': typeof AuthenticatedAdminEnquiriesRoute
   '/_authenticated/admin/health': typeof AuthenticatedAdminHealthRoute
   '/_authenticated/admin/homepage': typeof AuthenticatedAdminHomepageRoute
   '/_authenticated/admin/logs': typeof AuthenticatedAdminLogsRoute
@@ -437,6 +456,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/compare'
     | '/contact'
+    | '/enquiry'
     | '/faq'
     | '/offers'
     | '/order-tracking'
@@ -457,6 +477,7 @@ export interface FileRouteTypes {
     | '/admin/builder'
     | '/admin/content'
     | '/admin/design'
+    | '/admin/enquiries'
     | '/admin/health'
     | '/admin/homepage'
     | '/admin/logs'
@@ -482,6 +503,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/compare'
     | '/contact'
+    | '/enquiry'
     | '/faq'
     | '/offers'
     | '/order-tracking'
@@ -501,6 +523,7 @@ export interface FileRouteTypes {
     | '/admin/builder'
     | '/admin/content'
     | '/admin/design'
+    | '/admin/enquiries'
     | '/admin/health'
     | '/admin/homepage'
     | '/admin/logs'
@@ -527,6 +550,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/compare'
     | '/contact'
+    | '/enquiry'
     | '/faq'
     | '/offers'
     | '/order-tracking'
@@ -547,6 +571,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/builder'
     | '/_authenticated/admin/content'
     | '/_authenticated/admin/design'
+    | '/_authenticated/admin/enquiries'
     | '/_authenticated/admin/health'
     | '/_authenticated/admin/homepage'
     | '/_authenticated/admin/logs'
@@ -574,6 +599,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
+  EnquiryRoute: typeof EnquiryRoute
   FaqRoute: typeof FaqRoute
   OffersRoute: typeof OffersRoute
   OrderTrackingRoute: typeof OrderTrackingRoute
@@ -676,6 +702,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enquiry': {
+      id: '/enquiry'
+      path: '/enquiry'
+      fullPath: '/enquiry'
+      preLoaderRoute: typeof EnquiryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -874,6 +907,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminHealthRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/enquiries': {
+      id: '/_authenticated/admin/enquiries'
+      path: '/enquiries'
+      fullPath: '/admin/enquiries'
+      preLoaderRoute: typeof AuthenticatedAdminEnquiriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/design': {
       id: '/_authenticated/admin/design'
       path: '/design'
@@ -910,6 +950,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminBuilderRoute: typeof AuthenticatedAdminBuilderRoute
   AuthenticatedAdminContentRoute: typeof AuthenticatedAdminContentRoute
   AuthenticatedAdminDesignRoute: typeof AuthenticatedAdminDesignRoute
+  AuthenticatedAdminEnquiriesRoute: typeof AuthenticatedAdminEnquiriesRoute
   AuthenticatedAdminHealthRoute: typeof AuthenticatedAdminHealthRoute
   AuthenticatedAdminHomepageRoute: typeof AuthenticatedAdminHomepageRoute
   AuthenticatedAdminLogsRoute: typeof AuthenticatedAdminLogsRoute
@@ -929,6 +970,7 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminBuilderRoute: AuthenticatedAdminBuilderRoute,
   AuthenticatedAdminContentRoute: AuthenticatedAdminContentRoute,
   AuthenticatedAdminDesignRoute: AuthenticatedAdminDesignRoute,
+  AuthenticatedAdminEnquiriesRoute: AuthenticatedAdminEnquiriesRoute,
   AuthenticatedAdminHealthRoute: AuthenticatedAdminHealthRoute,
   AuthenticatedAdminHomepageRoute: AuthenticatedAdminHomepageRoute,
   AuthenticatedAdminLogsRoute: AuthenticatedAdminLogsRoute,
@@ -969,6 +1011,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,
+  EnquiryRoute: EnquiryRoute,
   FaqRoute: FaqRoute,
   OffersRoute: OffersRoute,
   OrderTrackingRoute: OrderTrackingRoute,

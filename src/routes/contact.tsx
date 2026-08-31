@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
@@ -125,6 +125,10 @@ function Contact() {
                 <WhatsAppIcon className="h-4 w-4" /> Chat on WhatsApp
               </a>
             </Button>
+            <Button variant="outline" asChild>
+              <Link to="/enquiry">Raise a product enquiry or complaint</Link>
+            </Button>
+
             <SocialIcons placement="contact" className="pt-1" />
             <QrCodes placement="contact" className="pt-1" />
           </div>

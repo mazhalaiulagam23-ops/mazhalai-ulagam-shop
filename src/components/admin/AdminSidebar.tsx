@@ -11,6 +11,8 @@ import {
   LayoutTemplate,
   LogOut,
   Menu,
+  MessageSquareWarning,
+
   ScrollText,
   Settings,
   Share2,
@@ -65,8 +67,12 @@ export const ADMIN_NAV: AdminNavGroup[] = [
   },
   {
     label: "Engagement",
-    items: [{ to: "/admin/ai-chat", label: "AI Chat", icon: Bot, keywords: "assistant support chatbot" }],
+    items: [
+      { to: "/admin/ai-chat", label: "AI Chat", icon: Bot, keywords: "assistant support chatbot" },
+      { to: "/admin/enquiries", label: "Enquiries", icon: MessageSquareWarning, keywords: "complaints support tickets feedback" },
+    ],
   },
+
   {
     label: "Administration",
     items: [
