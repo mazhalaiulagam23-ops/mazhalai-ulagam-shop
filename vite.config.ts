@@ -22,14 +22,24 @@ export default defineConfig({
   },
   vite: {
     resolve: {
-      alias: {
+      alias: [
         // React Email's htmlparser2 needs entities v4.5.0; newer nested
-        // copies removed ./lib/decode.js, so pin every import to the
-        // hoisted v4.5.0 copy.
-        "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
-        "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
-        entities: path.resolve(__dirname, "node_modules/entities"),
-      },
+        // copies removed ./lib/decode.js, so pin imports to the hoisted
+        // v4.5.0 copy. Regexes (not string keys) so subpath imports like
+        // `entities/escape` map to lib/<name>.js instead of a missing file.
+        {
+          find: /^entities\/lib\/(decode|encode)\.js$/,
+          replacement: path.resolve(__dirname, "node_modules/entities/lib/$1.js"),
+        },
+        {
+          find: /^entities\/(.+)$/,
+          replacement: path.resolve(__dirname, "node_modules/entities/lib/$1.js"),
+        },
+        {
+          find: /^entities$/,
+          replacement: path.resolve(__dirname, "node_modules/entities"),
+        },
+      ],
     },
   },
 });
