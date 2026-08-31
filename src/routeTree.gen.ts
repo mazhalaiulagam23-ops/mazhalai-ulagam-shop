@@ -55,6 +55,7 @@ import { Route as AuthenticatedAdminDesignRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminContentRouteImport } from './routes/_authenticated/admin/content'
 import { Route as AuthenticatedAdminBuilderRouteImport } from './routes/_authenticated/admin/builder'
 import { Route as AuthenticatedAdminAiChatRouteImport } from './routes/_authenticated/admin/ai-chat'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -300,6 +301,12 @@ const AuthenticatedAdminAiChatRoute =
     path: '/ai-chat',
     getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -347,6 +354,7 @@ export interface FileRoutesByFullPath {
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -393,6 +401,7 @@ export interface FileRoutesByTo {
   '/admin/team': typeof AuthenticatedAdminTeamRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -442,6 +451,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/team': typeof AuthenticatedAdminTeamRoute
   '/api/public/razorpay-webhook': typeof ApiPublicRazorpayWebhookRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -491,6 +501,7 @@ export interface FileRouteTypes {
     | '/admin/team'
     | '/api/public/razorpay-webhook'
     | '/admin/'
+    | '/lovable/email/transactional/preview'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -537,6 +548,7 @@ export interface FileRouteTypes {
     | '/admin/team'
     | '/api/public/razorpay-webhook'
     | '/admin'
+    | '/lovable/email/transactional/preview'
   id:
     | '__root__'
     | '/'
@@ -585,6 +597,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/team'
     | '/api/public/razorpay-webhook'
     | '/_authenticated/admin/'
+    | '/lovable/email/transactional/preview'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -616,6 +629,7 @@ export interface RootRouteChildren {
   CategorySlugRoute: typeof CategorySlugRoute
   ProductSlugRoute: typeof ProductSlugRoute
   ApiPublicRazorpayWebhookRoute: typeof ApiPublicRazorpayWebhookRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -942,6 +956,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAiChatRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1028,6 +1049,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategorySlugRoute: CategorySlugRoute,
   ProductSlugRoute: ProductSlugRoute,
   ApiPublicRazorpayWebhookRoute: ApiPublicRazorpayWebhookRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
