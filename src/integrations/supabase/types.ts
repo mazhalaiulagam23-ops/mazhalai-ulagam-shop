@@ -293,6 +293,57 @@ export type Database = {
         }
         Relationships: []
       }
+      enquiries: {
+        Row: {
+          admin_notes: string
+          created_at: string
+          customer_name: string
+          email: string
+          id: string
+          message: string
+          mobile: string
+          order_number: string
+          product: string
+          reference: string
+          status: Database["public"]["Enums"]["enquiry_status"]
+          type: Database["public"]["Enums"]["enquiry_type"]
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          admin_notes?: string
+          created_at?: string
+          customer_name: string
+          email: string
+          id?: string
+          message: string
+          mobile: string
+          order_number?: string
+          product: string
+          reference?: string
+          status?: Database["public"]["Enums"]["enquiry_status"]
+          type?: Database["public"]["Enums"]["enquiry_type"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          admin_notes?: string
+          created_at?: string
+          customer_name?: string
+          email?: string
+          id?: string
+          message?: string
+          mobile?: string
+          order_number?: string
+          product?: string
+          reference?: string
+          status?: Database["public"]["Enums"]["enquiry_status"]
+          type?: Database["public"]["Enums"]["enquiry_type"]
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       error_logs: {
         Row: {
           created_at: string
@@ -1489,6 +1540,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "staff" | "customer" | "super_admin" | "manager"
+      enquiry_status: "new" | "in_progress" | "resolved"
+      enquiry_type: "enquiry" | "complaint"
       order_status:
         | "pending"
         | "confirmed"
@@ -1631,6 +1684,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "staff", "customer", "super_admin", "manager"],
+      enquiry_status: ["new", "in_progress", "resolved"],
+      enquiry_type: ["enquiry", "complaint"],
       order_status: [
         "pending",
         "confirmed",
